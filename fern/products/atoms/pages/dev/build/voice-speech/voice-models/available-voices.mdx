@@ -1,0 +1,131 @@
+---
+title: "Available Voices"
+sidebarTitle: "Voice IDs"
+description: "Complete list of available voice IDs for your agents."
+---
+
+Use these voice IDs when configuring your agent's TTS output.
+
+## Smallest AI Voices
+
+Ultra-low latency voices optimized for real-time conversation:
+
+| Voice ID | Name | Gender | Description |
+|----------|------|--------|-------------|
+| `lightning` | Lightning | Neutral | Fast, clear, professional |
+| `thunder` | Thunder | Male | Deep, authoritative |
+| `breeze` | Breeze | Female | Warm, friendly |
+| `storm` | Storm | Male | Energetic, upbeat |
+
+<Info>
+  Smallest AI voices have the lowest latency and are recommended for telephony.
+</Info>
+
+## OpenAI Voices
+
+High-quality voices with moderate latency:
+
+| Voice ID | Gender | Description |
+|----------|--------|-------------|
+| `alloy` | Neutral | Balanced, versatile |
+| `echo` | Male | Clear, professional |
+| `fable` | Male | Warm, storytelling quality |
+| `onyx` | Male | Deep, authoritative |
+| `nova` | Female | Friendly, youthful |
+| `shimmer` | Female | Soft, warm |
+
+## ElevenLabs Voices
+
+Premium voices with the highest quality:
+
+| Voice ID | Name | Description |
+|----------|------|-------------|
+| `21m00Tcm4TlvDq8ikWAM` | Rachel | American, calm |
+| `AZnzlk1XvdvUeBnXmlld` | Domi | American, assertive |
+| `EXAVITQu4vr4xnSDxMaL` | Bella | American, soft |
+| `ErXwobaYiN019PkySvjV` | Antoni | British, warm |
+| `MF3mGyEYCl7XYWbV9V6O` | Elli | American, young |
+
+<Tip>
+  Browse all ElevenLabs voices at [elevenlabs.io/voice-library](https://elevenlabs.io/voice-library)
+</Tip>
+
+## Using Voice IDs
+
+### In Platform Configuration
+
+Set voice ID in the [Atoms Dashboard](https://atoms.smallest.ai):
+
+1. Open agent settings → **Voice Configuration**
+2. Select TTS provider
+3. Enter the voice ID from the tables above
+
+### In Agent Code
+
+Reference voice IDs in your agent configuration:
+
+```python
+from smallestai.atoms.models import CreateAgentRequest
+
+agent = CreateAgentRequest(
+    name="SupportAgent",
+    synthesizer={
+        "provider": "smallest",
+        "voice_id": "lightning",  # ← Voice ID from table above
+        "speed": 1.0
+    },
+    ...
+)
+```
+
+### Per-Session Override
+
+Change voice dynamically based on context:
+
+```python
+class MultilingualAgent(OutputAgentNode):
+    VOICE_MAP = {
+        "en": "lightning",
+        "es": "spanish-female-1",
+        "fr": "french-male-1"
+    }
+    
+    async def start(self, init_event, task_manager):
+        await super().start(init_event, task_manager)
+        
+        language = init_event.session_context.initial_variables.get("language", "en")
+        self.voice_id = self.VOICE_MAP.get(language, "lightning")
+```
+
+## Custom Voices
+
+### Voice Cloning
+
+Create custom voices with ElevenLabs:
+
+1. Record 5+ minutes of clear speech
+2. Upload to [ElevenLabs Voice Lab](https://elevenlabs.io/voice-lab)
+3. Use the generated voice ID in your agent
+
+<Note>
+  Voice cloning requires appropriate consent and permissions. See [Voice Cloning](/dev/build/voice-speech/advanced-voice/voice-cloning) for guidelines.
+</Note>
+
+### Request New Voices
+
+Need a specific voice for your use case? Contact support@smallest.ai with your requirements.
+
+## Quick Reference
+
+Copy-paste ready voice configurations:
+
+```python
+# Fastest (Smallest AI)
+voice_config = {"provider": "smallest", "voice_id": "lightning"}
+
+# Highest quality (ElevenLabs)
+voice_config = {"provider": "elevenlabs", "voice_id": "21m00Tcm4TlvDq8ikWAM"}
+
+# Balanced (OpenAI)
+voice_config = {"provider": "openai", "voice_id": "nova"}
+```

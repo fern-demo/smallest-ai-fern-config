@@ -1,0 +1,354 @@
+---
+title: "Widget"
+description: "Learn how to integrate Atoms AI chat and voice functionality into your web applications using our React-based widget SDK."
+icon: "puzzle-piece"
+---
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/jjsa_l9vy8w?si=hGUCmBA62m8EzcVb"
+  title="How to Build AI Voice Agent Workflows?"
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>
+
+## What is the Atoms Widget?
+
+The Atoms Widget is a React-based SDK that allows you to seamlessly integrate AI chat and voice functionality into any web application. Built with TypeScript and modern React patterns, it provides enterprise-grade reliability with minimal setup required.
+
+## Getting Started
+
+Before integrating the widget, you need to create an agent and configure your widget:
+
+1. **Visit [https://atoms.smallest.ai/dashboard/agents](https://atoms.smallest.ai/dashboard/agents)**
+2. **Create a new agent** or select an existing one
+3. **Go to the Widget tab** to customize your widget's appearance and behavior
+4. **Copy the generated embed code** from the UI for easy integration
+
+<Note>
+  **Quick Integration:** You can copy the complete embed code directly from the
+  Widget tab in your dashboard. This code will include all your UI
+  configurations automatically applied. You can also override any of these
+  configurations programmatically if needed.
+</Note>
+
+## Key Features
+
+### Core Capabilities
+
+- **Real-time Chat**: Full-featured chat implementation with typing indicators and message history
+- **Voice Calling**: Complete voice conversation support with high-quality audio
+- **Dual Integration**: React component for modern frameworks and HTML custom element for vanilla projects
+- **TypeScript First**: Full type safety with comprehensive IntelliSense support
+- **Responsive Design**: Adaptive UI that works across all device sizes
+
+### Customization Options
+
+- **Flexible Positioning**: 4 position options (bottom-right, bottom-left, top-right, top-left)
+- **Size Variants**: Tiny, compact, and full-size layouts
+- **Color Theming**: Complete color customization for perfect branding consistency
+- **Consent Management**: Built-in privacy consent flow with customizable content
+
+---
+
+## Installation & Setup
+
+### For HTML/Vanilla JavaScript
+
+**Simple Integration (Recommended):**
+Just paste the embed code you copied from the dashboard:
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <script src="https://unpkg.com/atoms-widget-core@latest/dist/embed/widget.umd.js"></script>
+  </head>
+  <body>
+    <!-- Paste your embed code here -->
+    <atoms-widget assistant-id="your-assistant-id"></atoms-widget>
+  </body>
+</html>
+```
+
+**Optional Customization:**
+You can override dashboard settings by adding attributes:
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <script src="https://unpkg.com/atoms-widget-core@latest/dist/embed/widget.umd.js"></script>
+  </head>
+  <body>
+    <atoms-widget
+      assistant-id="your-assistant-id"
+      mode="chat"
+      position="bottom-right"
+      size="full"
+      accent-color="#2d9d9f"
+      title="AI Assistant"
+      chat-placeholder="How can I help you today?"
+    ></atoms-widget>
+  </body>
+</html>
+```
+
+### For React/Next.js Projects
+
+First, install the widget package:
+
+```bash
+npm install atoms-widget-core
+```
+
+**Simple Integration (Recommended):**
+Use just the assistant ID - all dashboard settings will be applied:
+
+```jsx
+import { AtomsWidget } from "atoms-widget-core";
+
+function App() {
+  return <AtomsWidget assistantId="your-assistant-id" />;
+}
+```
+
+**Optional Customization:**
+You can override dashboard settings with props:
+
+```jsx
+import { AtomsWidget } from "atoms-widget-core";
+
+function App() {
+  return (
+    <AtomsWidget
+      assistantId="your-assistant-id"
+      mode="chat"
+      position="bottom-right"
+      size="full"
+      accentColor="#2d9d9f"
+      title="AI Assistant"
+      chatPlaceholder="How can I help you today?"
+    />
+  );
+}
+```
+
+---
+
+## Configuration Options
+
+### Required Properties
+
+| Property    | Type   | Description             |
+| ----------- | ------ | ----------------------- |
+| assistantId | string | Your Atoms assistant ID |
+
+### Layout & Positioning
+
+| Property     | Type                                                         | Default        | Description             |
+| ------------ | ------------------------------------------------------------ | -------------- | ----------------------- |
+| mode         | "chat" \| "voice"                                            | "chat"         | Interaction mode        |
+| position     | "bottom-right" \| "bottom-left" \| "top-right" \| "top-left" | "bottom-right" | Widget position         |
+| size         | "tiny" \| "compact" \| "full"                                | "full"         | Widget size             |
+| borderRadius | number                                                       | 16             | Border radius in pixels |
+
+### Color Customization
+
+| Property           | Type   | Default   | Description                      |
+| ------------------ | ------ | --------- | -------------------------------- |
+| baseColor          | string | "#ffffff" | Background color                 |
+| accentColor        | string | "#2d9d9f" | Primary accent color             |
+| ctaButtonColor     | string | "#000000" | CTA button background            |
+| ctaButtonTextColor | string | "#ffffff" | CTA button text color            |
+| agentBubbleColor   | string | "#F3F4F6" | Agent message bubble color       |
+| textOnAccentColor  | string | "#ffffff" | Text color on accent backgrounds |
+| secondaryTextColor | string | "#6B7280" | Secondary text color             |
+| primaryTextColor   | string | "#111827" | Primary text color               |
+
+### Text & Labels
+
+| Property        | Type   | Default                | Description             |
+| --------------- | ------ | ---------------------- | ----------------------- |
+| title           | string | "Talk with AI"         | Widget title            |
+| ctaName         | string | "Chat with us"         | CTA button text         |
+| startButtonText | string | "Start"                | Voice start button text |
+| endButtonText   | string | "End Call"             | Voice end button text   |
+| chatPlaceholder | string | "Type your message..." | Chat input placeholder  |
+| avatarUrl       | string | ""                     | Avatar image URL        |
+
+### Empty State Messages
+
+| Property                | Type   | Description                            |
+| ----------------------- | ------ | -------------------------------------- |
+| voiceEmptyMessage       | string | Message shown when voice is inactive   |
+| voiceActiveEmptyMessage | string | Message shown during active voice call |
+| chatEmptyMessage        | string | Message shown in empty chat            |
+| hybridEmptyMessage      | string | Message shown in hybrid mode           |
+
+### Consent Management
+
+| Property        | Type    | Default              | Description             |
+| --------------- | ------- | -------------------- | ----------------------- |
+| consentRequired | boolean | false                | Require privacy consent |
+| consentTitle    | string  | "Privacy Agreement"  | Consent dialog title    |
+| consentContent  | string  | Default privacy text | Consent dialog content  |
+
+---
+
+## Use Cases & Examples
+
+### Retail & E-commerce
+
+**Faster shopping, product discovery, and returns help.**
+
+Example: A shopper can ask, "Do you have this jacket in medium?" or "What's your return policy for sale items?" and get an instant answer, no scrolling through FAQs.
+
+### Banking & Fintech
+
+**Balance checks, policy info, and account troubleshooting.**
+
+Example: A customer can say, "What's my credit card limit?" or "Help me reset my netbanking password" and the widget responds instantly, reducing call center load.
+
+### Healthcare
+
+**Appointment booking, doctor discovery, and pricing queries.**
+
+Example: A patient can ask, "Find me a dermatologist available this week" or "What's the cost of a routine health check-up?" and even book an appointment right away.
+
+### SaaS & Tech Support
+
+**Onboarding guidance, error code resolution, and integrations.**
+
+Example: A user can type, "How do I integrate this with Slack?" or "Why am I seeing error code 401?" and the widget walks them through solutions step by step.
+
+## **Lead Capture into a CRM (Salesforce / HubSpot Example)**
+
+The Atoms Widget can be configured to collect lead data during a conversation and forward it into your CRM (Salesforce or HubSpot).This requires **no backend coding** — everything happens inside the **Atoms dashboard \+ workflow editor**.
+
+## **Step-by-Step Workflow**
+
+### **Step 1: Collect lead details in the Widget**
+
+- Configure your agent (in Atoms dashboard) to prompt the user for lead details:
+
+  - Name
+
+  - Email
+
+  - Phone
+
+  - Company (optional)
+
+- These fields are captured during the conversation and stored as variables in your agent's context.
+
+---
+
+### **Step 2: Configure the Agent to Capture Leads**
+
+The widget itself does not directly capture leads: you must configure your **Agent inside Atoms** to integrate with your CRM.
+
+1. **Install the CRM Integration**
+
+   - Go to the **Integrations Tab** in your Atoms dashboard.
+
+   - Select **Salesforce** or **HubSpot**.
+
+   - Authenticate and connect your CRM account.
+
+   - Select which fields Atoms should read/write (e.g., `First Name`, `Email`, `Phone`, `Company`).
+
+<img src="../../images/widget/widget-step-1.png" className="rounded-lg" sub="df" />
+
+Click on the Integration tab in the atoms page.
+
+<img src="../../images/widget/widget-step-2.png" className="rounded-lg" sub="df" />
+
+
+Install and connect to your CRM.
+
+2. **Open the Workflow Editor**
+
+   - Navigate to your Agent → **Edit Workflow**.
+
+   - Under **Integrations** in the left panel, drag a **Salesforce/HubSpot node** into your workflow.
+
+<img src="../../images/widget/widget-step-3.png" className="rounded-lg" sub="df" />
+
+
+Select the CRM integration you need.
+
+3. **Extract Variables in Conversation**
+
+   - In the **starting node** (or wherever you ask for user details), add prompts like:
+
+     - “What’s your name?” → `$name`
+
+     - “What’s your email?” → `$email`
+
+     - “What’s your phone number?” → `$phone`
+
+     - “Which company do you represent?” → `$company`
+
+<img src="../../images/widget/widget-step-4.png" className="rounded-lg" sub="df" />
+
+
+extract the variables you need for lead generation
+
+4. **Add Salesforce/HubSpot Node**
+
+   - Drop a **Create Record** (or Update Record) node into your workflow.
+
+Map your variables into CRM fields using JSON-like format:
+
+```json
+{
+  "FirstName": "$name",
+
+  "Email": "$email",
+
+  "Phone": "$phone",
+
+  "Company": "$company"
+}
+```
+
+<img src="../../images/widget/widget-step-5.png" className="rounded-lg" sub="df" />
+
+
+In the salesforce node ads the record data in a json format.
+
+5. **Save & Deploy**
+
+   - Once published, every time your Agent reaches this node, it automatically creates/updates a record in Salesforce/HubSpot.
+
+   - No backend work is required.
+
+---
+
+### **Step 3: Confirm back to the user**
+
+After the lead is captured, configure your Agent to send a confirmation message like:
+
+“Thanks Jane, we’ve captured your details. Our team will contact you shortly.”
+
+---
+
+### **Step 4: Monitor & handle errors**
+
+- If CRM authentication fails (wrong token, expired connection), you’ll see errors in the **Atoms dashboard logs**.
+
+- Always set up a fallback message so the user gets a smooth experience.
+
+---
+
+## **Best Practices**
+
+- **No backend required** → use Atoms’ native integrations.
+
+- **Validate inputs** → configure conversation prompts clearly for email/phone.
+
+- **Avoid duplicates** → use CRM upsert where available.
+
+- **Monitor logs** → use Atoms dashboard logs to check failed syncs.

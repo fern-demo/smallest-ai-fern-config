@@ -1,0 +1,45 @@
+---
+title: "Agents"
+sidebarTitle: "Overview"
+description: "The brain of your AI application."
+---
+
+An **Agent** is the core component that powers conversational AI in the Atoms SDK. It's the "brain" that listens to what users say, thinks about how to respond, and speaks back—all in real-time.
+
+## What is an Agent?
+
+In Atoms, an agent is implemented as an `OutputAgentNode`—a specialized node that handles the complete conversation loop:
+
+1. **Listen** — Receives transcribed speech from the user
+2. **Think** — Processes the input with an LLM to generate a response
+3. **Speak** — Streams the response as audio back to the user
+
+This happens continuously, creating a natural back-and-forth conversation.
+
+## Why Atoms Agents?
+
+| Feature | Description |
+|---------|-------------|
+| **Real-Time Streaming** | Responses start playing while the LLM is still generating. No waiting. |
+| **Interruption Handling** | When users speak mid-response, the agent stops and listens. |
+| **Context Management** | Conversation history maintained automatically. |
+| **Tool Calling** | Execute functions mid-conversation—check databases, call APIs. |
+| **Multi-Provider LLM** | Use OpenAI, Anthropic, or bring your own model. |
+| **Production Ready** | Deploy with one command. Handle thousands of concurrent calls. |
+
+## What's Next
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="sliders" href="/dev/build/agents/agent-configuration/overview">
+    Set up prompts and LLM settings.
+  </Card>
+  <Card title="Tools & Functions" icon="wrench" href="/dev/build/agents/tools-functions/overview">
+    Give your agent actions and data access.
+  </Card>
+  <Card title="Patterns" icon="diagram-project" href="/dev/build/agents/agent-patterns/conversation-flow-design">
+    Conversation flows, interruptions, multi-agent.
+  </Card>
+  <Card title="Testing & Debugging" icon="bug" href="/dev/build/agents/debugging-testing/overview">
+    Test locally and debug issues.
+  </Card>
+</CardGroup>

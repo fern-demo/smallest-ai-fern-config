@@ -1,0 +1,67 @@
+---
+title: "Renting Numbers"
+description: "Connect your Atom to a dedicated Phone Number"
+icon: "phone-arrow-down-left"
+---
+
+## Purchasing Numbers
+
+To purchase a phone number through the dashboard:
+
+1. Navigate to the [Phone Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/rent-numbers) tab in your dashboard
+2. Click the **Buy Numbers** button in the top-right corner
+3. Select your requirements:
+   - Choose your desired country code
+   - Select a preferred provider
+4. Click **Acquire Number**
+
+The purchased number will appear in the [Your Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/your-numbers) tab immediately and will be ready to assign to any agent.
+
+<Note>
+  The maximum number of phone numbers you can acquire depends on your current subscription plan. Check your
+  limits and available quota on the [Subscription page](https://console.smallest.ai/subscription).
+</Note>
+
+## Importing Numbers via SIP Trunking
+
+If you already have phone numbers with your own telephony provider, you can import them using SIP Trunking (BYOSIP - Bring Your Own SIP). This allows you to:
+
+- Keep your existing phone numbers
+- Use your preferred telephony provider
+- Maintain control over your telephony infrastructure
+- Avoid number porting or rental fees
+
+To import a phone number using SIP Trunking:
+
+1. Navigate to the [Phone Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/rent-numbers) tab in your dashboard
+2. Click the **Buy Numbers** button in the top-right corner
+3. Select the **Import SIP Number** tab
+4. Enter your phone number details:
+   - Phone number in E.164 format (e.g., +12025551234)
+   - SIP Termination URL from your provider
+   - Optional: Display name, username, and password for authentication
+5. Configure your telephony provider to route calls to Smallest AI's SIP Origination URL
+6. Click **Add Custom Number**
+
+The imported number will appear in the [Your Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/your-numbers) tab and will be ready to assign to any agent.
+
+<Card title="Learn More About SIP Trunking" icon="network-wired" href="/deep-dive/phone-number/sip-trunking">
+  For detailed setup instructions, technical specifications, and provider-specific guides, see our
+  comprehensive SIP Trunking documentation.
+</Card>
+
+## Assigning Numbers to Your Agent
+
+Once you have a number, connecting it to your Atom is straightforward:
+
+1. Navigate to your Atom's **Configure** page
+2. Look for the **Assign Phone Number** section
+3. Open the dropdown menu to see your available numbers
+4. Select the number you want to assign
+
+<Tip>
+  Make sure to test your agent thoroughly with outbound calls before setting it up for inbound calls. This
+  helps ensure a smooth experience for your callers.
+</Tip>
+
+Congrats! Your agent will now answer calls and perform calls from the assigned number!

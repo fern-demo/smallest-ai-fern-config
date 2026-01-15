@@ -1,0 +1,36 @@
+---
+title: "Call Logs Guide"
+description: "Understand how to view, manage, and interact with call logs."
+icon: scroll
+---
+
+The **Call Logs** section provides a detailed record of past calls, including key details such as call time, duration, status, and available actions.  
+![image](../../images/call-logs.png)
+
+## Call Log Fields  
+
+| Field        | Description |
+|-------------|------------|
+| **Call Date** | Displays when the call took place. Calls are listed in descending order by default. |
+| **Call ID** | A unique identifier assigned to each call. Useful for tracking and referencing specific calls. |
+| **Duration** | The total length of the call, measured in seconds. |
+| **Status** | Indicates the current state of the call (refer to the [Call Status](#call-status) section for details). |
+| **Actions** | Allows interaction with the call log through the following options: - **Play**: Listen to the recorded call. - **Transcript**: View the text transcript of the call. - **Download**: Save the call's audio recording. |
+
+## Call Status  
+
+Each call has a **status** that represents its current state. Below is a breakdown of all possible statuses:  
+
+| Status       | Description |
+|-------------|------------|
+| **Pending** | The default status when a call is first created. |
+| **In Queue** | The call has been sent to the queue and is waiting to be processed. |
+| **In Progress** | The call has been picked up by the service and is actively running. |
+| **Completed** | The call has ended successfully. This status is set upon the end-call event. |
+| **Failed** | The call was not completed due to an error. This status can be set by the system if service fails. |
+| **Cancelled** | The call was manually canceled from the dashboard before it could be processed. |
+| **No Answer** | The recipient did not answer the call. This status is set upon the end-call event. |
+| **Busy** | The recipient's line was busy, preventing the call from connecting. This status is set upon the end-call event. |
+
+
+This section helps in reviewing past interactions, analyzing conversations, and keeping track of important call records.  

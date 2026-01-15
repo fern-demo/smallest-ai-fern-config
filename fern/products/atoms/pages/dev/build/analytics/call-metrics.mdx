@@ -1,0 +1,166 @@
+---
+title: "Call Metrics"
+sidebarTitle: "Call Metrics"
+description: "Track call duration, status, and transcripts."
+---
+
+Retrieve detailed metrics for individual calls.
+
+## Getting Call Details
+
+```python
+import requests
+import os
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+call_id = "CALL-1768155029217-0bae45"
+
+response = requests.get(
+    f"https://atoms.smallest.ai/api/v1/conversation/{call_id}",
+    headers={"Authorization": f"Bearer {API_KEY}"}
+)
+data = response.json()["data"]
+
+print(f"Call ID: {data['callId']}")
+print(f"Duration: {data['duration']} seconds")
+print(f"Status: {data['status']}")
+```
+
+## Call Duration
+
+```python
+duration_seconds = data["duration"]
+duration_minutes = duration_seconds / 60
+
+print(f"Call lasted {duration_minutes:.1f} minutes")
+```
+
+## Call Status
+
+Check call outcomes:
+
+```python
+status = data["status"]
+
+if status == "completed":
+    print("Call completed successfully")
+elif status == "in_progress":
+    print("Call is ongoing")
+elif status == "failed":
+    print(f"Call failed: {data.get('callFailureReason', 'Unknown')}")
+```
+
+## Call Types
+
+```python
+call_type = data["type"]
+
+# Possible values:
+# - 'telephony_inbound'  - Incoming call
+# - 'telephony_outbound' - Outgoing call  
+# - 'chat'               - Text conversation
+```
+
+## Phone Numbers
+
+```python
+caller = data["from"]  # Who initiated
+callee = data["to"]    # Who received
+
+print(f"From: {caller}")
+print(f"To: {callee}")
+```
+
+## Transcripts
+
+Get the full conversation:
+
+```python
+transcript = data["transcript"]
+
+for message in transcript:
+    role = message.get("role", "unknown")
+    content = message.get("content", "")
+    print(f"{role}: {content}")
+```
+
+## Recording URL
+
+Access the call recording:
+
+```python
+recording_url = data["recordingUrl"]
+dual_url = data["recordingDualUrl"]  # Stereo version
+
+if recording_url:
+    print(f"Recording: {recording_url}")
+```
+
+## Call Cost
+
+```python
+cost = data["callCost"]
+print(f"Call cost: {cost} credits")
+```
+
+## Call Events
+
+View the call lifecycle:
+
+```python
+events = data["events"]
+
+for event in events:
+    event_type = event["eventType"]
+    event_time = event["eventTime"]
+    print(f"{event_time}: {event_type}")
+```
+
+Common event types:
+- `call_pending` - Call initiated
+- `call_queued` - Waiting for agent
+- `in_progress` - Call connected
+- `completed` - Call ended normally
+- `failed` - Call failed
+
+## Batch Analysis
+
+Analyze multiple calls:
+
+```python
+def analyze_calls(call_ids):
+    total_duration = 0
+    completed = 0
+    
+    for call_id in call_ids:
+        resp = requests.get(
+            f"https://atoms.smallest.ai/api/v1/conversation/{call_id}",
+            headers={"Authorization": f"Bearer {API_KEY}"}
+        )
+        data = resp.json()["data"]
+        
+        total_duration += data.get("duration", 0)
+        if data.get("status") == "completed":
+            completed += 1
+    
+    avg_duration = total_duration / len(call_ids) if call_ids else 0
+    completion_rate = completed / len(call_ids) * 100 if call_ids else 0
+    
+    print(f"Average duration: {avg_duration:.1f}s")
+    print(f"Completion rate: {completion_rate:.1f}%")
+```
+
+## Export Data
+
+```python
+import json
+
+# Export to JSON
+with open("call_log.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+# Export transcript to text
+with open("transcript.txt", "w") as f:
+    for msg in data.get("transcript", []):
+        f.write(f"{msg.get('role', '')}: {msg.get('content', '')}\n")
+```

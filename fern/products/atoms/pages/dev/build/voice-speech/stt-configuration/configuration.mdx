@@ -1,0 +1,113 @@
+---
+title: "STT & Language"
+sidebarTitle: "Configuration"
+description: "Configure speech-to-text and language settings."
+---
+
+Configure how your agent understands spoken input.
+
+## Language Settings
+
+The `language` object controls speech recognition:
+
+```python
+language = {
+    "enabled": "en",
+    "supported": ["en", "hi", "ta"],
+    "switching": {
+        "isEnabled": False,
+        "minWordsForDetection": 2,
+        "strongSignalThreshold": 0.7,
+        "weakSignalThreshold": 0.3,
+        "minConsecutiveForWeakThresholdSwitch": 2
+    }
+}
+```
+
+## Primary Language
+
+Set the default language:
+
+```python
+"enabled": "en"   # English (default)
+"enabled": "hi"   # Hindi
+"enabled": "ta"   # Tamil
+"enabled": "es"   # Spanish
+```
+
+## Supported Languages
+
+Languages the agent can understand:
+
+```python
+"supported": ["en"]              # English only
+"supported": ["en", "hi"]        # English and Hindi
+"supported": ["en", "hi", "ta"]  # Multiple languages
+```
+
+## Language Switching
+
+Enable automatic language detection:
+
+```python
+"switching": {
+    "isEnabled": True,              # Enable auto-detection
+    "minWordsForDetection": 2,      # Min words before switching
+    "strongSignalThreshold": 0.7,   # Confidence for strong signal
+    "weakSignalThreshold": 0.3,     # Confidence for weak signal
+    "minConsecutiveForWeakThresholdSwitch": 2
+}
+```
+
+## Example: Configure Language
+
+```python
+import requests
+import os
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+agent_id = "your-agent-id"
+
+response = requests.patch(
+    f"https://atoms.smallest.ai/api/v1/agent/{agent_id}",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "language": {
+            "enabled": "en",
+            "supported": ["en", "hi"],
+            "switching": {
+                "isEnabled": True,
+                "minWordsForDetection": 3
+            }
+        }
+    }
+)
+
+print(f"Updated: {response.status_code}")
+```
+
+## Voice Detection
+
+Fine-tune how the agent detects speech:
+
+```python
+"voiceDetectionConfig": {
+    "confidence": 0.7,           # Detection confidence
+    "minVolume": 0.6,            # Minimum volume threshold
+    "triggerTimeInSecs": 0.2,    # Time to start detection
+    "releaseTimeInSecs": 0.8     # Time to end detection
+}
+```
+
+## Denoising
+
+Enable background noise reduction:
+
+```python
+"denoisingConfig": {
+    "isEnabled": True  # Reduce background noise
+}
+```

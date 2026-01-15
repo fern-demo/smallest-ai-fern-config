@@ -1,0 +1,282 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Smallest AI - Atoms Documentation",
+  "colors": {
+    "primary": "#217D80",
+    "light": "#008080",
+    "dark": "#004D4D"
+  },
+  "favicon": "logo/favi.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Deep Dive",
+            "pages": [
+              {
+                "group": "Workflow",
+                "pages": [
+                  "deep-dive/workflow/what-is-a-workflow",
+                  "deep-dive/workflow/what-is-a-node",
+                  "deep-dive/workflow/what-is-a-branch",
+                  "deep-dive/workflow/what-are-variables",
+                  {
+                    "group": "Types of Nodes",
+                    "pages": [
+                      "deep-dive/workflow/types-of-nodes/default",
+                      "deep-dive/workflow/types-of-nodes/api-call",
+                      "deep-dive/workflow/types-of-nodes/transfer-call",
+                      "deep-dive/workflow/types-of-nodes/end-call",
+                      "deep-dive/workflow/types-of-nodes/pre-call-api",
+                      "deep-dive/workflow/types-of-nodes/post-call-api"
+                    ]
+                  },
+                  "deep-dive/workflow/best-practices-for-prompting",
+                  "deep-dive/workflow/workflow-vs-single-prompt"
+                ]
+              },
+              {
+                "group": "Single Prompt",
+                "pages": [
+                  "deep-dive/single-prompt/overview",
+                  "deep-dive/single-prompt/tool-calls",
+                  "deep-dive/single-prompt/prompting-best-practices"
+                ]
+              },
+              {
+                "group": "Voice Config",
+                "pages": [
+                  "deep-dive/voice-config/types-of-voice-models",
+                  "deep-dive/voice-config/understanding-voice-parameters",
+                  "deep-dive/voice-config/pronunciation-dictionaries",
+                  "deep-dive/voicemail-detection/voicemail-detection"
+                ]
+              },
+              {
+                "group": "LLM Config",
+                "pages": [
+                  "deep-dive/llm-config/llm-config"
+                ]
+              },
+              {
+                "group": "Call Logs",
+                "pages": [
+                  "deep-dive/call-logs/what-is-a-call-log"
+                ]
+              },
+              {
+                "group": "Phone Number",
+                "pages": [
+                  "deep-dive/phone-number/phone-number",
+                  "deep-dive/phone-number/sip-trunking",
+                  {
+                    "group": "Provider Setup Guides",
+                    "pages": [
+                      "deep-dive/phone-number/twilio-sip-setup",
+                      "deep-dive/phone-number/telnyx-sip-setup",
+                      "deep-dive/phone-number/vonage-sip-setup"
+                    ]
+                  }
+                ]
+              },
+              "deep-dive/audience/audience",
+              "deep-dive/campaign/campaign",
+              "deep-dive/webhooks/webhooks",
+              "deep-dive/widget/widget",
+              "deep-dive/realtime-events/events"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Usecases",
+        "groups": [
+          {
+            "group": "Top Industries",
+            "pages": [
+              "usecases/banking",
+              "usecases/e-commerce",
+              "usecases/logistics",
+              "usecases/healthcare",
+              "usecases/recruitment",
+              "usecases/small-business",
+              "usecases/startups"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developer Guide",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "dev/introduction/overview",
+              "dev/introduction/quickstart",
+              "dev/introduction/cli",
+              {
+                "group": "SDK",
+                "pages": [
+                  "dev/introduction/core-concepts/overview",
+                  "dev/introduction/core-concepts/nodes",
+                  "dev/introduction/core-concepts/events",
+                  "dev/introduction/core-concepts/graphs",
+                  "dev/introduction/core-concepts/sessions"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Build",
+            "pages": [
+              {
+                "group": "Agents",
+                "pages": [
+                  "dev/build/agents/overview",
+                  {
+                    "group": "LLM",
+                    "pages": [
+                      "dev/build/agents/agent-configuration/overview",
+                      "dev/build/agents/agent-configuration/llm-settings",
+                      "dev/build/agents/agent-configuration/prompts",
+                      "dev/build/agents/agent-configuration/byom"
+                    ]
+                  },
+                  {
+                    "group": "Tools",
+                    "pages": [
+                      "dev/build/agents/tools-functions/overview",
+                      "dev/build/agents/tools-functions/defining-tools",
+                      "dev/build/agents/tools-functions/executing-tools"
+                    ]
+                  },
+                  {
+                    "group": "Patterns",
+                    "pages": [
+                      "dev/build/agents/agent-patterns/streaming",
+                      "dev/build/agents/agent-patterns/interruption-handling",
+                      "dev/build/agents/agent-patterns/state-management",
+                      "dev/build/agents/agent-patterns/conversation-flow-design",
+                      "dev/build/agents/agent-patterns/multi-agent-orchestration"
+                    ]
+                  },
+                  {
+                    "group": "Operations",
+                    "pages": [
+                      "dev/build/agents/debugging-testing/overview",
+                      "dev/build/agents/debugging-testing/logging-observability",
+                      "dev/build/agents/debugging-testing/common-issues"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Calling",
+                "pages": [
+                  "dev/build/phone-calling/overview",
+                  "dev/build/phone-calling/outbound-calls",
+                  "dev/build/phone-calling/call-control"
+                ]
+              },
+              {
+                "group": "Analytics",
+                "pages": [
+                  "dev/build/analytics/overview",
+                  "dev/build/analytics/call-metrics",
+                  "dev/build/analytics/agent-performance"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "dev/cookbooks/examples"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference V1",
+        "href": "docs/api-reference/",
+        "openapi": "/api-reference/openapi.yaml"
+      },
+      {
+        "tab": "Client Libraries",
+        "groups": [
+          {
+            "group": "Client Libraries",
+            "pages": [
+              "client-libraries/overview"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "FAQs",
+        "groups": [
+          {
+            "group": "Frequently Asked Questions",
+            "pages": [
+              "faqs/frequently-asked-questions"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "href": "https://atoms-docs.smallest.ai/",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://smallest.ai/discord",
+          "icon": "discord"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://smallest.ai/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/dark.png",
+    "dark": "/logo/light.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@smallest.ai"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Home",
+      "href": "https://smallest.ai"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/smallest_AI",
+      "github": "https://github.com/smallest-inc/",
+      "linkedin": "https://www.linkedin.com/company/smallest/",
+      "youtube": "https://www.youtube.com/@smallest_ai"
+    }
+  }
+}

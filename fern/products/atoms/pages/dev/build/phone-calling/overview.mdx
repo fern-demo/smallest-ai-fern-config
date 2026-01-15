@@ -1,0 +1,47 @@
+---
+title: "Calling"
+sidebarTitle: "Overview"
+description: "Make outbound calls with your AI agent."
+---
+
+The Atoms SDK lets you make outbound phone calls. Connect your AI agents to real phone conversations.
+
+## What Can You Do?
+
+| Capability | Description |
+|------------|-------------|
+| **Outbound Calls** | Dial any phone number and connect it to your agent |
+| **Call Control** | End calls or transfer to humans from within your agent |
+| **Call Logs** | Access transcripts, recordings, and analytics |
+
+## How It Works
+
+```
+Your App → SDK → Atoms Platform → Phone Network → User's Phone
+                      ↓
+                 Your Agent
+```
+
+1. **You initiate** — Call `start_outbound_call()` with a phone number
+2. **Platform connects** — Atoms dials the number and establishes the call
+3. **Agent handles** — Your agent runs the conversation in real-time
+4. **You analyze** — Access transcripts and analytics afterward
+
+## Prerequisites
+
+Before making calls:
+
+1. **API Key** — Get from [atoms.smallest.ai](https://atoms.smallest.ai)
+2. **Agent** — Create an agent in the dashboard with a phone number linked
+3. **Phone Numbers** — E.164 format (e.g., `+14155551234`)
+
+## What's Next
+
+<CardGroup cols={2}>
+  <Card title="Outbound Calls" icon="phone-arrow-up-right" href="/dev/build/phone-calling/outbound-calls">
+    Make individual calls with code examples.
+  </Card>
+  <Card title="Call Control" icon="phone-hangup" href="/dev/build/phone-calling/call-control">
+    End calls and transfer to humans.
+  </Card>
+</CardGroup>

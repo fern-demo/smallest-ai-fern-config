@@ -1,0 +1,373 @@
+---
+title: "Complete Walkthrough"
+description: "Build a fully functional voice agent from scratch in 15 minutes."
+---
+
+This guide walks you through building a complete voice agent. You will create an agent that can answer questions, call tools, and handle a real conversation.
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Python 3.10 or higher installed
+- A Smallest AI account with an API key
+- An OpenAI API key (or another LLM provider)
+
+## What You Will Build
+
+By the end of this guide, your agent will:
+
+1. Greet users when they connect
+2. Answer questions using an LLM
+3. Look up order information using a tool
+4. Handle interruptions gracefully
+
+## Step 1: Install the SDK
+
+Open your terminal and install the Atoms SDK:
+
+```bash
+pip install smallestai
+```
+
+Verify the installation:
+
+```bash
+python -c "import smallestai; print('Atoms SDK installed')"
+```
+
+## Step 2: Set Up Environment Variables
+
+Create a `.env` file in your project directory:
+
+```bash
+SMALLEST_API_KEY=your_smallest_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+Load these in your Python code or export them in your shell.
+
+## Step 3: Create Your Agent
+
+Create a new file called `agent.py`:
+
+```python
+from smallestai.atoms.agent.nodes import OutputAgentNode
+from smallestai.atoms.agent.clients.openai import OpenAIClient
+
+
+class OrderAssistant(OutputAgentNode):
+    """A voice agent that helps customers check order status."""
+
+    def __init__(self):
+        super().__init__(name="order-assistant")
+        
+        # Initialize the LLM client
+        self.llm = OpenAIClient(model="gpt-4o-mini")
+        
+        # Set the system prompt
+        self.context.add_message({
+            "role": "system",
+            "content": (
+                "You are a helpful order assistant for Acme Store. "
+                "You help customers check their order status. "
+                "Be friendly but concise. "
+                "If the customer asks about an order, use the get_order_status tool."
+            )
+        })
+
+    async def generate_response(self):
+        """Generate a response by calling the LLM."""
+        response = await self.llm.chat(
+            messages=self.context.messages,
+            stream=True
+        )
+        
+        async for chunk in response:
+            if chunk.content:
+                yield chunk.content
+```
+
+This code defines an agent with:
+
+- A name for identification in logs
+- An LLM client for generating responses
+- A system prompt that sets the agent's behavior
+- A `generate_response` method that streams text to the user
+
+## Step 4: Add a Tool
+
+Tools let your agent perform actions. Add a tool to look up order status:
+
+```python
+from smallestai.atoms.agent.nodes import OutputAgentNode
+from smallestai.atoms.agent.clients.openai import OpenAIClient
+from smallestai.atoms.agent.tools.decorator import function_tool
+from smallestai.atoms.agent.tools.registry import ToolRegistry
+
+
+class OrderAssistant(OutputAgentNode):
+    """A voice agent that helps customers check order status."""
+
+    def __init__(self):
+        super().__init__(name="order-assistant")
+        
+        self.llm = OpenAIClient(model="gpt-4o-mini")
+        
+        # Set up the tool registry
+        self.tool_registry = ToolRegistry()
+        self.tool_registry.discover(self)
+        self.tool_schemas = self.tool_registry.get_schemas()
+        
+        self.context.add_message({
+            "role": "system",
+            "content": (
+                "You are a helpful order assistant for Acme Store. "
+                "You help customers check their order status. "
+                "Be friendly but concise. "
+                "If the customer asks about an order, use the get_order_status tool."
+            )
+        })
+
+    @function_tool()
+    def get_order_status(self, order_id: str) -> dict:
+        """
+        Look up the status of a customer order.
+
+        Args:
+            order_id: The order ID to look up, for example "ORD-12345"
+
+        Returns:
+            A dictionary with order status information
+        """
+        # In production, this would query your database
+        orders = {
+            "ORD-12345": {"status": "shipped", "eta": "Tomorrow"},
+            "ORD-67890": {"status": "processing", "eta": "3-5 days"},
+        }
+        
+        if order_id in orders:
+            return orders[order_id]
+        return {"status": "not_found", "message": "Order not found"}
+
+    async def generate_response(self):
+        """Generate a response, handling tool calls if needed."""
+        response = await self.llm.chat(
+            messages=self.context.messages,
+            stream=True,
+            tools=self.tool_schemas
+        )
+        
+        tool_calls = []
+        
+        async for chunk in response:
+            if chunk.content:
+                yield chunk.content
+            if chunk.tool_calls:
+                tool_calls.extend(chunk.tool_calls)
+        
+        # Execute any tool calls
+        if tool_calls:
+            results = await self.tool_registry.execute(tool_calls, parallel=True)
+            
+            # Add tool results to context
+            for result in results:
+                self.context.add_message({
+                    "role": "tool",
+                    "tool_call_id": result.tool_call_id,
+                    "content": result.content
+                })
+            followup = await self.llm.chat(
+                messages=self.context.messages,
+                stream=True
+            )
+            
+            async for chunk in followup:
+                if chunk.content:
+                    yield chunk.content
+```
+
+The `@function_tool()` decorator transforms your method into an LLM-compatible tool. The docstring tells the LLM when and how to use it.
+
+## Step 5: Create the Server
+
+Wrap your agent in a server that handles WebSocket connections:
+
+```python
+from smallestai.atoms.agent.server import AtomsApp
+from smallestai.atoms.agent.session import AgentSession
+
+
+async def setup(session: AgentSession):
+    """Configure a new session when a user connects."""
+    # Create the agent
+    agent = OrderAssistant()
+    
+    # Add it to the session
+    session.add_node(agent)
+    
+    # Start processing events
+    await session.start()
+    
+    # Wait until the session ends
+    await session.wait_until_complete()
+
+
+if __name__ == "__main__":
+    app = AtomsApp(setup_handler=setup)
+    app.run()
+```
+
+## Step 6: Run Your Agent
+
+Start the server:
+
+```bash
+python agent.py
+```
+
+You should see output like:
+
+```
+INFO:     Atoms server starting on ws://localhost:8080
+INFO:     Waiting for connections...
+```
+
+## Step 7: Test with the CLI
+
+Open a new terminal and connect to your agent:
+
+```bash
+smallestai agent chat
+```
+
+The CLI connects to your local server and starts an interactive voice session. Try saying:
+
+- "Hello!"
+- "What's the status of order ORD-12345?"
+- "Thanks, goodbye!"
+
+## Complete Code
+
+Here is the full `agent.py` file:
+
+```python
+from smallestai.atoms.agent.server import AtomsApp
+from smallestai.atoms.agent.session import AgentSession
+from smallestai.atoms.agent.nodes import OutputAgentNode
+from smallestai.atoms.agent.clients.openai import OpenAIClient
+from smallestai.atoms.agent.tools.decorator import function_tool
+from smallestai.atoms.agent.tools.registry import ToolRegistry
+
+
+class OrderAssistant(OutputAgentNode):
+    """A voice agent that helps customers check order status."""
+
+    def __init__(self):
+        super().__init__(name="order-assistant")
+        
+        self.llm = OpenAIClient(model="gpt-4o-mini")
+        
+        self.tool_registry = ToolRegistry()
+        self.tool_registry.discover(self)
+        self.tool_schemas = self.tool_registry.get_schemas()
+        
+        self.context.add_message({
+            "role": "system",
+            "content": (
+                "You are a helpful order assistant for Acme Store. "
+                "You help customers check their order status. "
+                "Be friendly but concise. "
+                "If the customer asks about an order, use the get_order_status tool."
+            )
+        })
+
+    @function_tool()
+    def get_order_status(self, order_id: str) -> dict:
+        """
+        Look up the status of a customer order.
+
+        Args:
+            order_id: The order ID to look up, for example "ORD-12345"
+
+        Returns:
+            A dictionary with order status information
+        """
+        orders = {
+            "ORD-12345": {"status": "shipped", "eta": "Tomorrow"},
+            "ORD-67890": {"status": "processing", "eta": "3-5 days"},
+        }
+        
+        if order_id in orders:
+            return orders[order_id]
+        return {"status": "not_found", "message": "Order not found"}
+
+    async def generate_response(self):
+        """Generate a response, handling tool calls if needed."""
+        response = await self.llm.chat(
+            messages=self.context.messages,
+            stream=True,
+            tools=self.tool_schemas
+        )
+        
+        tool_calls = []
+        
+        async for chunk in response:
+            if chunk.content:
+                yield chunk.content
+            if chunk.tool_calls:
+                tool_calls.extend(chunk.tool_calls)
+        
+            results = await self.tool_registry.execute(tool_calls, parallel=True)
+            
+            # Add tool results to context
+            for result in results:
+                self.context.add_message({
+                    "role": "tool",
+                    "tool_call_id": result.tool_call_id,
+                    "content": result.content
+                })
+            
+            followup = await self.llm.chat(
+                messages=self.context.messages,
+                stream=True
+            )
+            
+            async for chunk in followup:
+                if chunk.content:
+                    yield chunk.content
+
+
+async def setup(session: AgentSession):
+    """Configure a new session when a user connects."""
+    agent = OrderAssistant()
+    session.add_node(agent)
+    await session.start()
+    await session.wait_until_complete()
+
+
+if __name__ == "__main__":
+    app = AtomsApp(setup_handler=setup)
+    app.run()
+```
+
+## What You Learned
+
+In this guide, you:
+
+1. Installed the Atoms SDK
+2. Created an agent class with a system prompt
+3. Added a tool for looking up order status
+4. Built a server to handle connections
+5. Tested your agent locally with the CLI
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Prompts & Personality" icon="message" href="/dev/build/agents/agent-configuration/prompts">
+    Craft better system prompts and agent personas.
+  </Card>
+  <Card title="Tools Deep Dive" icon="wrench" href="/dev/build/agents/tools-functions/defining-tools">
+    Learn advanced tool patterns and best practices.
+  </Card>
+</CardGroup>

@@ -1,0 +1,191 @@
+---
+title: "Using Knowledge Bases"
+sidebarTitle: "Usage"
+description: "Create, populate, and connect Knowledge Bases to your agents."
+---
+
+Knowledge Bases give your agents context from your documents. Upload PDFs, and the platform automatically retrieves relevant information during conversations.
+
+## Complete Workflow
+
+```python
+from smallestai.atoms import AtomsClient
+from smallestai.atoms.models import KnowledgebasePostRequest, CreateAgentRequest
+import time
+
+client = AtomsClient()
+
+# 1. Create Knowledge Base
+kb = client.create_knowledge_base(
+    knowledgebase_post_request=KnowledgebasePostRequest(
+        name="ProductDocs",
+        description="Product documentation"
+    )
+)
+kb_id = kb.data
+
+# 2. Upload Documents
+with open("manual.pdf", "rb") as f:
+    client.upload_media_to_knowledge_base(id=kb_id, media=("manual.pdf", f.read()))
+
+# 3. Wait for Processing
+for _ in range(10):
+    items = client.get_knowledge_base_items(id=kb_id).data
+    if all(item.processing_status == "completed" for item in items):
+        print("Ready!")
+        break
+    time.sleep(2)
+
+# 4. Create Agent with KB
+agent = client.create_agent(
+    create_agent_request=CreateAgentRequest(
+        name="SupportBot",
+        global_knowledge_base_id=kb_id,
+        global_prompt="Answer using the knowledge base.",
+        slm_model="gpt-4o"
+    )
+)
+```
+
+## Creating a Knowledge Base
+
+```python
+from smallestai.atoms.models import KnowledgebasePostRequest
+
+kb = client.create_knowledge_base(
+    knowledgebase_post_request=KnowledgebasePostRequest(
+        name="CompanyKB",
+        description="Internal documentation"
+    )
+)
+kb_id = kb.data
+```
+
+## Uploading Documents
+
+### PDF Files
+
+```python
+with open("manual.pdf", "rb") as f:
+    client.upload_media_to_knowledge_base(
+        id=kb_id,
+        media=("manual.pdf", f.read())
+    )
+```
+
+### Multiple Files
+
+```python
+import os
+
+for filename in os.listdir("./documents"):
+    if filename.endswith(".pdf"):
+        with open(f"./documents/{filename}", "rb") as f:
+            client.upload_media_to_knowledge_base(id=kb_id, media=(filename, f.read()))
+```
+
+## Checking Processing Status
+
+Documents are processed asynchronously. Poll until complete:
+
+```python
+import time
+
+def wait_for_processing(client, kb_id, timeout=60):
+    start = time.time()
+    
+    while time.time() - start < timeout:
+        items = client.get_knowledge_base_items(id=kb_id).data
+        
+        if all(item.processing_status == "completed" for item in items):
+            return True
+            
+        time.sleep(2)
+    
+    return False
+```
+
+| Status | Meaning |
+|--------|---------|
+| `pending` | Queued |
+| `processing` | Being indexed |
+| `completed` | Ready |
+| `failed` | Error |
+
+## Connecting to Agents
+
+### At Creation
+
+```python
+from smallestai.atoms.models import CreateAgentRequest
+
+agent = client.create_agent(
+    create_agent_request=CreateAgentRequest(
+        name="SupportBot",
+        global_knowledge_base_id=kb_id,
+        global_prompt="Answer using the knowledge base.",
+        slm_model="gpt-4o"
+    )
+)
+```
+
+### Update Existing Agent
+
+```python
+from smallestai.atoms.models import AgentIdPatchRequest
+
+# Connect KB
+client.update_agent(
+    id=agent_id,
+    agent_id_patch_request=AgentIdPatchRequest(global_knowledge_base_id=kb_id)
+)
+
+# Disconnect KB
+client.update_agent(
+    id=agent_id,
+    agent_id_patch_request=AgentIdPatchRequest(global_knowledge_base_id="")
+)
+```
+
+## Managing Documents
+
+### List Items
+
+```python
+items = client.get_knowledge_base_items(id=kb_id).data
+
+for item in items:
+    print(f"{item.id}: {item.file_name or item.title}")
+```
+
+### Delete KB
+
+<Warning>
+  Disconnect the KB from agents before deleting.
+</Warning>
+
+```python
+from smallestai.atoms.models import AgentIdPatchRequest
+
+client.update_agent(
+    id=agent_id,
+    agent_id_patch_request=AgentIdPatchRequest(global_knowledge_base_id="")
+)
+client.delete_knowledge_base(id=kb_id)
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Keep documents focused">
+    Upload content relevant to your agent's purpose. Quality over quantity.
+  </Accordion>
+  
+  <Accordion title="Wait for processing">
+    Always confirm `completed` status before using with an agent.
+  </Accordion>
+  
+  <Accordion title="Test retrieval">
+    Make test calls to verify the agent correctly uses KB content.
+  </Accordion>
+</AccordionGroup>

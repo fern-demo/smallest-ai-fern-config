@@ -1,0 +1,56 @@
+---
+title: "Analytics"
+sidebarTitle: "Overview"
+description: "Track call metrics and agent performance."
+---
+
+Retrieve conversation logs to analyze call metrics, view transcripts, and monitor your agents.
+
+## Quick Example
+
+```python
+import requests
+import os
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+
+# Get conversation details
+response = requests.get(
+    f"https://atoms.smallest.ai/api/v1/conversation/{call_id}",
+    headers={"Authorization": f"Bearer {API_KEY}"}
+)
+data = response.json()["data"]
+
+print(f"Duration: {data['duration']} seconds")
+print(f"Status: {data['status']}")
+print(f"Type: {data['type']}")
+print(f"Recording: {data['recordingUrl']}")
+```
+
+## Available Metrics
+
+| Metric | Field | Description |
+|--------|-------|-------------|
+| Call ID | `callId` | Unique call identifier |
+| Status | `status` | in_progress, completed, failed |
+| Duration | `duration` | Length in seconds |
+| Type | `type` | telephony_outbound, telephony_inbound, chat |
+| Transcript | `transcript` | Array of conversation messages |
+| Recording | `recordingUrl` | Link to mono audio |
+| Dual Recording | `recordingDualUrl` | Link to stereo audio |
+| Cost | `callCost` | Call cost in credits |
+| From | `from` | Caller phone number |
+| To | `to` | Recipient phone number |
+| Events | `events` | Call lifecycle events |
+| Agent | `agent` | Agent configuration used |
+
+## What's Next
+
+<CardGroup cols={2}>
+  <Card title="Call Metrics" icon="phone" href="/dev/build/analytics/call-metrics">
+    Track call duration, status, and transcripts.
+  </Card>
+  <Card title="Performance" icon="gauge-high" href="/dev/build/analytics/agent-performance">
+    Monitor latency and identify bottlenecks.
+  </Card>
+</CardGroup>

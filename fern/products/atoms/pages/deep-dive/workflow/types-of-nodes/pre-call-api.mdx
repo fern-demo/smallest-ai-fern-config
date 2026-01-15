@@ -1,0 +1,148 @@
+---
+title: "The Pre Call API Node"
+description: "A node for fetching initial variables before conversation starts"
+icon: webhook
+---
+
+## Understanding the Pre Call API Node
+
+The **Pre Call API Node** is a specialized component in Atoms workflow that executes **before the conversation begins**. It allows you to **fetch initial variables** from external systems (like CRM, databases, etc.) that can be used throughout the conversation flow.
+
+Unlike regular API nodes, Pre Call API nodes can **only be attached to the Start node** and must be executed **sequentially** (parallel execution is planned for future releases).
+
+---
+
+## Example: Customer Support Workflow
+
+Here's how a **Pre Call API Node** enhances a customer support workflow:
+
+1️⃣ **Before Conversation Starts**
+
+- Pre Call API fetches customer details from CRM
+- Retrieves customer's previous interaction history
+- Loads any active support tickets
+
+2️⃣ **During Conversation**
+
+- Agent uses pre-fetched information to personalize interaction
+- References customer history without asking redundant questions
+- Provides context-aware support
+
+---
+
+## Creating a Pre Call API Node in Atoms
+
+Follow these steps to add a Pre Call API Node to your workflow:
+
+### 1️⃣ Add the Node
+
+- In the **Node Type Selector**, choose **Pre Call API Node**
+- Connect it to the **Start Node**
+- Remember: Pre Call API nodes must be connected **sequentially**
+
+![Adding Pre Call API Node](../../../images/pre-call-api-node.png)
+
+### 2️⃣ Configure API Details
+
+- Set up the API endpoint and method
+- Configure headers and authentication
+- Define request body if needed
+- Map response data to workflow variables
+
+---
+
+## Parameters of the Pre Call API Node
+
+The Pre Call API Node requires several parameters for proper configuration:
+
+<img
+  src="../../../images/pre-call-api-params.png"
+  className="rounded-lg"
+  style={{ height: "400px", width: "auto" }}
+  sub="Configuration parameters for Pre Call API Node"
+/>
+
+| **Parameter** | **Description**                                       |
+| ------------- | ----------------------------------------------------- |
+| **Node Name** | Identifier for the node (e.g., "Fetch Customer Data") |
+| **API URL**   | The endpoint URL to call                              |
+| **Method**    | HTTP method (GET, POST, etc.)                         |
+| **Headers**   | HTTP headers for the request                          |
+| **Body**      | Request body (for POST/PUT methods)                   |
+| **Variables** | Mapping of API response to workflow variables         |
+
+---
+
+## Best Practices for Pre Call API Node
+
+✅ **Efficient Data Fetching**
+
+- Only fetch data you'll need during the conversation
+- Use appropriate caching strategies
+- Handle API failures gracefully
+
+✅ **Variable Naming**
+
+- Use clear, descriptive names for mapped variables
+- Follow a consistent naming convention
+- Document variable purposes
+
+✅ **Error Handling**
+
+- Set default values for critical variables
+- Define fallback behavior for API failures
+- Log errors for debugging
+
+---
+
+## Common Use Cases
+
+### 1️⃣ CRM Integration
+
+```javascript
+// Example API response mapping
+{
+  "customerName": "$.response.data.name",
+  "accountType": "$.response.data.account.type",
+  "lastInteraction": "$.response.data.interactions[0].date"
+}
+```
+
+### 2️⃣ Product Catalog
+
+```javascript
+// Example variable usage in conversation
+Agent: "I see you're interested in {{productCategory}}.
+       Our latest {{productName}} is priced at {{productPrice}}."
+```
+
+### 3️⃣ User Preferences
+
+```javascript
+// Example preference mapping
+{
+  "preferredLanguage": "$.response.data.preferences.language",
+  "communicationChannel": "$.response.data.preferences.channel"
+}
+```
+
+---
+
+## Limitations and Future Enhancements
+
+🚧 **Current Limitations**
+
+- Sequential execution only
+
+🔮 **Planned Features**
+
+- Parallel API call support
+- Advanced error handling
+
+---
+
+## Summary
+
+The **Pre Call API Node** is a powerful tool for enriching conversations with external data before they begin. By fetching relevant information upfront, you can create more personalized and efficient conversational experiences.
+
+**Next Steps:** Learn about [API Call Node](/deep-dive/workflow/types-of-nodes/api-call) to understand how to make API calls during the conversation!

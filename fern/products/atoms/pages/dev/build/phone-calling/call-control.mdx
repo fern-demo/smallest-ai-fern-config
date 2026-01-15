@@ -1,0 +1,104 @@
+---
+title: "Call Control"
+sidebarTitle: "Call Control"
+description: "End calls and transfer to humans from within your agent."
+---
+
+Control the call flow from within your agent. End calls gracefully or transfer to a human.
+
+## Ending Calls
+
+Use `SDKAgentEndCallEvent` to end the call:
+
+```python
+from smallestai.atoms.agent.nodes.output_agent import OutputAgentNode
+from smallestai.atoms.agent.events import SDKAgentEndCallEvent
+from smallestai.atoms.agent.tools import function_tool
+
+class MyAgent(OutputAgentNode):
+    @function_tool()
+    def end_call(self) -> SDKAgentEndCallEvent:
+        """End the call gracefully."""
+        return SDKAgentEndCallEvent()
+```
+
+<Note>
+  `SDKAgentEndCallEvent` has no parameters.
+</Note>
+
+## Transferring to Humans
+
+Use `SDKAgentTransferConversationEvent` to hand off to a human:
+
+```python
+from smallestai.atoms.agent.events import (
+    SDKAgentTransferConversationEvent,
+    TransferOption,
+    TransferOptionType
+)
+from smallestai.atoms.agent.tools import function_tool
+
+class MyAgent(OutputAgentNode):
+    @function_tool()
+    def transfer_to_human(self) -> SDKAgentTransferConversationEvent:
+        """Transfer to a human agent."""
+        return SDKAgentTransferConversationEvent(
+            transfer_call_number="+14155551234",
+            transfer_options=TransferOption(
+                type=TransferOptionType.COLD_TRANSFER
+            ),
+            on_hold_music="relaxing_sound"
+        )
+```
+
+### Transfer Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `transfer_call_number` | string | Yes | Human agent's phone (E.164) |
+| `transfer_options` | TransferOption | Yes | Transfer type |
+| `on_hold_music` | string | No | `"ringtone"`, `"relaxing_sound"`, `"uplifting_beats"`, or `"none"` |
+
+### Transfer Types
+
+```python
+from smallestai.atoms.agent.events import TransferOption, TransferOptionType
+
+# Cold transfer (immediate handoff)
+cold = TransferOption(type=TransferOptionType.COLD_TRANSFER)
+
+# Warm transfer (agent briefs human first)
+warm = TransferOption(
+    type=TransferOptionType.WARM_TRANSFER,
+    private_handoff_option={
+        "type": "prompt",
+        "prompt": "Customer calling about billing"
+    }
+)
+```
+
+## Call Flow Events
+
+When these events trigger, they appear in call logs:
+
+| Event | Log Entry |
+|-------|-----------|
+| `SDKAgentEndCallEvent` | `hangupSource: "agent"` |
+| `SDKAgentTransferConversationEvent` | `transferTarget: "+1..."` |
+
+## Tips
+
+<AccordionGroup>
+  <Accordion title="Announce transfers">
+    Tell the user before transferring: "I'll connect you to..."
+  </Accordion>
+  <Accordion title="Use cold transfer for simple handoffs">
+    Faster than warm transfers.
+  </Accordion>
+  <Accordion title="Graceful endings">
+    Say goodbye before ending, don't just hang up.
+  </Accordion>
+  <Accordion title="Fallback numbers">
+    Have a general transfer number if specific departments unavailable.
+  </Accordion>
+</AccordionGroup>

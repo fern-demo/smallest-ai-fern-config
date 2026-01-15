@@ -1,0 +1,81 @@
+---
+title: "The End Call Node"
+description: "The node responsible for ending the conversation"
+icon: phone-slash
+---
+
+## Understanding the End Call Node  
+
+The **End Call Node** is a crucial component of an Atoms workflow. It serves as the **final step** in a conversation, ensuring that the interaction is **properly closed** once the Agent has completed its task.  
+
+Unlike other nodes that guide the conversation forward, the **End Call Node does not have outgoing branches**, it simply **ends the conversation** at that point.  
+
+---
+
+## Example: Restaurant Reservation Workflow  
+
+Continuing with the **Restaurant Reservation Assistant**, here’s how an **End Call Node** fits into the flow:  
+
+1️⃣ **Greet & Ask for Reservation Intent**  
+   - If the user **declines**, the conversation **ends immediately** via an End Call Node.  
+   - If they **proceed**, the AI continues to collect details.  
+
+2️⃣ **Collect Reservation Details**  
+   - The agent gathers the date, time, and number of guests.  
+
+3️⃣ **Confirm & End Call**  
+   - The AI **recaps the reservation** and confirms the booking.  
+   - The **End Call Node is triggered**, wrapping up the conversation.   
+
+---
+
+## Creating an End Call Node in Atoms  
+
+Once inside the **Edit Workflow** canvas, follow these steps:  
+
+### 1️⃣ Locate the Node Type Selector  
+- In the **top left corner**, find the **Node Type Selector** and select **End Call Node**.  
+- The node is added to the canvas automatically.  
+
+![Adding End Call Node](../../../images/end-call-node.png)  
+
+### 2️⃣ Connect the End Call Node  
+- Drag a branch from the **last conversational node** to the **End Call Node**.  
+- Ensure all conversation paths that require termination lead to an End Call Node.  
+
+---   
+
+## Parameters of the End Call Node  
+
+When defining an **End Call Node**, the following parameters help configure its behavior:  
+
+<img src="../../../images/end-call-params.png" className="rounded-lg" style={{ height: "400px", width: "auto" }} sub="df" />
+
+| **Parameter**       | **Description** |
+|----------------------|-------------------------------------------------|
+| **Node Name**       | Enter a label to identify the node (e.g., "End Conversation"). |
+| **Action**          | Provide a short goal/prompt for what the agent needs to do (e.g., "End the call politely"). |
+| **Static Text**     | Enables the node to use predefined static text rather than dynamically generated responses. |
+
+Once these parameters are set, clicking **Save** finalizes the End Call Node setup.
+
+---
+
+## When to Use an End Call Node  
+
+✅ **After Completing a Task**  
+   - Example: The AI confirms a reservation and ends the call.  
+
+✅ **If the User Declines to Proceed**  
+   - Example: The customer does not want to book a table, so the AI politely ends the conversation.  
+
+✅ **When No Further Action is Needed**  
+   - Example: A support inquiry is resolved, and there is no need to continue the conversation.  
+
+---
+
+## Summary  
+
+The **End Call Node** ensures that conversations in Atoms workflows conclude smoothly and naturally. It helps create a **structured, user-friendly experience** by closing interactions **at the right moments**.  
+
+**Next Steps:** Learn about [Best Practices for Prompting](/deep-dive/workflow/best-practices-for-prompting) to refine how your AI generates responses!

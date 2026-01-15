@@ -1,0 +1,50 @@
+---
+title: "SDK Overview"
+sidebarTitle: "Python SDK"
+description: "The Atoms Python SDK for building voice agents."
+---
+
+The Atoms SDK is the official Python package for building voice agents on the Smallest AI platform.
+
+```bash
+pip install smallestai
+```
+
+**Requirements:** Python 3.9+
+
+---
+
+## Core Components
+
+| Component | Description | Learn More |
+|-----------|-------------|------------|
+| **Nodes** | Processing units that handle events | [Nodes →](/dev/introduction/core-concepts/nodes) |
+| **Events** | Messages flowing through the system | [Events →](/dev/introduction/core-concepts/events) |
+| **Graphs** | Connect nodes into pipelines | [Graphs →](/dev/introduction/core-concepts/graphs) |
+| **Sessions** | Manage conversation state and lifecycle | [Sessions →](/dev/introduction/core-concepts/sessions) |
+
+---
+
+## Key Modules
+
+| Import | Purpose |
+|--------|---------|
+| `smallestai.atoms.agent.nodes` | `Node`, `OutputAgentNode` base classes |
+| `smallestai.atoms.agent.events` | Event types (`SDKEvent`, etc.) |
+| `smallestai.atoms.agent.tools` | `@function_tool` decorator, registry |
+| `smallestai.atoms.agent.clients` | LLM clients (OpenAI-compatible) |
+| `smallestai.atoms.agent.server` | `AtomsApp` for hosting |
+| `smallestai.atoms.agent.session` | `AgentSession` management |
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Core Concepts" icon="shapes" href="/dev/introduction/core-concepts/nodes">
+    Understand nodes, sessions, and events.
+  </Card>
+  <Card title="CLI" icon="terminal" href="/dev/introduction/cli">
+    Development and deployment tools.
+  </Card>
+</CardGroup>

@@ -1,0 +1,32 @@
+---
+title: "LLM Configuration Guide"
+description: "Understand the available LLM models, their capabilities, and language settings."
+icon: language
+---
+
+## Large Language Model
+
+The **LLM** dropdown allows you to select the LLM that will power your agent. Different models have varying capabilities in terms of reasoning, response generation, and efficiency.
+
+### Available Models
+
+| Model Name      | Description                                                                                                                                                                                                                                                                             |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Electron-v2** | Significantly faster than v1, offering improved efficiency and response times. More robust, with improved agent's navigation through flow. Drop-in replacement for v1, ensuring seamless migration. Features architectural improvements over v1 for better performance and reliability. |
+| **Electron-v1** | Our First-generation small language model (SLM). Trained specifically for conversational tasks, optimized for dialogue-based interactions.                                                                                                                                              |
+
+## Language
+
+![image](../../images/language.png)
+
+The **Language** setting allows you to choose the primary language in which the agent will operate. The selected language influences text generation and response quality.
+
+## Language Switching
+
+![image](../../images/language-switch.png)
+
+The **Language Switching** option enables or disables the ability for the agent to dynamically switch between multiple languages during interactions.
+
+### Example
+
+If the agent greets the user in English by saying, **"Hello! How can I assist you today?"**, and the user responds in Hindi with **"मुझे मौसम की जानकारी चाहिए"** (I need weather information), the agent will recognize the language shift and continue responding in Hindi.

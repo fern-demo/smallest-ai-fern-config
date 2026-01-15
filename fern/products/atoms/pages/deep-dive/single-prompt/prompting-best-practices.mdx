@@ -1,0 +1,109 @@
+---
+title: "Best practices"
+description: "Tips and ideas for making robust production ready agents"
+icon: lightbulb
+---
+
+# Best Practices for Single Prompt Agents
+
+Designing effective single-prompt agents is less about length and more about **clarity, structure, and consistency**. A well-crafted prompt gives you far more predictable and high-quality behavior than an unstructured one. Below are some best practices to keep in mind:
+
+---
+
+## 1. Structure Your Prompt Clearly
+
+The structure of your prompt is the foundation of your agent's performance. Using **Markdown** or another consistent formatting style help LLMs parse the instructions more easily.
+
+A recommended skeleton:
+
+* **Role & Objective** – Who the agent is and what "success" means in this context.
+* **Personality & Tone** – The voice, style, and attitude the agent should maintain.
+* **Context** – Relevant background, retrieved data, or domain knowledge.
+* **Tools** – Available tools, usage rules, and how/when to call them.
+* **Instructions / Rules** – Do's, don'ts, and approach guidelines.
+* **Conversation Flow** – Stages, goals, and transition logic.
+* **Safety & Guardrails** – Fallbacks, escalation points, and restricted behaviors.
+
+Clear sectioning not only improves the LLM's adherence but also keeps your prompt **easy to maintain and extend**.
+
+---
+
+## 2. Write Instructions Simply and Consistently
+
+Modern LLMs excel at following instructions, but **conflicting or overly complex directives** can create rigidity or unexpected behaviors.
+
+* Favor positive phrasing: Instead of *"Do NOT…"*, use *"Always…"* or *"Prefer…"*.
+* Break down complex rules into **short, digestible points**.
+* Keep the instructions **unambiguous**—avoid overlap or contradictory rules.
+
+Think of your instructions as a **step-by-step playbook**, not a legal contract.
+
+---
+
+## 3. Define Personality and Tone Intentionally
+
+Your agent's **voice and tone** heavily influence the user experience. For example:
+
+* **Professional & Formal** → Banking assistant, legal advisor.
+* **Friendly & Conversational** → Customer support, lifestyle coach.
+* **Playful & Fun** → Gaming or entertainment bots.
+
+Be explicit in your prompt: state whether the agent should be concise, empathetic, humorous, persuasive, etc. Even subtle differences in phrasing can dramatically change how users perceive the agent.
+
+---
+
+## 4. Map Out the Conversation Flow
+
+A strong prompt doesn't just define style—it **guides the conversation**. Break the flow into **logical sub-sections** (e.g., Introduction, Collecting Details, Offering Options, Closing).
+
+* Define what signals **end each step** and when the agent should **transition** to the next.
+* Explicitly write transitions: *"Once the introduction is complete, move to Collecting Details."*
+
+This keeps interactions smooth, structured, and predictable.
+
+---
+
+## 5. Be Explicit About Tool Usage
+
+If your agent integrates with tools, **teach it exactly when and how to use them**.
+
+* Example: *"After collecting all patient details, call the `add_customer_details` tool before moving to the next step."*
+* State whether tools should be **always called**, **conditionally used**, or **never exposed** to the user.
+
+Clear rules ensure tools are triggered at the right time instead of randomly or too late.
+
+---
+
+## 6. Include Language Guidelines
+
+If your agent supports multiple languages, specify:
+
+* The **default language** to use.
+* Whether the agent may **switch languages** mid-conversation.
+* How to handle **code-switching** (mix of languages).
+
+For example: *"Always respond in English unless the user initiates in Hindi. If switching, mirror the user's choice consistently."*
+
+---
+
+## 7. Balance Flexibility with Guardrails
+
+Agents need flexibility to sound natural but also **boundaries to avoid risks**.
+
+* Use **"do this" framing** for stylistic or conversational rules.
+* Use **hard "never" rules** only for safety or compliance (e.g., *"Never share medical diagnoses"*).
+* Include **fallback instructions**: what to do when the agent doesn't know, when a tool fails, or when the request is out of scope.
+
+---
+
+## 8. Iterate and Test Continuously
+
+Single prompts are **living documents**. Test your agent in real scenarios, then refine:
+
+* Adjust tone based on user reactions.
+* Reorder instructions if conflicts appear.
+* Add clarifications when the agent drifts or misunderstands.
+
+---
+
+✅ **Summary:** A good single prompt agent is structured, simple, consistent, and tested. Write like you're designing a blueprint: clear sections, concise instructions, strong tone guidance, explicit tool usage, and safety guardrails. Small refinements in wording often make the difference between a rigid, clunky bot and a natural, effective agent.

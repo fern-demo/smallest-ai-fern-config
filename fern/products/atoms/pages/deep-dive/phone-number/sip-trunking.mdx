@@ -1,0 +1,281 @@
+---
+title: "SIP Trunking (BYOSIP)"
+description: "Bring your own phone numbers using SIP Trunking"
+icon: "network-wired"
+---
+
+## What is SIP Trunking?
+
+SIP Trunking allows you to connect your existing phone numbers from any telephony provider directly to Smallest AI's platform. Instead of renting numbers through us, you can bring your own numbers and route calls through a SIP trunk that connects your provider to our infrastructure.
+
+## How it Works
+
+1. **Your telephony provider** (e.g., Telstra, Vonage, Telnyx, Twilio) hosts your phone numbers
+2. You configure those numbers to route through an **SIP Trunk** that connects directly to Smallest AI's SIP infrastructure
+3. Once configured:
+   - **Inbound calls** to your numbers are delivered by your provider over the SIP trunk to Smallest AI
+   - **Outbound calls** from your AI agent are sent from Smallest AI back to your provider, who then completes the call to the PSTN
+4. Smallest AI handles the conversation and media, while your provider handles the telephony backbone
+
+## Benefits of SIP Trunking
+
+- **Keep your existing numbers**: No need to port or change phone numbers
+- **Use your preferred provider**: Work with any telephony provider that supports SIP trunking
+- **Flexibility**: Maintain control over your telephony infrastructure
+- **Scale easily**: Add or remove numbers without platform limitations
+
+## Prerequisites
+
+To set up SIP trunking, you will need:
+
+### 1. A Telephony Provider that Supports SIP Trunking
+
+Common providers include:
+
+- Telstra
+- Vonage
+- Telnyx
+- Twilio
+- Bandwidth
+- And many others
+
+### 2. Phone Numbers Ready to Route
+
+Your numbers must be configured to point to a SIP trunk in your provider's settings.
+
+### 3. SIP Trunk Configuration Details
+
+You'll need to obtain from your provider:
+
+- **SIP server URI** for outbound calls (e.g., `sip.yourprovider.com`)
+- **Supported transports**: UDP, TCP, or TLS
+- **Media encryption**: SRTP support (if required)
+
+### 4. Authentication Credentials
+
+Depending on your provider's requirements:
+
+- SIP username
+- SIP password
+- Or mutual TLS configuration
+
+<Note>
+  Smallest AI does not currently have a fixed IP range for SIP servers. Make sure your provider can accept
+  connections without IP whitelisting, or contact us for alternative solutions.
+</Note>
+
+## Setting Up SIP Trunking
+
+### Step 1: Configure Your Provider
+
+In your telephony provider's dashboard:
+
+1. **Set up inbound routing** to point to Smallest AI's SIP server:
+
+   ```
+   sip:5rdbhjuwtlk.sip.livekit.cloud
+   ```
+
+2. **Configure your SIP trunk** with the following settings:
+
+   - **Transport**: UDP, TCP, or TLS (as supported by your provider)
+   - **Media encryption**: SRTP (if required)
+   - **Codec support**: Ensure common codecs (G.711, Opus) are enabled
+
+3. **Note your outbound SIP server details** including:
+   - SIP server URI
+   - Username (if required)
+   - Password (if required)
+
+### Step 2: Import Your Number on Smallest AI
+
+1. Navigate to the [Phone Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/rent-numbers) tab in your dashboard
+2. Click the **Buy Numbers** button in the top-right corner
+3. Select the **Import SIP Number** tab
+4. Fill in the required information:
+   - **Phone Number**: Your phone number in E.164 format (e.g., +12025551234)
+   - **SIP Termination URL**: Your provider's SIP server URI for outbound calls
+   - **Display Name**: A friendly name for this number (optional)
+   - **Username**: SIP authentication username (if required)
+   - **Password**: SIP authentication password (if required)
+5. Copy the **SIP Origination URL** provided:
+   ```
+   sip:5rdbhjuwtlk.sip.livekit.cloud
+   ```
+6. Click **Add Custom Number**
+
+<Tip>
+  Make sure the phone number you enter matches exactly with the number configured in your provider's
+  dashboard, including country code.
+</Tip>
+
+### Step 3: Test Your Setup
+
+Once your number is imported:
+
+1. Assign it to one of your agents
+2. Make a test inbound call to verify the connection
+3. Make a test outbound call from your agent
+4. Check call quality and verify audio in both directions
+
+## Technical Details
+
+### Supported Features
+
+| Feature             | Support                       |
+| ------------------- | ----------------------------- |
+| Transport Protocols | UDP, TCP, TLS                 |
+| Media Encryption    | SRTP                          |
+| Authentication      | Username/Password, Mutual TLS |
+| Codecs              | G.711 (PCMU/PCMA), Opus       |
+| DTMF                | RFC 2833, SIP INFO            |
+
+### SIP Origination URL
+
+For **inbound calls** (from your provider to Smallest AI):
+
+```
+sip:5rdbhjuwtlk.sip.livekit.cloud
+```
+
+Configure this in your telephony provider's settings to route incoming calls to Smallest AI.
+
+### SIP Termination URL
+
+For **outbound calls** (from Smallest AI to your provider):
+
+You provide your provider's SIP server URI when importing the number. This tells Smallest AI where to send outbound calls.
+
+Example formats:
+
+- `sip:sip.yourprovider.com`
+- `sip:sip.yourprovider.com:5060`
+- `sips:sip.yourprovider.com:5061` (for TLS)
+
+## Troubleshooting
+
+### Calls Not Connecting
+
+- Verify the SIP Origination URL is correctly configured in your provider's settings
+- Check that your provider allows connections from Smallest AI's infrastructure
+- Ensure authentication credentials are correct
+
+### One-Way Audio
+
+- Verify media encryption settings match between your provider and Smallest AI
+- Check that your provider's firewall allows RTP traffic
+- Ensure SRTP is properly configured if required
+
+### Call Quality Issues
+
+- Check codec compatibility between your provider and Smallest AI
+- Verify network latency and bandwidth availability
+- Review your provider's SIP trunk capacity and limits
+
+### Authentication Failures
+
+- Double-check username and password are entered correctly
+- Verify your provider requires authentication (some use IP-based authentication)
+- Contact your provider to confirm authentication method
+
+<Warning>
+  If you experience persistent issues, contact Smallest AI support at support@smallest.ai with your phone
+  number and provider details for assistance.
+</Warning>
+
+## Common Provider Examples
+
+We support all major telephony providers that offer SIP trunking. Below are detailed setup guides for the most popular providers:
+
+<AccordionGroup>
+  <Accordion title="Twilio" icon="phone-volume">
+    Twilio supports SIP trunking through **Elastic SIP Trunking**, which provides reliable connectivity for both
+    inbound and outbound calls.
+
+    **Quick Setup Steps:**
+
+    1. Create an Elastic SIP Trunk in Twilio Console
+    2. Configure Termination (outbound) and Origination (inbound) settings
+    3. Assign your phone numbers to the trunk
+    4. Import numbers on Smallest AI with your trunk credentials
+    5. Test inbound and outbound calls
+
+    <Card title="Complete Twilio Setup Guide" icon="arrow-right" href="/deep-dive/phone-number/twilio-sip-setup">
+      View the detailed step-by-step guide with troubleshooting and advanced configuration
+    </Card>
+
+  </Accordion>
+
+  <Accordion title="Telnyx" icon="signal-bars">
+    Telnyx provides flexible, global SIP trunking with competitive pricing and excellent call quality.
+
+    **Quick Setup Steps:**
+
+    1. Create a SIP Connection in Telnyx Portal
+    2. Configure inbound and outbound settings
+    3. Set up authentication (IP or credential-based)
+    4. Assign your phone numbers to the connection
+    5. Import numbers on Smallest AI with your connection details
+
+    <Card title="Complete Telnyx Setup Guide" icon="arrow-right" href="/deep-dive/phone-number/telnyx-sip-setup">
+      View the comprehensive guide with authentication options and monitoring setup
+    </Card>
+
+  </Accordion>
+
+  <Accordion title="Vonage" icon="phone-arrow-up-right">
+    Vonage offers Voice API with robust SIP connectivity and global reach.
+
+    **Quick Setup Steps:**
+
+    1. Create a Voice API application in Vonage Dashboard
+    2. Configure SIP endpoints and authentication
+    3. Set up answer URL with SIP connect action
+    4. Link your phone numbers to the application
+    5. Import numbers on Smallest AI with your API credentials
+
+    <Card title="Complete Vonage Setup Guide" icon="arrow-right" href="/deep-dive/phone-number/vonage-sip-setup">
+      View the detailed guide with NCCO configuration and webhook setup
+    </Card>
+
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Each provider has unique configuration steps and terminology. For detailed setup instructions specific to
+  your provider, see the dedicated guides above or contact Smallest AI support at support@smallest.ai for
+  personalized guidance.
+</Note>
+
+## Best Practices
+
+1. **Test thoroughly**: Always test both inbound and outbound calls before production use
+2. **Monitor call quality**: Keep an eye on call metrics and audio quality
+3. **Keep credentials secure**: Store SIP authentication credentials safely
+4. **Document your setup**: Maintain records of your SIP trunk configuration
+5. **Plan for redundancy**: Consider backup trunks or failover options for critical applications
+
+## Limitations
+
+- No fixed IP range currently available for IP-based authentication
+- SRTP encryption may be required depending on provider
+- Some providers may have additional configuration requirements
+
+## Pricing
+
+Imported numbers via SIP trunking:
+
+- No monthly rental fee charged by Smallest AI
+- You pay your telephony provider directly for number hosting
+- Standard Smallest AI per-minute call rates apply
+- No additional fees for SIP trunk configuration
+
+Check the [Pricing page](https://smallest.ai/pricing) for current per-minute rates.
+
+## Need Help?
+
+If you need assistance setting up SIP trunking:
+
+- Email: support@smallest.ai
+- Join our [Discord community](https://smallest.ai/discord)
+- Check our [FAQ section](/faqs/frequently-asked-questions) for common questions

@@ -1,0 +1,237 @@
+---
+title: "Rate Limits & Usage"
+sidebarTitle: "Rate Limits"
+description: "Understand Atoms platform limits and track your usage."
+---
+
+The Atoms platform has usage limits based on your subscription tier. Understanding these helps you plan capacity and avoid disruptions.
+
+## Platform Limits
+
+| Resource | Free | Pro | Enterprise |
+|----------|------|-----|------------|
+| Concurrent calls | 5 | 50 | Custom |
+| Minutes/month | 100 | 10,000 | Custom |
+| API requests/sec | 10 | 100 | Custom |
+| Agents | 3 | 25 | Unlimited |
+| Knowledge Bases | 1 | 10 | Unlimited |
+| Phone Numbers | 1 | 10 | Custom |
+
+<Info>
+  Contact sales for enterprise limits: sales@smallest.ai
+</Info>
+
+## Checking Your Usage
+
+### Via Dashboard
+
+Visit [atoms.smallest.ai/usage](https://atoms.smallest.ai/usage) to see:
+- Minutes used this billing period
+- Active concurrent calls
+- API request counts
+- Cost breakdown
+
+### Via SDK
+
+```python
+from smallestai.atoms import AtomsClient
+
+client = AtomsClient()
+
+# Get organization details (includes usage info)
+org = client.get_organization()
+
+print(f"Plan: {org.data.plan}")
+print(f"Minutes used: {org.data.minutes_used}")
+print(f"Minutes limit: {org.data.minutes_limit}")
+```
+
+## Rate Limit Errors
+
+When you exceed limits, the API returns a `429 Too Many Requests` error.
+
+### Error Response
+
+```json
+{
+  "status": false,
+  "error": "Rate limit exceeded",
+  "code": "RATE_LIMIT_EXCEEDED",
+  "retry_after": 60
+}
+```
+
+### Handling in Code
+
+```python
+from smallestai.atoms.exceptions import ApiException
+import asyncio
+
+async def make_call_with_retry(client, request, max_retries=3):
+    """Make API call with exponential backoff on rate limit."""
+    
+    for attempt in range(max_retries):
+        try:
+            return client.start_outbound_call(request)
+            
+        except ApiException as e:
+            if e.status == 429:
+                wait_time = 2 ** attempt
+                print(f"Rate limited. Waiting {wait_time}s...")
+                await asyncio.sleep(wait_time)
+            else:
+                raise
+    
+    raise Exception("Max retries exceeded")
+```
+
+## Concurrent Call Limits
+
+The platform limits simultaneous active calls. Before starting a new call, check availability:
+
+```python
+def check_capacity(client, required_slots: int = 1) -> bool:
+    """Check if we have capacity for new calls."""
+    org = client.get_organization()
+    
+    # Get current stats from your tracking
+    active_calls = get_active_call_count()  # Your implementation
+    max_concurrent = org.data.concurrent_call_limit
+    
+    available = max_concurrent - active_calls
+    
+    if available < required_slots:
+        print(f"At capacity: {active_calls}/{max_concurrent} calls active")
+        return False
+    
+    return True
+```
+
+## Monthly Minute Limits
+
+Track your monthly usage to avoid service interruption:
+
+```python
+def check_minutes_remaining(client) -> tuple[int, int]:
+    """Check remaining minutes in billing period."""
+    org = client.get_organization()
+    
+    used = org.data.minutes_used
+    limit = org.data.minutes_limit
+    remaining = limit - used
+    
+    if remaining < 100:
+        print(f"⚠️ Low minutes: {remaining} remaining")
+    
+    return remaining, limit
+```
+
+## Campaign Pacing
+
+When running outbound campaigns, pace your calls to stay within limits:
+
+```python
+import asyncio
+from datetime import datetime, timedelta
+
+async def paced_campaign(client, phone_numbers: list, agent_id: str):
+    """
+    Run campaign with automatic pacing.
+    Respects concurrent call and rate limits.
+    """
+    from smallestai.atoms.models import ConversationOutboundPostRequest
+    
+    max_concurrent = 5  # Based on your plan
+    calls_per_minute = 10  # Conservative rate
+    
+    active_calls = set()
+    results = []
+    
+    for phone in phone_numbers:
+        # Wait if at max concurrent
+        while len(active_calls) >= max_concurrent:
+            await asyncio.sleep(1)
+            # Remove completed calls
+            active_calls = {c for c in active_calls if not c.done()}
+        
+        # Make call
+        request = ConversationOutboundPostRequest(
+            agent_id=agent_id,
+            phone_number=phone
+        )
+        
+        call_task = asyncio.create_task(
+            make_call_async(client, request)
+        )
+        active_calls.add(call_task)
+        
+        # Rate limiting pause
+        await asyncio.sleep(60 / calls_per_minute)
+    
+    # Wait for remaining calls
+    if active_calls:
+        results = await asyncio.gather(*active_calls, return_exceptions=True)
+    
+    return results
+```
+
+## Usage Alerts
+
+Set up alerts before hitting limits:
+
+```python
+def check_usage_alerts(client):
+    """Check usage and return any alerts."""
+    alerts = []
+    org = client.get_organization()
+    
+    # Minutes alert
+    minutes_used = org.data.minutes_used
+    minutes_limit = org.data.minutes_limit
+    minutes_pct = (minutes_used / minutes_limit) * 100
+    
+    if minutes_pct > 90:
+        alerts.append({
+            "type": "CRITICAL",
+            "message": f"Minutes at {minutes_pct:.0f}% ({minutes_used}/{minutes_limit})"
+        })
+    elif minutes_pct > 75:
+        alerts.append({
+            "type": "WARNING",
+            "message": f"Minutes at {minutes_pct:.0f}%"
+        })
+    
+    return alerts
+```
+
+## Upgrading Limits
+
+To increase your limits:
+
+1. **Pro Plan**: Upgrade via [atoms.smallest.ai/billing](https://atoms.smallest.ai/billing)
+2. **Enterprise**: Contact sales@smallest.ai for custom limits
+3. **Temporary Burst**: Request temporary limit increases for campaigns
+
+<Tip>
+  Enterprise plans include dedicated infrastructure with guaranteed capacity for high-volume use cases.
+</Tip>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Track usage proactively">
+    Don't wait until you hit limits. Set up daily usage checks and alerts at 75% and 90% thresholds.
+  </Accordion>
+  
+  <Accordion title="Pace outbound campaigns">
+    Spread calls over time rather than bursting. This improves answer rates and stays within limits.
+  </Accordion>
+  
+  <Accordion title="Handle errors gracefully">
+    When rate limited, implement exponential backoff. Don't hammer the API with retries.
+  </Accordion>
+  
+  <Accordion title="Plan for growth">
+    If approaching limits regularly, upgrade your plan before it impacts operations.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,113 @@
+openapi: 3.0.1
+info:
+  title: Get Voices
+  description: |
+    API Endpoint to get voices supported by our models.
+    Currently featuring our two models, Lightning & Lightning Large, with more models coming soon.
+  version: 1.0.0
+servers:
+  - url: https://waves-api.smallest.ai
+    description: Waves API server
+
+paths:
+  /api/v1/{model}/get_voices:
+    get:
+      tags:
+        - Voices
+      summary: Get Voices
+      description: Fetch voices for a given model.
+      operationId: getWavesVoices
+      parameters:
+        - in: path
+          name: model
+          required: true
+          schema:
+            type: string
+            enum: [lightning, lightning-large, lightning-v2]
+          description: The model to use for speech synthesis.
+      responses:
+        '200':
+          description: Voices retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  voices:
+                    type: array
+                    description: List of available voices.
+                    items:
+                      type: object
+                      required:
+                        - voiceId
+                        - displayName
+                      properties:
+                        voiceId:
+                          type: string
+                          description: Unique Voice ID.
+                        displayName:
+                          type: string
+                          description: Display name for the voice.
+                        tags:
+                          type: object
+                          description: List of tags associated with the voice.
+                          properties:
+                            language:
+                              type: array
+                              description: Language of the voice.
+                              items:
+                                type: string
+                            accent:
+                              type: string
+                              description: Accent of the voice.
+                            gender:
+                              type: string
+                              description: Gender of the voice.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type
+                  message:
+                    type: string
+                    description: Error message
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type
+                  message:
+                    type: string
+                    description: Error message
+        '500':
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type
+                  message:
+                    type: string
+                    description: Error message
+      security:
+        - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

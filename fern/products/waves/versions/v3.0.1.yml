@@ -1,0 +1,59 @@
+tabs:
+  docs:
+    display-name: Docs
+    icon: home
+  api-reference:
+    display-name: API Reference
+    icon: puzzle
+
+navigation:
+  - tab: docs
+    layout:
+      - section: Getting Started
+        contents:
+          - page: Introduction
+            path: ./v3.0.1/introduction/introduction.mdx
+          - page: Quickstart
+            path: ./v3.0.1/getting-started/quickstart.mdx
+          - page: Authentication
+            path: ./v3.0.1/getting-started/authentication.mdx
+      - section: Text to Speech
+        contents:
+          - page: How to TTS
+            path: ./v3.0.1/text-to-speech/how-to-tts.mdx
+          - page: LLM to TTS
+            path: ./v3.0.1/text-to-speech/llm-to-tts.mdx
+          - page: Voice Models & Languages
+            path: ./v3.0.1/text-to-speech/get-voice-models-langs.mdx
+      - section: Voice Cloning
+        contents:
+          - page: Types of Cloning
+            path: ./v3.0.1/voice-cloning/types-of-clone.mdx
+          - page: How to Voice Clone
+            path: ./v3.0.1/voice-cloning/how-to-vc.mdx
+          - page: Voice Clone via UI
+            path: ./v3.0.1/voice-cloning/how-to-vc-ui.mdx
+          - page: Professional Voice Cloning
+            path: ./v3.0.1/voice-cloning/how-to-pvc.mdx
+          - page: Delete Cloned Voice
+            path: ./v3.0.1/voice-cloning/how-to-delete-vc.mdx
+      - section: Best Practices
+        contents:
+          - page: TTS Best Practices
+            path: ./v3.0.1/best-practices/tts-best-practices.mdx
+          - page: Voice Cloning Best Practices
+            path: ./v3.0.1/best-practices/vc-best-practices.mdx
+          - page: PVC Best Practices
+            path: ./v3.0.1/best-practices/pvc-best-practices.mdx
+      - section: Integrations
+        contents:
+          - page: LiveKit
+            path: ./v3.0.1/integrations/livekit.mdx
+          - page: Plivo
+            path: ./v3.0.1/integrations/plivo.mdx
+          - page: Vonage
+            path: ./v3.0.1/integrations/vonage.mdx
+  - tab: api-reference
+    layout:
+      - api: API Reference
+        api-name: waves

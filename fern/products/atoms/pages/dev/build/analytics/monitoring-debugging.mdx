@@ -1,0 +1,309 @@
+---
+title: "Monitoring & Debugging"
+sidebarTitle: "Monitoring"
+description: "Real-time monitoring and debugging strategies for voice agents."
+---
+
+Monitor your agents in production and debug issues effectively using conversation logs and latency metrics.
+
+## Real-Time Monitoring
+
+### Health Dashboard Pattern
+
+Build a simple monitoring dashboard that tracks active agents:
+
+```python
+from smallestai.atoms import AtomsClient
+from datetime import datetime, timedelta
+
+client = AtomsClient()
+
+def monitor_agent_health(agent_id: str, recent_call_ids: list):
+    """
+    Check agent health based on recent calls.
+    Returns status and any issues found.
+    """
+    issues = []
+    metrics = {
+        "total_calls": len(recent_call_ids),
+        "completed": 0,
+        "failed": 0,
+        "avg_duration": 0,
+        "avg_latency": 0
+    }
+    
+    for call_id in recent_call_ids:
+        try:
+            logs = client.get_conversation_logs(id=call_id)
+            data = logs.data
+            
+            if data.status == "completed":
+                metrics["completed"] += 1
+            else:
+                metrics["failed"] += 1
+                
+            metrics["avg_duration"] += data.duration or 0
+            metrics["avg_latency"] += data.average_agent_latency or 0
+            
+        except Exception as e:
+            issues.append(f"Failed to get logs for {call_id}: {e}")
+    
+    if metrics["total_calls"] > 0:
+        metrics["avg_duration"] /= metrics["total_calls"]
+        metrics["avg_latency"] /= metrics["total_calls"]
+        metrics["success_rate"] = metrics["completed"] / metrics["total_calls"] * 100
+    
+    # Check for problems
+    if metrics.get("success_rate", 0) < 80:
+        issues.append("Low success rate (<80%)")
+    if metrics.get("avg_latency", 0) > 1500:
+        issues.append("High latency (>1500ms)")
+    
+    return {
+        "healthy": len(issues) == 0,
+        "metrics": metrics,
+        "issues": issues
+    }
+```
+
+### Alert Thresholds
+
+Set up alerts based on key metrics:
+
+| Metric | Warning | Critical | Action |
+|--------|---------|----------|--------|
+| Success Rate | < 90% | < 80% | Check agent prompts, tool errors |
+| Avg Latency | > 1000ms | > 2000ms | Optimize prompts, check tools |
+| Call Duration | > 5 min | > 10 min | Review conversation flow |
+| ASR Errors | > 5% | > 10% | Check audio quality |
+
+## Debugging Failed Calls
+
+### Step 1: Get Call Details
+
+```python
+def debug_call(call_id: str):
+    """Comprehensive call debugging."""
+    logs = client.get_conversation_logs(id=call_id)
+    data = logs.data
+    
+    print("=== CALL DEBUG REPORT ===")
+    print(f"Call ID: {data.call_id}")
+    print(f"Status: {data.status}")
+    print(f"Type: {data.type}")
+    print(f"Duration: {data.duration}s")
+    
+    # Check for issues
+    print("\n=== ISSUES ===")
+    
+    if data.status != "completed":
+        print(f"⚠️  Call did not complete. Status: {data.status}")
+    
+    if data.average_agent_latency and data.average_agent_latency > 1500:
+        print(f"⚠️  High LLM latency: {data.average_agent_latency}ms")
+    
+    if not data.transcript or len(data.transcript) == 0:
+        print("⚠️  No transcript - possible ASR failure")
+    
+    # Show transcript
+    print("\n=== TRANSCRIPT ===")
+    for i, line in enumerate(data.transcript or []):
+        print(f"  [{i}] {line}")
+```
+
+### Step 2: Analyze Transcript
+
+Look for patterns in failed conversations:
+
+```python
+def analyze_transcript(call_id: str):
+    """Find issues in conversation flow."""
+    logs = client.get_conversation_logs(id=call_id)
+    transcript = logs.data.transcript or []
+    
+    issues = []
+    
+    # Check for repeated messages (loop detection)
+    if len(transcript) > 2:
+        for i in range(len(transcript) - 2):
+            if transcript[i] == transcript[i + 2]:
+                issues.append(f"Possible loop at line {i}")
+    
+    # Check for error messages in transcript
+    error_keywords = ["sorry", "error", "cannot", "unable", "don't understand"]
+    for i, line in enumerate(transcript):
+        for keyword in error_keywords:
+            if keyword in line.lower():
+                issues.append(f"Possible issue at line {i}: '{line[:50]}...'")
+    
+    return issues
+```
+
+### Step 3: Check Latency Breakdown
+
+```python
+def latency_breakdown(call_id: str):
+    """Identify slowest component."""
+    logs = client.get_conversation_logs(id=call_id)
+    data = logs.data
+    
+    components = {
+        "ASR (Transcriber)": data.average_transcriber_latency,
+        "LLM (Agent)": data.average_agent_latency,
+        "TTS (Synthesizer)": data.average_synthesizer_latency
+    }
+    
+    print("=== LATENCY BREAKDOWN ===")
+    for name, latency in components.items():
+        if latency:
+            bar = "█" * int(latency / 50)  # Scale for display
+            status = "⚠️" if latency > 500 else "✓"
+            print(f"{status} {name}: {latency:.0f}ms {bar}")
+    
+    # Find bottleneck
+    slowest = max(components.items(), key=lambda x: x[1] or 0)
+    print(f"\n🎯 Bottleneck: {slowest[0]} ({slowest[1]:.0f}ms)")
+```
+
+## Common Issues & Solutions
+
+<AccordionGroup>
+  <Accordion title="High LLM Latency">
+    **Symptoms:** `average_agent_latency` > 1000ms
+    
+    **Causes:**
+    - Long system prompts
+    - Complex tool chains
+    - Large context windows
+    
+    **Solutions:**
+    - Shorten prompts
+    - Use streaming (default)
+    - Consider `gpt-4o-mini` for faster responses
+    - Cache repeated tool results
+  </Accordion>
+  
+  <Accordion title="Empty Transcripts">
+    **Symptoms:** `transcript` is empty or null
+    
+    **Causes:**
+    - ASR failure
+    - No speech detected
+    - Call dropped immediately
+    
+    **Solutions:**
+    - Check audio quality
+    - Verify caller's microphone
+    - Check for network issues
+  </Accordion>
+  
+  <Accordion title="Calls Ending Prematurely">
+    **Symptoms:** Very short `duration`, status not "completed"
+    
+    **Causes:**
+    - Unhandled exceptions in tools
+    - Agent sent end signal too early
+    - Network disconnection
+    
+    **Solutions:**
+    - Add error handling in tools
+    - Review end-of-call logic
+    - Check for interruption handling issues
+  </Accordion>
+  
+  <Accordion title="Conversation Loops">
+    **Symptoms:** Repeated messages in transcript
+    
+    **Causes:**
+    - Poor prompt leading to repetition
+    - Tool returning same error repeatedly
+    - Missing conversation state
+    
+    **Solutions:**
+    - Add explicit instructions to avoid repetition
+    - Track conversation state
+    - Add loop detection in agent logic
+  </Accordion>
+</AccordionGroup>
+
+## Logging Best Practices
+
+### Store Call IDs
+
+```python
+import json
+from datetime import datetime
+
+def log_call(call_id: str, agent_id: str, metadata: dict = None):
+    """Log call for later analysis."""
+    entry = {
+        "call_id": call_id,
+        "agent_id": agent_id,
+        "timestamp": datetime.now().isoformat(),
+        "metadata": metadata or {}
+    }
+    
+    # Append to log file
+    with open("call_log.jsonl", "a") as f:
+        f.write(json.dumps(entry) + "\n")
+```
+
+### Periodic Analysis
+
+```python
+def daily_analysis():
+    """Run daily to catch trends."""
+    # Read today's calls
+    today_calls = []
+    with open("call_log.jsonl", "r") as f:
+        for line in f:
+            entry = json.loads(line)
+            if entry["timestamp"].startswith(datetime.now().strftime("%Y-%m-%d")):
+                today_calls.append(entry["call_id"])
+    
+    # Analyze
+    total_duration = 0
+    high_latency_count = 0
+    
+    for call_id in today_calls:
+        try:
+            logs = client.get_conversation_logs(id=call_id)
+            total_duration += logs.data.duration or 0
+            if (logs.data.average_agent_latency or 0) > 1000:
+                high_latency_count += 1
+        except:
+            pass
+    
+    print(f"Today's calls: {len(today_calls)}")
+    print(f"Total talk time: {total_duration / 60:.1f} minutes")
+    print(f"High latency calls: {high_latency_count}")
+```
+
+## Recording Review
+
+Access call recordings for manual review:
+
+```python
+def get_recording(call_id: str, save_path: str = None):
+    """Download call recording for review."""
+    import requests
+    
+    logs = client.get_conversation_logs(id=call_id)
+    recording_url = logs.data.recording_url
+    
+    if not recording_url:
+        print("No recording available")
+        return None
+    
+    if save_path:
+        response = requests.get(recording_url)
+        with open(save_path, "wb") as f:
+            f.write(response.content)
+        print(f"Saved to {save_path}")
+    
+    return recording_url
+```
+
+<Tip>
+  Keep recordings for at least 30 days for debugging purposes. Consider automated deletion policies for compliance.
+</Tip>

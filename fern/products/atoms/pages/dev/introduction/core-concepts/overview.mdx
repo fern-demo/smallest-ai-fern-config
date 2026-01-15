@@ -1,0 +1,34 @@
+---
+title: "Core Concepts"
+sidebarTitle: "Overview"
+description: "The fundamental building blocks of the Atoms SDK."
+---
+
+The Atoms SDK is built around a **graph-based architecture** where information flows between processing units. This design makes it easy to build everything from simple chatbots to complex multi-agent systems.
+
+## How It Works
+
+Every voice conversation in Atoms follows this pattern:
+
+1. **Audio comes in** — The user speaks into their phone or browser
+2. **Events flow through nodes** — Speech is transcribed, processed, and responses generated
+3. **Audio goes out** — The agent's response is synthesized and played back
+
+The system manages all the complexity of real-time streaming, interruptions, and state management. You just focus on the logic.
+
+## The Four Building Blocks
+
+<CardGroup cols={2}>
+  <Card title="Nodes" icon="circle-nodes" href="/dev/introduction/core-concepts/nodes">
+    Processing units that handle events. The brain of your agent logic.
+  </Card>
+  <Card title="Events" icon="bolt" href="/dev/introduction/core-concepts/events">
+    Messages flowing through the system. Audio, text, and control signals.
+  </Card>
+  <Card title="Graphs" icon="diagram-project" href="/dev/introduction/core-concepts/graphs">
+    Connect nodes into pipelines. Build complex multi-agent flows.
+  </Card>
+  <Card title="Sessions" icon="clock" href="/dev/introduction/core-concepts/sessions">
+    Manage conversation state and lifecycle. One session per call.
+  </Card>
+</CardGroup>

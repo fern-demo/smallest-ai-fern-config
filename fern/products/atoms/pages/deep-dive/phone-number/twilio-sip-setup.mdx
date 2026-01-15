@@ -1,0 +1,319 @@
+---
+title: "Twilio SIP Setup"
+description: "Connect your Twilio account to Smallest AI using Elastic SIP Trunking"
+icon: "phone-volume"
+---
+
+## Overview
+
+This guide explains how to connect your Twilio account to Smallest AI using **Elastic SIP Trunking**. This allows you to use your existing Twilio phone numbers with Smallest AI's voice agents.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- An active Twilio account
+- Access to the Twilio Console
+- Phone numbers in your Twilio account (or ability to purchase new ones)
+
+## Step 1: Create an Elastic SIP Trunk
+
+1. Log in to the [Twilio Console](https://console.twilio.com)
+2. Navigate to **Elastic SIP Trunking → Trunks**
+3. Click **Create new trunk**
+4. Give your trunk a descriptive name (e.g., "Smallest AI Trunk")
+5. Click **Create** to save your trunk
+
+## Step 2: Configure Termination (Outbound Calls)
+
+Termination settings control how outbound calls from Smallest AI are sent to Twilio.
+
+### Set Up Termination URI
+
+1. In your trunk, click on the **Termination** tab
+2. Create a **Termination SIP URI** (e.g., `mycompany.pstn.twilio.com`)
+3. Choose a **localized URI** close to your region for optimal call quality:
+   - For US: Choose a US-based URI
+   - For EU: Choose an EU-based URI
+   - For APAC: Choose an APAC-based URI
+
+### Configure Authentication
+
+Choose one of the following authentication methods:
+
+#### Option 1: IP Whitelisting
+
+Since Smallest AI doesn't currently have a fixed IP range:
+
+1. In the **IP Access Control Lists** section, click **Create new IP ACL**
+2. Add `0.0.0.0/0` to allow all IPs (temporary workaround)
+
+<Warning>
+  Using 0.0.0.0/0 allows connections from any IP address. For production use, consider using credential-based
+  authentication instead for better security.
+</Warning>
+
+#### Option 2: Credential-Based Authentication (Recommended)
+
+1. Scroll down to the **Credentials** section
+2. Click **Create credential list**
+3. Give it a name (e.g., "Smallest AI Credentials")
+4. Click **Create**
+5. Inside the credential list, click **Add credential**
+6. Enter a **Username** and **Password**
+7. Save the credentials
+8. Make note of both the username and password - you'll need these when importing the number on Smallest AI
+
+<Warning>
+  The "friendly name" shown in Twilio is NOT the username. Use the actual credential username you created, not
+  the friendly name of the credential list.
+</Warning>
+
+### Enable the Credential List
+
+1. Go back to your trunk's **Termination** tab
+2. Under **Authentication**, select your credential list
+3. Save your changes
+
+## Step 3: Configure Origination (Inbound Calls)
+
+Origination settings control how inbound calls to your Twilio numbers are routed to Smallest AI.
+
+1. In your trunk, click on the **Origination** tab
+2. Click **Add new Origination URI**
+3. Enter Smallest AI's SIP server:
+   ```
+   sip:5rdbhjuwtlk.sip.livekit.cloud
+   ```
+4. Set **Priority** to `10` and **Weight** to `10`
+5. Click **Add**
+6. Save your changes
+
+This configuration tells Twilio where to send inbound calls.
+
+## Step 4: Assign Numbers to the Trunk
+
+Now you need to connect your phone numbers to the SIP trunk.
+
+### For Existing Numbers
+
+1. Navigate to **Phone Numbers → Manage → Active Numbers** in Twilio Console
+2. Click on the phone number you want to use with Smallest AI
+3. Scroll down to **Voice Configuration**
+4. Under **Configure With**, select **SIP Trunk**
+5. In the **SIP Trunk** dropdown, select your newly created trunk
+6. Click **Save**
+
+### For New Numbers
+
+1. In the Twilio Console, go to **Phone Numbers → Buy a Number**
+2. Search for and purchase your desired number
+3. During setup, configure it to use your SIP trunk
+4. Or follow the "For Existing Numbers" steps above
+
+## Step 5: Import Numbers on Smallest AI
+
+Now that your Twilio trunk is configured, you can import your numbers into Smallest AI.
+
+1. Navigate to [Phone Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/rent-numbers) in your Smallest AI dashboard
+2. Click **Buy Numbers** button
+3. Select the **Import SIP Number** tab
+4. Fill in your number details:
+
+   - **Phone Number**: Your Twilio number in E.164 format
+
+     - Example: `+12025551234` for a US number
+     - Example: `+442071234567` for a UK number
+
+   - **SIP Termination URL**: Your Termination SIP URI from Step 2
+
+     - Example: `sip:mycompany.pstn.twilio.com`
+     - Make sure there are NO trailing spaces
+
+   - **Display Name** (Optional): A friendly name for this number
+
+     - Example: "Customer Support Line"
+
+   - **Username**: Your SIP credential username (if using credential-based auth)
+
+     - Use the actual username, NOT the friendly name of the credential list
+
+   - **Password**: Your SIP credential password (if using credential-based auth)
+
+5. Copy the **SIP Origination URL** shown (this should already be configured in Step 3)
+6. Click **Add Custom Number**
+
+<Tip>
+  Make sure the phone number you enter matches exactly with the number in your Twilio account, including the
+  country code and format.
+</Tip>
+
+## Step 6: Test Your Setup
+
+After importing your number:
+
+1. Go to your agents in Smallest AI dashboard
+2. Assign the imported Twilio number to one of your agents
+3. Make a test inbound call to your Twilio number
+4. Verify that the call connects to your AI agent
+5. Test an outbound call from your agent
+6. Verify audio quality in both directions
+
+## Troubleshooting
+
+### Inbound Works, But Outbound Fails
+
+This is a common issue. Check the following:
+
+**Verify Termination SIP URI:**
+
+- Make sure there are NO trailing spaces in your URI
+- Use the full URI format: `sip:mycompany.pstn.twilio.com`
+- Don't include `https://` or other protocols
+
+**Check Localization:**
+
+- Use a **localized URI** near your geographic region
+- If calls are made from the US, use a US-based Twilio URI
+- This improves latency and call quality
+
+**Verify Credentials:**
+
+- Double-check your SIP **username** and **password**
+- Remember: the "friendly name" in Twilio is NOT the username
+- Use the actual credential username you created
+
+**Authentication Method:**
+
+- If using IP whitelisting with 0.0.0.0, make sure it's properly saved
+- If using credentials, ensure they're enabled on your trunk
+
+### Unable to Call International Numbers
+
+Twilio restricts international calling by default:
+
+1. In Twilio Console, search for **Voice Geographic Permissions**
+2. Select your account or specifically **Elastic SIP Trunking**
+3. Review the list of countries
+4. Enable the countries you want to dial
+5. Click **Save**
+
+<Note>
+  International calling permissions may take a few minutes to take effect. Wait 5-10 minutes before testing
+  again.
+</Note>
+
+### One-Way Audio Issues
+
+If one party can hear but the other cannot:
+
+- Verify your firewall allows RTP traffic
+- Check that media encryption (SRTP) settings match
+- Ensure your Twilio trunk doesn't have restrictive NAT settings
+- Contact Smallest AI support if the issue persists
+
+### Authentication Errors
+
+**"401 Unauthorized" or "403 Forbidden" errors:**
+
+- Verify credentials are entered correctly in Smallest AI
+- Check that credentials are enabled on your Twilio trunk
+- Ensure the credential list is attached to your trunk's Termination tab
+
+**"404 Not Found" errors:**
+
+- Verify the Termination SIP URI is correct
+- Check that the URI is reachable and properly formatted
+
+### Call Quality Issues
+
+**Choppy or robotic audio:**
+
+- Choose a Twilio URI closer to your region
+- Check your network bandwidth and latency
+- Verify codec compatibility
+
+**Echo or feedback:**
+
+- This is usually a Twilio configuration issue
+- Check echo cancellation settings in Twilio
+- Contact Twilio support if needed
+
+## Advanced Configuration
+
+### Caller ID & Number Masking
+
+Display your own phone number as the caller ID when making outbound calls:
+
+1. In Twilio Console, go to **Phone Numbers → Verified Caller IDs**
+2. Click **Add a new Caller ID** (the red plus button)
+3. Enter the phone number you'd like to show as caller ID
+4. Complete the verification process:
+   - Twilio will call or text you with an OTP
+   - Enter the OTP to verify ownership
+5. Once verified, configure SIP header manipulation:
+   - Go to **Elastic SIP Trunking → Trunks → [Your Trunk]**
+   - Click on the **Termination** tab
+   - Scroll down to **SIP Header Manipulation**
+   - Click **Create new Policy**
+   - Set the rule to replace the **From** header with your verified caller ID:
+     ```
+     Replace: From
+     With: <sip:+12025551234@yourdomain.pstn.twilio.com>
+     ```
+   - Save and apply the policy
+
+Now outbound calls through Smallest AI will display your verified Caller ID.
+
+### Geographic Routing
+
+For better call quality, you can set up multiple trunks in different regions:
+
+1. Create separate SIP trunks for each region (US, EU, APAC)
+2. Use region-specific Termination URIs
+3. Import numbers from each trunk separately on Smallest AI
+4. Assign region-appropriate numbers to your agents
+
+### Security Best Practices
+
+1. **Use credential-based authentication** instead of IP whitelisting
+2. **Rotate credentials regularly** (every 90 days recommended)
+3. **Set up alerts** in Twilio for unusual usage patterns
+
+## Cost Considerations
+
+When using Twilio with Smallest AI:
+
+**Twilio charges:**
+
+- Monthly number rental fees (varies by country)
+- Per-minute outbound call costs (varies by destination)
+- Inbound call costs (typically free or very low)
+- SIP trunk fees (if applicable to your plan)
+
+**Smallest AI charges:**
+
+- Standard per-minute call rates for AI conversation
+- No additional fees for SIP trunk configuration
+- No monthly rental fees for imported numbers
+
+Check [Smallest AI Pricing](https://smallest.ai/pricing) and [Twilio Pricing](https://www.twilio.com/voice/pricing) for current rates.
+
+## Need Help?
+
+If you encounter issues not covered in this guide:
+
+- **Email Support**: support@smallest.ai
+- **Include in your message**:
+  - Your Twilio phone number
+  - Your Termination SIP URI
+  - Description of the issue
+  - Any error messages you're seeing
+- **Join our Community**: [Discord](https://smallest.ai/discord)
+- **Twilio Support**: For Twilio-specific issues, contact [Twilio Support](https://www.twilio.com/help/contact)
+
+## Related Documentation
+
+- [SIP Trunking Overview](/deep-dive/phone-number/sip-trunking) - General SIP trunking concepts
+- [Phone Numbers](/deep-dive/phone-number/phone-number) - Managing phone numbers on Smallest AI
+- [Twilio Elastic SIP Trunking Docs](https://www.twilio.com/docs/sip-trunking) - Official Twilio documentation

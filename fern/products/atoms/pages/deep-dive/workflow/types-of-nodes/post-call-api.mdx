@@ -1,0 +1,92 @@
+---
+title: "The Post Call API Node"
+description: "A node for executing API calls after conversation ends"
+icon: webhook
+---
+
+## Understanding the Post Call API Node
+
+The **Post Call API Node** is a specialized component in Atoms workflow that executes **after the conversation successfully ends**. It allows you to perform actions like updating external systems, logging conversation outcomes, or triggering follow-up processes.
+
+Unlike Pre Call API nodes, Post Call API nodes:
+
+- Can **only be attached to End Call nodes**
+- Execute **only when the conversation reaches a proper end**
+- Support both **sequential and parallel execution**
+- Will **not trigger if conversation ends prematurely**
+
+<Note>
+  For handling all types of call events (completed, failed, busy, etc.), use
+  Webhooks configured in the Agent Config page instead of Post Call API nodes.
+</Note>
+
+---
+
+## Example: Customer Support Workflow
+
+Here's how a **Post Call API Node** enhances a support workflow:
+
+1️⃣ **After Conversation Ends**
+
+- Updates CRM with conversation outcome
+- Triggers follow-up email to customer
+
+2️⃣ **Parallel Processing**
+
+- Simultaneously updates multiple systems
+- Records conversation metrics
+- Schedules follow-up tasks
+
+---
+
+## Creating a Post Call API Node in Atoms
+
+Follow these steps to add a Post Call API Node to your workflow:
+
+### 1️⃣ Add the Node
+
+- In the **Node Type Selector**, choose **Post Call API Node**
+- Connect it to an **End Call Node**
+- Add multiple nodes in parallel if needed
+
+![Adding Post Call API Node](../../../images/post-call-api-node.png)
+
+### 2️⃣ Configure API Details
+
+- Set up the API endpoint and method
+- Configure headers and authentication
+- Define request body if needed
+- Map conversation data to API request
+
+---
+
+## Parameters of the Post Call API Node
+
+The Post Call API Node requires several parameters for proper configuration:
+
+| **Parameter** | **Description**                                                |
+| ------------- | -------------------------------------------------------------- |
+| **Node Name** | Identifier for the node (e.g., "Update CRM", "Send Analytics") |
+| **API URL**   | The endpoint URL to call                                       |
+| **Method**    | HTTP method (GET, POST, etc.)                                  |
+| **Headers**   | HTTP headers for the request                                   |
+| **Body**      | Request body (for POST/PUT methods)                            |
+
+---
+
+## Important Distinctions
+
+🔄 **Post Call API vs Webhooks**
+
+| **Post Call API**                            | **Webhooks (Agent Config)**                        |
+| -------------------------------------------- | -------------------------------------------------- |
+| Triggers only on successful conversation end | Triggers on all call events (complete, fail, busy) |
+| Part of workflow design                      | Configured at agent level                          |
+| Can execute multiple calls in parallel       | Single webhook per event type                      |
+| Only processes successful conversations      | Handles all conversation outcomes                  |
+
+---
+
+## Summary
+
+The **Post Call API Node** provides a powerful way to perform actions after successful conversations. While it's perfect for updating systems and triggering follow-ups after normal conversation endings, use Agent Config Webhooks for handling all types of call events.

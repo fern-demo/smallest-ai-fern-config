@@ -1,0 +1,125 @@
+---
+title: "LLM Configuration"
+sidebarTitle: "LLM Settings"
+description: "Configure models and response behavior."
+---
+
+Configure the LLM client and response parameters for your agent.
+
+## OpenAI Client
+
+The `OpenAIClient` is the primary way to connect to LLMs:
+
+```python
+import os
+from smallestai.atoms.agent.clients.openai import OpenAIClient
+
+llm = OpenAIClient(
+    model="gpt-4o-mini",
+    temperature=0.7,
+    api_key=os.getenv("OPENAI_API_KEY")
+)
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `model` | str | required | Model name (e.g., "gpt-4o", "gpt-4o-mini") |
+| `temperature` | float | 0.7 | Response randomness (0-2) |
+| `api_key` | str | env var | OpenAI API key |
+| `base_url` | str | OpenAI | Custom endpoint for BYOM |
+| `max_tokens` | int | None | Max response length |
+
+## Using the Client
+
+In your agent's `generate_response`, call the LLM:
+
+```python
+class MyAgent(OutputAgentNode):
+    def __init__(self):
+        super().__init__(name="my-agent")
+        self.llm = OpenAIClient(
+            model="gpt-4o-mini",
+            temperature=0.7,
+            api_key=os.getenv("OPENAI_API_KEY")
+        )
+        
+        self.context.add_message({
+            "role": "system",
+            "content": "You are a helpful assistant."
+        })
+
+    async def generate_response(self):
+        response = await self.llm.chat(
+            messages=self.context.messages,
+            stream=True
+        )
+        async for chunk in response:
+            if chunk.content:
+                yield chunk.content
+```
+
+## Streaming vs Non-Streaming
+
+For real-time voice agents, always use streaming:
+
+```python
+# Streaming (recommended for voice)
+response = await self.llm.chat(
+    messages=self.context.messages,
+    stream=True
+)
+async for chunk in response:
+    yield chunk.content
+
+# Non-streaming (for internal processing)
+response = await self.llm.chat(
+    messages=self.context.messages,
+    stream=False
+)
+result = response.content
+```
+
+## With Tool Calling
+
+Pass tool schemas when using function calling:
+
+```python
+async def generate_response(self):
+    response = await self.llm.chat(
+        messages=self.context.messages,
+        stream=True,
+        tools=self.tool_schemas  # From ToolRegistry
+    )
+    
+    tool_calls = []
+    async for chunk in response:
+        if chunk.content:
+            yield chunk.content
+        if chunk.tool_calls:
+            tool_calls.extend(chunk.tool_calls)
+    
+    if tool_calls:
+        # Execute tools and continue conversation
+        results = await self.tool_registry.execute(tool_calls)
+        # Add results to context and call LLM again
+```
+
+## Tips
+
+<AccordionGroup>
+  <Accordion title="Use gpt-4o-mini for cost efficiency">
+    For most conversational use cases, gpt-4o-mini provides excellent quality at a fraction of the cost.
+  </Accordion>
+  <Accordion title="Lower temperature for tool-heavy agents">
+    If your agent uses many tools, lower temperature (0.3-0.5) improves tool selection reliability.
+  </Accordion>
+  <Accordion title="Set system prompt in context">
+    Add a system message to `self.context` in `__init__` to define agent personality.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  **Voice & STT settings** are configured at the platform level when you create or configure your agent in the [Atoms dashboard](https://atoms.smallest.ai), not in SDK code.
+</Note>

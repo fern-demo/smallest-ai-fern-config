@@ -1,0 +1,55 @@
+---
+title: "What is a Workflow?"
+description: "Learn about the Atoms workflow, our graph-based approach to building conversational agents"
+icon: circle-nodes
+---
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/5XFQky98pCg?si=DuJrkyr3eAPos9eY"
+  title="How to Build AI Voice Agent Workflows?"
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>
+
+Watch the above video or the below instructions to understand workflows better.
+
+<Tip>
+Any conversation in the world can be thought of as a set of goals that are to achieved one after the other, and the
+next goal to be achieved is based on the intent of the user at the end of the current goal.
+
+At the heart of Atoms lies a powerful graph-based system called the **workflow** which enables breaking a conversation down
+into sub-goals or **nodes**, and based on the intent or **branches** move to the next goal/node.
+
+</Tip>
+
+<img src="../../images/workflow.png" className="rounded-lg" sub="df" />
+
+The above image describes a simple workflow of atoms.
+
+It contains 3 [default nodes](/deep-dive/workflow/types-of-nodes/default), 2 [end call nodes](/deep-dive/workflow/types-of-nodes/end-call)
+and 5 [branches](/deep-dive/workflow/what-is-a-branch.mdx).
+
+In this example, we show a simple Insurance lead generation workflow.
+
+1. In the first node **Introduction and Offer**, the agent introduces itself and tries to see if the customer is interested in buying home insurance.
+2. In case the customer is not interested, the agent will proceed to the **Disinterest Closure** node. In this node, the agent simply thanks the customer for their time
+   and cuts the call.
+3. In case the customer is interested, the agent will proceed to the **Qualify Home Insurance Need** node. Here, the agent checks if the customer currently has
+   home insurance or is looking actively. This identification of **intent** is extremely important.
+4. In case the customer says they are not looking or already have something, then the agent goes back to 2.
+5. In case the customer is looking, then the agent proceeds to the **Collect Basic Qualifying Data** node. In this node, the agent
+   collects the name and a suitable time to call back.
+6. Finally, the agent proceeds to confirm the call back time and cut the call.
+
+We hope that you get a brief understanding of how a workflow graph works. Once you get the hang of it,
+you will be able to build infinitely long and complex workflows for any usecase in the world.
+
+<Note>
+  While it appears complex at first, when you realise that nodes are given
+  **goals** and not *exactly* what has to be spoken, it becomes extremely
+  intuitive and simple to build the workflow.
+</Note>
+
+In the next sections, we will dive deeper into nodes and branches and best practices around them.

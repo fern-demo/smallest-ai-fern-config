@@ -1,0 +1,371 @@
+---
+title: "Custom Reports"
+sidebarTitle: "Custom Reports"
+description: "Build custom analytics reports and dashboards."
+---
+
+Create tailored analytics reports by combining SDK data with your business logic.
+
+## Building Reports
+
+### Daily Summary Report
+
+```python
+from smallestai.atoms import AtomsClient
+from datetime import datetime
+import json
+
+client = AtomsClient()
+
+def daily_summary_report(call_ids: list) -> dict:
+    """
+    Generate a daily summary report.
+    
+    Args:
+        call_ids: List of conversation IDs from today
+        
+    Returns:
+        Report dictionary with key metrics
+    """
+    report = {
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "total_calls": len(call_ids),
+        "completed": 0,
+        "failed": 0,
+        "total_duration_minutes": 0,
+        "avg_latency_ms": 0,
+        "call_types": {
+            "inbound": 0,
+            "outbound": 0,
+            "chat": 0
+        }
+    }
+    
+    latencies = []
+    
+    for call_id in call_ids:
+        try:
+            logs = client.get_conversation_logs(id=call_id)
+            data = logs.data
+            
+            # Count by status
+            if data.status == "completed":
+                report["completed"] += 1
+            else:
+                report["failed"] += 1
+            
+            # Duration
+            report["total_duration_minutes"] += (data.duration or 0) / 60
+            
+            # Latency
+            if data.average_agent_latency:
+                latencies.append(data.average_agent_latency)
+            
+            # Call type
+            if data.type == "telephony_inbound":
+                report["call_types"]["inbound"] += 1
+            elif data.type == "telephony_outbound":
+                report["call_types"]["outbound"] += 1
+            else:
+                report["call_types"]["chat"] += 1
+                
+        except Exception as e:
+            print(f"Skipping {call_id}: {e}")
+    
+    # Calculate averages
+    if latencies:
+        report["avg_latency_ms"] = sum(latencies) / len(latencies)
+    
+    if report["total_calls"] > 0:
+        report["success_rate"] = report["completed"] / report["total_calls"] * 100
+    
+    return report
+```
+
+### Usage
+
+```python
+# Get today's call IDs from your database or logs
+todays_calls = ["conv-123", "conv-456", "conv-789"]
+
+report = daily_summary_report(todays_calls)
+print(json.dumps(report, indent=2))
+```
+
+**Output:**
+```json
+{
+  "date": "2024-01-15",
+  "total_calls": 3,
+  "completed": 3,
+  "failed": 0,
+  "total_duration_minutes": 12.5,
+  "avg_latency_ms": 487.3,
+  "call_types": {
+    "inbound": 1,
+    "outbound": 2,
+    "chat": 0
+  },
+  "success_rate": 100.0
+}
+```
+
+## Agent Performance Report
+
+Compare performance across agents:
+
+```python
+def agent_comparison_report(agent_call_map: dict) -> dict:
+    """
+    Compare metrics across multiple agents.
+    
+    Args:
+        agent_call_map: {"agent_id": ["call_id1", "call_id2"]}
+    """
+    report = {}
+    
+    for agent_id, call_ids in agent_call_map.items():
+        agent_stats = {
+            "total_calls": len(call_ids),
+            "avg_duration": 0,
+            "avg_latency": 0,
+            "success_rate": 0
+        }
+        
+        durations = []
+        latencies = []
+        completed = 0
+        
+        for call_id in call_ids:
+            try:
+                logs = client.get_conversation_logs(id=call_id)
+                data = logs.data
+                
+                if data.duration:
+                    durations.append(data.duration)
+                if data.average_agent_latency:
+                    latencies.append(data.average_agent_latency)
+                if data.status == "completed":
+                    completed += 1
+            except:
+                pass
+        
+        if durations:
+            agent_stats["avg_duration"] = sum(durations) / len(durations)
+        if latencies:
+            agent_stats["avg_latency"] = sum(latencies) / len(latencies)
+        if call_ids:
+            agent_stats["success_rate"] = completed / len(call_ids) * 100
+        
+        report[agent_id] = agent_stats
+    
+    return report
+```
+
+## Transcript Analytics
+
+Extract insights from conversation transcripts:
+
+```python
+def transcript_analysis(call_ids: list) -> dict:
+    """Analyze conversation patterns across calls."""
+    
+    analysis = {
+        "total_exchanges": 0,
+        "avg_exchanges_per_call": 0,
+        "common_phrases": {},
+        "sentiment_indicators": {
+            "positive": 0,
+            "negative": 0,
+            "neutral": 0
+        }
+    }
+    
+    positive_words = ["thanks", "great", "perfect", "wonderful", "helpful"]
+    negative_words = ["frustrated", "angry", "upset", "problem", "issue", "wrong"]
+    
+    all_exchanges = 0
+    
+    for call_id in call_ids:
+        try:
+            logs = client.get_conversation_logs(id=call_id)
+            transcript = logs.data.transcript or []
+            
+            all_exchanges += len(transcript)
+            
+            for line in transcript:
+                line_lower = line.lower()
+                
+                # Check sentiment
+                has_positive = any(word in line_lower for word in positive_words)
+                has_negative = any(word in line_lower for word in negative_words)
+                
+                if has_positive and not has_negative:
+                    analysis["sentiment_indicators"]["positive"] += 1
+                elif has_negative and not has_positive:
+                    analysis["sentiment_indicators"]["negative"] += 1
+                else:
+                    analysis["sentiment_indicators"]["neutral"] += 1
+                    
+        except:
+            pass
+    
+    analysis["total_exchanges"] = all_exchanges
+    if call_ids:
+        analysis["avg_exchanges_per_call"] = all_exchanges / len(call_ids)
+    
+    return analysis
+```
+
+## Export Formats
+
+### CSV Export
+
+```python
+import csv
+
+def export_to_csv(call_ids: list, filename: str):
+    """Export call data to CSV for spreadsheet analysis."""
+    
+    with open(filename, "w", newline="") as f:
+        writer = csv.writer(f)
+        
+        # Header
+        writer.writerow([
+            "call_id", "status", "type", "duration_seconds",
+            "from", "to", "agent_latency_ms", "asr_latency_ms", 
+            "tts_latency_ms", "transcript_length"
+        ])
+        
+        # Data rows
+        for call_id in call_ids:
+            try:
+                logs = client.get_conversation_logs(id=call_id)
+                data = logs.data
+                
+                writer.writerow([
+                    data.call_id,
+                    data.status,
+                    data.type,
+                    data.duration,
+                    data.var_from,
+                    data.to,
+                    data.average_agent_latency,
+                    data.average_transcriber_latency,
+                    data.average_synthesizer_latency,
+                    len(data.transcript or [])
+                ])
+            except:
+                pass
+    
+    print(f"Exported {len(call_ids)} calls to {filename}")
+```
+
+### JSON Export
+
+```python
+def export_to_json(call_ids: list, filename: str):
+    """Export full call data to JSON."""
+    
+    calls = []
+    
+    for call_id in call_ids:
+        try:
+            logs = client.get_conversation_logs(id=call_id)
+            calls.append(logs.data.to_dict())
+        except:
+            pass
+    
+    with open(filename, "w") as f:
+        json.dump(calls, f, indent=2, default=str)
+    
+    print(f"Exported {len(calls)} calls to {filename}")
+```
+
+## Dashboard Integration
+
+### Webhook for Real-Time Updates
+
+Send analytics to external dashboards:
+
+```python
+import requests
+
+def send_to_dashboard(call_id: str, webhook_url: str):
+    """Send call metrics to external dashboard."""
+    
+    logs = client.get_conversation_logs(id=call_id)
+    data = logs.data
+    
+    payload = {
+        "call_id": data.call_id,
+        "timestamp": datetime.now().isoformat(),
+        "duration": data.duration,
+        "status": data.status,
+        "latency": {
+            "agent": data.average_agent_latency,
+            "asr": data.average_transcriber_latency,
+            "tts": data.average_synthesizer_latency
+        }
+    }
+    
+    response = requests.post(webhook_url, json=payload)
+    return response.status_code == 200
+```
+
+### Grafana / Prometheus Format
+
+```python
+def prometheus_metrics(call_ids: list) -> str:
+    """Generate Prometheus-compatible metrics."""
+    
+    lines = []
+    
+    for call_id in call_ids:
+        try:
+            logs = client.get_conversation_logs(id=call_id)
+            data = logs.data
+            
+            if data.duration:
+                lines.append(f'call_duration_seconds{{call_id="{call_id}"}} {data.duration}')
+            if data.average_agent_latency:
+                lines.append(f'agent_latency_ms{{call_id="{call_id}"}} {data.average_agent_latency}')
+        except:
+            pass
+    
+    return "\n".join(lines)
+```
+
+## Scheduled Reports
+
+### Cron-Style Automation
+
+```python
+import schedule
+import time
+
+def run_daily_report():
+    """Run this on a schedule."""
+    # Get yesterday's calls from your call log storage
+    call_ids = get_yesterdays_call_ids()  # Implement based on your storage
+    
+    report = daily_summary_report(call_ids)
+    
+    # Save or email report
+    with open(f"reports/daily_{report['date']}.json", "w") as f:
+        json.dump(report, f, indent=2)
+    
+    print(f"Daily report generated for {report['date']}")
+
+# Schedule to run at 7 AM daily
+schedule.every().day.at("07:00").do(run_daily_report)
+
+# Run scheduler
+while True:
+    schedule.run_pending()
+    time.sleep(60)
+```
+
+<Tip>
+  Store call IDs in your database after each call completes. This makes report generation faster since you don't need to query the platform for a list of calls.
+</Tip>

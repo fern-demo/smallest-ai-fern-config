@@ -1,0 +1,149 @@
+tabs:
+  docs:
+    display-name: Docs
+    icon: home
+  api-reference:
+    display-name: API Reference
+    icon: puzzle
+
+navigation:
+  - tab: docs
+    layout:
+      - section: Getting Started
+        contents:
+          - page: Introduction
+            path: ./v4.0.0/introduction/introduction.mdx
+          - page: Quickstart
+            path: ./v4.0.0/getting-started/quickstart.mdx
+          - page: Authentication
+            path: ./v4.0.0/getting-started/authentication.mdx
+      - section: Text to Speech
+        contents:
+          - page: How to TTS
+            path: ./v4.0.0/text-to-speech/how-to-tts.mdx
+          - page: Stream TTS
+            path: ./v4.0.0/text-to-speech/stream-tts.mdx
+          - page: Voice Models & Languages
+            path: ./v4.0.0/text-to-speech/get-voice-models-langs.mdx
+          - page: Pronunciation Dictionaries
+            path: ./v4.0.0/text-to-speech/pronunciation-dictionaries.mdx
+      - section: Speech to Text
+        contents:
+          - page: Overview
+            path: ./v4.0.0/speech-to-text-new/overview.mdx
+          - section: Real-time
+            contents:
+              - page: Quickstart
+                path: ./v4.0.0/speech-to-text-new/realtime/quickstart.mdx
+              - page: Audio Formats
+                path: ./v4.0.0/speech-to-text-new/realtime/audio-formats.mdx
+              - page: Features
+                path: ./v4.0.0/speech-to-text-new/realtime/features.mdx
+              - page: Response Format
+                path: ./v4.0.0/speech-to-text-new/realtime/response-format.mdx
+              - page: Code Examples
+                path: ./v4.0.0/speech-to-text-new/realtime/code-examples.mdx
+              - page: Best Practices
+                path: ./v4.0.0/speech-to-text-new/realtime/best-practices.mdx
+              - page: Troubleshooting
+                path: ./v4.0.0/speech-to-text-new/realtime/troubleshooting.mdx
+          - section: Pre-recorded
+            contents:
+              - page: Quickstart
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/quickstart.mdx
+              - page: Audio Formats
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/audio-formats.mdx
+              - page: Features
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/features.mdx
+              - page: Webhooks
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/webhooks.mdx
+              - page: Code Examples
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/code-examples.mdx
+              - page: Best Practices
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/best-practices.mdx
+              - page: Troubleshooting
+                path: ./v4.0.0/speech-to-text-new/pre-recorded/troubleshooting.mdx
+          - section: Features
+            contents:
+              - page: Word Timestamps
+                path: ./v4.0.0/speech-to-text-new/features/word-timestamps.mdx
+              - page: Diarization
+                path: ./v4.0.0/speech-to-text-new/features/diarization.mdx
+              - page: Language Detection
+                path: ./v4.0.0/speech-to-text-new/features/language-detection.mdx
+              - page: Redaction
+                path: ./v4.0.0/speech-to-text-new/features/redaction.mdx
+              - page: Word Boosting
+                path: ./v4.0.0/speech-to-text-new/features/word-boosting.mdx
+              - page: Numeric Formatting
+                path: ./v4.0.0/speech-to-text-new/features/numeric-formatting.mdx
+              - page: Utterances
+                path: ./v4.0.0/speech-to-text-new/features/utterances.mdx
+              - page: Full Transcript
+                path: ./v4.0.0/speech-to-text-new/features/full-transcript.mdx
+              - page: Emotion Detection
+                path: ./v4.0.0/speech-to-text-new/features/emotion-detection.mdx
+              - page: Age and Gender Detection
+                path: ./v4.0.0/speech-to-text-new/features/age-and-gender-detection.mdx
+          - section: Benchmarks
+            contents:
+              - page: Performance
+                path: ./v4.0.0/speech-to-text-new/benchmarks/performance.mdx
+              - page: Metrics Overview
+                path: ./v4.0.0/speech-to-text-new/benchmarks/metrics-overview.mdx
+              - page: Evaluation Walkthrough
+                path: ./v4.0.0/speech-to-text-new/benchmarks/evaluation-walkthrough.mdx
+      - section: Voice Cloning
+        contents:
+          - page: Types of Cloning
+            path: ./v4.0.0/voice-cloning/types-of-clone.mdx
+          - page: How to Voice Clone
+            path: ./v4.0.0/voice-cloning/how-to-vc.mdx
+          - page: Voice Clone via UI
+            path: ./v4.0.0/voice-cloning/how-to-vc-ui.mdx
+          - page: Professional Voice Cloning
+            path: ./v4.0.0/voice-cloning/how-to-pvc.mdx
+          - page: Delete Cloned Voice
+            path: ./v4.0.0/voice-cloning/how-to-delete-vc.mdx
+      - section: Best Practices
+        contents:
+          - page: TTS Best Practices
+            path: ./v4.0.0/best-practices/tts-best-practices.mdx
+          - page: Voice Cloning Best Practices
+            path: ./v4.0.0/best-practices/vc-best-practices.mdx
+          - page: PVC Best Practices
+            path: ./v4.0.0/best-practices/pvc-best-practices.mdx
+      - section: Integrations
+        contents:
+          - page: LiveKit
+            path: ./v4.0.0/integrations/livekit.mdx
+          - page: Plivo
+            path: ./v4.0.0/integrations/plivo.mdx
+          - page: Vonage
+            path: ./v4.0.0/integrations/vonage.mdx
+      - section: On-Premise
+        contents:
+          - page: Introduction
+            path: ./v4.0.0/on-prem/introduction.mdx
+          - section: Docker
+            contents:
+              - page: Prerequisites
+                path: ./v4.0.0/on-prem/docker/prerequisites.mdx
+              - page: Quick Start
+                path: ./v4.0.0/on-prem/docker/quick-start.mdx
+              - page: Configuration
+                path: ./v4.0.0/on-prem/docker/configuration.mdx
+              - page: Troubleshooting
+                path: ./v4.0.0/on-prem/docker/docker-troubleshooting.mdx
+          - section: Kubernetes
+            contents:
+              - page: Prerequisites
+                path: ./v4.0.0/on-prem/kubernetes/prerequisites.mdx
+              - page: Quick Start
+                path: ./v4.0.0/on-prem/kubernetes/quick-start.mdx
+              - page: Troubleshooting
+                path: ./v4.0.0/on-prem/kubernetes/k8s-troubleshooting.mdx
+  - tab: api-reference
+    layout:
+      - api: API Reference
+        api-name: waves

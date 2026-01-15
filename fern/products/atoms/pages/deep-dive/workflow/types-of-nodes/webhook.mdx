@@ -1,0 +1,98 @@
+---
+title: "The Webhook Node"
+description: "The node responsible fetching or sending data to any external system"
+icon: plug
+---
+
+## What is a Webhook Node?
+
+The Webhook Node allows your workflow to **send or receive data** from external APIs, enabling real-time updates and seamless integrations.  
+For example, in a **restaurant reservation workflow**, a Webhook Node can be used to **send booking details** to the restaurant’s database or **retrieve available time slots**.    
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/odDB2K39UMs"
+  title="How To Use Webhook Nodes?"
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>  
+
+---
+
+# Example: Restaurant Reservation Workflow  
+
+Continuing with our **Restaurant Reservation Assistant**, here’s how a **Webhook Node** fits into the flow:  
+
+1️⃣ **Greet & Ask for Reservation Intent**  
+   - The AI asks if the customer wants to make a reservation.  
+
+2️⃣ **Collect Reservation Details**  
+   - The AI gathers the date, time, and number of guests.  
+
+3️⃣ **Send Data via Webhook**  
+   - The Webhook Node sends the reservation details to an external system.  
+
+4️⃣ **Confirm & End Call**  
+   - The AI receives a response from the webhook and confirms the booking.  
+   - The conversation ends with an **End Call Node**.  
+
+---
+
+## Creating a Webhook Node in Atoms  
+
+Once inside the **Edit Workflow** canvas, follow these steps:  
+
+### 1️⃣ Locate the Node Type Selector  
+- In the **top left corner**, find the **Node Type Selector** and select **Webhook Node**.  
+- The node is added to the canvas automatically.  
+
+![Adding Webhook Node](../../../images/webhook-node.png)  
+
+### 2️⃣ Configure the Webhook Node  
+- Open the node settings and enter the required webhook details.  
+- Connect the Webhook Node to the **previous conversational node** (e.g., "Collect Reservation Details").  
+- Connect the Webhook Node to the **next step** (e.g., "Confirm Reservation").  
+
+---
+
+## Parameters of the Webhook Node  
+
+When defining a **Webhook Node**, the following parameters help configure its behavior:  
+
+
+| **Parameter**                 | **Description** |
+|--------------------------------|--------------------------------------|
+| **Node Name**                  | A label to identify the node. |
+| **Action**                      | A short goal describing what the AI should do at this step. |
+| **Static Text**                 | Enables predefined static text instead of dynamically generated responses. |
+| **Action**                      | Defines the HTTP request type (`GET`, `POST`, etc.). |
+| **API Link**                    | URL of the external API. |
+| **Add Header**                  | Allows adding custom headers like authentication tokens. |
+| **Body**                        | Defines the request body for `POST` or `PUT` requests. |
+| **API Timeout**                 | Maximum wait time for API response. |
+| **Is Async**                    | Determines if the request should be asynchronous. |
+| **Extract to Variables**        | Enables extraction of API response values into variables. |
+
+Once these parameters are set, clicking **Save** finalizes the Webhook Node setup.  
+
+---
+
+## When to Use a Webhook Node  
+
+✅ **Sending Data to External Systems**  
+   - Example: Sending a reservation request to a restaurant’s booking system.  
+
+✅ **Retrieving Information from an API**  
+   - Example: Checking available table slots before confirming a reservation.  
+
+✅ **Processing Payments or Transactions**  
+   - Example: Integrating with a payment gateway to process deposits.  
+
+---
+
+## Summary  
+
+The **Webhook Node** is a powerful tool that allows your workflow to **communicate with external systems**. Whether sending data or fetching information, Webhook Nodes enable **real-time, automated interactions**.  
+
+**Next Steps:** Learn how to use the [Transfer Call Node](/deep-dive/workflow/types-of-nodes/transfer-call) to add a Human into the loop!

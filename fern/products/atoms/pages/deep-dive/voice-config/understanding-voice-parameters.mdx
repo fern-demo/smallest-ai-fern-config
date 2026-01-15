@@ -1,0 +1,66 @@
+---
+title: "Understanding Voice Parameters"  
+description: "Fine-tune AI-generated speech for optimal clarity, naturalness, and efficiency."  
+icon: gear  
+---
+
+## Overview  
+AI-generated speech can be customized using various parameters to achieve the desired speed, clarity, and similarity to reference audio. Below are the key parameters that allow you to fine-tune speech output.  
+
+---
+
+## Voice Parameters  
+
+### 1. **Speed (`speed`)**  
+- **Description:** Controls the rate at which speech is generated.  
+- **Default Value:** `1`  
+- **Allowed Range:** `0.5 ≤ x ≤ 2`  
+- **Effects:**  
+  - Decreasing speed (`< 1`) slows down the speech, making it clearer but longer.  
+  - Increasing speed (`> 1`) makes speech faster but may reduce clarity.  
+
+---
+
+### 2. **Consistency (`consistency`)**  
+- **Description:** Manages word repetition and skipping to maintain speech fluency.  
+- **Default Value:** `0.5`  
+- **Allowed Range:** `0 ≤ x ≤ 1`  
+- **Effects:**  
+  - Lower values (`< 0.5`) reduce skipped words but may allow slight repetition.  
+  - Higher values (`> 0.5`) prevent repetition but may cause words to be skipped.  
+
+---
+
+### 3. **Similarity (`similarity`)**  
+- **Description:** Adjusts how closely the generated speech matches the reference audio.  
+- **Default Value:** `0`  
+- **Allowed Range:** `0 ≤ x ≤ 1`  
+- **Effects:**  
+  - Higher values (`> 0`) make speech resemble the reference voice more closely.  
+  - Lower values (`0`) allow for more flexible voice generation.  
+
+---
+
+### 4. **Enhancement (`enhancement`)**  
+- **Description:** Improves speech quality, with a trade-off in processing speed.  
+- **Default Value:** `1`  
+- **Allowed Range:** `0 ≤ x ≤ 2`  
+- **Effects:**  
+  - Increasing this value enhances speech clarity and naturalness.  
+  - Higher values may introduce latency due to additional processing.  
+
+---
+
+## **Optimizing Speech Output**  
+- Adjust **Speed** for fast or slow narration styles.  
+- Fine-tune **Consistency** to avoid missing or repeated words.  
+- Use **Similarity** to match a specific reference voice.  
+- Increase **Enhancement** for the best quality, but balance it with latency needs.  
+
+## Additional Voice Features
+
+For more voice-related features, check out:
+- [Background Sound](background-sound) - Add ambient background noise to calls
+- [Types of Voice Models](types-of-voice-models) - Explore available voice models
+
+These parameters allow you to create a customized, natural-sounding AI voice experience. 🚀

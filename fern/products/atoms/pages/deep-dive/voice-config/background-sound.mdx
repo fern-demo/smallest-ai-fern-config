@@ -1,0 +1,61 @@
+---
+title: "Background Sound"
+description: "Learn how to add ambient background sound to your agent's calls"
+icon: "volume"
+---
+
+## Overview
+The **Background Sound** feature allows you to add ambient background noise during your agent's calls. This can help create a more natural and immersive conversation experience by simulating a realistic call environment.
+
+## Enabling Background Sound
+
+To enable background sound for your agent:
+
+1. Navigate to your agent's **Configure** page
+2. Find the **Voice Settings** section
+3. Look for the **Background Sound** toggle
+4. Enable the toggle to add ambient background sound during calls
+
+<Note>
+Background sound is disabled by default for all agents. When enabled, it will apply to all calls made by that agent.
+</Note>
+
+## When to Use Background Sound
+
+Background sound can be particularly useful in scenarios where:
+
+- You want to create a more realistic call center experience
+- You're simulating a business environment
+- You want to reduce the "artificial" feel of AI calls
+
+## Best Practices
+
+1. **Test First**: Always test your agent with background sound enabled before using it in production
+2. **Consider Context**: Make sure background sound is appropriate for your use case
+3. **Monitor Quality**: Ensure the background sound doesn't interfere with call clarity
+
+## Technical Details
+
+- The background sound is automatically mixed with the agent's voice
+- The volume level is optimized to not interfere with conversation clarity
+- The feature has minimal impact on call latency and quality
+
+## Available Sound Options
+
+Currently, a default office ambience sound is available out of the box. This provides a natural background noise that simulates a professional office environment.
+
+<Note>
+Additional sound options (like cafe ambience, outdoor environment, etc.) can be made available upon request. Contact our support team to discuss custom sound requirements.
+</Note>
+
+## API Support
+
+The background sound setting can be configured via our API:
+
+```json
+{
+  "backgroundSound": true
+}
+```
+
+For more details, see our [API Reference](/api-reference/). 

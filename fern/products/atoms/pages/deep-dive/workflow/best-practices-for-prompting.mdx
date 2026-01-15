@@ -1,0 +1,120 @@
+---
+title: "Best Practices for Workflows"
+description: "How to make sure you get the best results from atoms agents"
+icon: font
+---
+
+## Best Practices for Workflow Optimization
+
+To ensure your AI voice agents perform effectively, follow these essential best practices
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ueD6Jc9P-oQ"
+  title="Prompt Tips for your AI Voice Agents"
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe> 
+
+## 1️⃣ Name Your Nodes Properly  
+
+A well-structured workflow starts with **clear, descriptive node names**. Proper naming makes workflows easier to understand and maintain.  
+
+| ✅ Good Examples          | ❌ Bad Examples        |
+|--------------------------|----------------------|
+| Collect Customer Name   | Node 1              |
+| Verify Payment Status   | Step 3              |
+| Send Order Confirmation | Miscellaneous Task  |
+| Retrieve Order Details  | Process A           |
+| Check User Subscription | Task 42             |
+
+<Tip>
+Use action-based names that describe the node’s function concisely.
+</Tip>
+
+## 2️⃣ Write Clear, Specific Actions
+
+Your AI performs best when given **precise instructions**. Clearly define the task at hand to avoid ambiguity.  
+
+| ❌ Bad Example (Vague) | ✅ Good Example (Explicit) |
+|------------------------|---------------------------|
+| *"Ask the user what they want. If they mention an order, ask for details. If they ask about a product, give information."* | *"Introduce yourself as a customer support agent. Be professional, warm, and helpful. Inform the customer that you can assist with product inquiries, order tracking, and support requests. Begin by asking how you can help today."* |
+| *"End the conversation politely."* | *"Thank the customer for considering the service. Inform them that they are welcome to call back anytime to ask queries. Close the conversation professionally."* |
+| *"Confirm the booking details."* | *"Summarize the details you have collected: the date, time, number of guests, and any special requests. Ask the customer to confirm if everything is correct or if they need to make any changes. Note down any changes."* |  
+
+<Tip>
+Think of actions as step-by-step instructions for the AI, not just general goals.
+</Tip>
+
+## 3️⃣ Use Static Text for Exact Wordings  
+
+When responses must remain **consistent and precise**, such as legal disclaimers or policy updates, use **Static Text** instead of AI-generated responses.  
+
+| ❌ Bad Practice | ✅ Good Practice |
+|----------------|----------------|
+| AI generates a random response for a refund policy. | Use **Static Text** to display the exact refund policy message. |
+| AI freely rephrases legal disclaimers. | Set disclaimers as **Static Text** to maintain accuracy. |
+| AI dynamically creates a privacy notice. | Use **Static Text** for legal and compliance-related messages. |  
+
+#### When to Use Static Text:  
+- Legal disclaimers  
+- Cancellation policies  
+- Privacy terms 
+
+📌 **How to Enable Static Text:**  
+1. Navigate to the **Node Parameters** section.  
+2. Toggle the **Static Text** option.  
+
+<img src="../../images/default-node-params.png" className="rounded-lg" style={{ height: "400px", width: "auto" }} sub="df" />
+
+<Tip>
+Use this when exact wording is required; otherwise, let the AI generate responses dynamically.
+</Tip>
+
+## 4️⃣ Test Your Webhooks Thoroughly  
+
+Before deploying your workflow, verify that:  
+
+| ❌ Bad Practice | ✅ Good Practice |
+|----------------|----------------|
+| Webhooks are integrated without testing. | Use API testing tools (Postman, cURL) before deployment. |
+| API responses are not checked for formatting. | Ensure API **responses are correctly formatted**. |
+| Missing or incorrect variable extraction. | Verify that **all necessary variables** are passed and extracted correctly. |
+| No error handling in case of API failure. | Implement error handling to avoid workflow failures. |  
+
+<Tip>
+Use API testing tools (Postman, cURL) before integrating with your workflow.
+</Tip>
+
+## 5️⃣ Provide Clear Variable Extraction Details
+
+When extracting data from API responses, specify exactly what needs to be captured and in what format. This prevents misinterpretations and ensures data is presented correctly.  
+
+| ❌ Bad Practice | ✅ Good Practice |
+|----------------|----------------|
+| Extracts the entire API response without filtering. | Only extract **necessary fields** (e.g., `order_id`, `status`). |
+| Uses vague field names (`data1`, `valueX`). | Use **clear, meaningful field names** (e.g., `customer_name`, `subscription_status`). |
+| Doesn't validate extracted data. | Test the workflow to verify extracted values are correct. |
+  
+
+📌 How to Extract Variables Correctly:
+
+1. Navigate to **Extract to Variables** in the Webhook Node settings.
+2. Select the exact fields to store.
+3. Test the workflow to verify the extracted values.
+
+<img src="../../images/webhook-node-params.png" className="rounded-lg" style={{ height: "400px", width: "auto" }} sub="df" />
+
+
+
+<Tip>
+Only extract necessary fields to keep workflows efficient.
+</Tip>
+
+
+## Conclusion
+
+Following these best practices will help you create smooth and efficient AI voice agents. 🚀
+
+

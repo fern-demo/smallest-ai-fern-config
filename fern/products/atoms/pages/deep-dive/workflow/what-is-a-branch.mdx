@@ -1,0 +1,135 @@
+---
+title: "What is a Branch?"
+description: "Learn about Branches, the connectors of the Atoms workflow."
+icon: turn-up
+---
+
+# Understanding Branches in Atoms
+
+In **Atoms**, a **Branch** is a connector that links one **Node** to another within a conversation workflow. It determines the **flow** of the conversation, directing which node should be activated next based on user input or predefined conditions.
+
+---
+
+## Example: Restaurant Reservation Booking Workflow
+
+Continuing from our **Restaurant Reservation Assistant**, branches define how the conversation moves forward based on the customer's responses.
+
+1. **Greet & Ask for Reservation Intent**
+
+   - **Branch 1:** If the user **declines**, transition to the **End Call Node**.
+   - **Branch 2:** If the user **wants to book**, move to **Ask for Date & Time**.
+
+2. **Ask for Date & Time**
+
+   - **Branch:** Continue to **Collect Guest Details**.
+
+3. **Collect Guest Details**
+
+   - **Branch:** Collects the Guest details such as Name and Number of guests and proceeds to **Send Reservation Request** via the **Webhook Node**.
+
+4. **Send Request (Webhook Node)**
+
+   - **Branch:** If successful, transition to **Confirm & End Call**.
+
+5. **Confirm & End Call**
+   - **Branch:** Conclude the conversation.
+
+---
+
+## Creating a Branch in Atoms
+
+To modify or create branches in your **Restaurant Reservation Agent**, simply click to **edit branches** and define the conditions for transitioning from one node to another.
+
+![Edit Branch](../../images/edit-edge.gif)
+
+---
+
+## Parameters of a Branch
+
+When setting up a branch, you can choose between two different types of decision-making logic by selecting the appropriate tab:
+
+<img
+  src="../../images/atoms-edge.png"
+  alt="Branch configuration interface"
+  className="rounded-lg"
+  style={{ height: "400px", width: "auto" }}
+/>
+
+### Prompt Tab (AI Decision)
+
+Use the Prompt tab when you want the AI to decide which path to take based on conversation context.
+
+| Parameter              | Description                                                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Branch Prompt**      | A short decision label describing when this branch should be followed.                                       |
+| **Branch Description** | A more detailed explanation of the condition or reason for this transition. Helps improve response accuracy. |
+
+### Condition Tab (Variable Logic)
+
+Use the Condition tab when you want to make decisions based on specific variable values extracted from the conversation.
+
+| Parameter         | Description                                                                             |
+| ----------------- | --------------------------------------------------------------------------------------- |
+| **Variable Name** | The name of the variable to check.                                                      |
+| **Operator**      | The comparison operator (`==`, `!=`, `>`, `<`, `>=`, `<=`, contains, not_contains, is). |
+| **Value**         | The exact value to compare against.                                                     |
+
+## When to Use Each Type
+
+### Use Prompt-Based When:
+
+- Decisions require natural language understanding
+- Multiple factors need to be considered
+- The logic is conversational or nuanced
+- You want the AI to make context-aware decisions
+
+### Use Condition-Based When:
+
+- Working with specific numeric values
+- Checking exact string matches
+- Need deterministic, rule-based routing
+- Variables have been extracted from previous nodes
+
+## Examples
+
+### Prompt-Based Example
+
+**Node: Check Restaurant Availability**  
+**Branch 1 (Prompt):**  
+Prompt: "Restaurant is full"  
+Description: "Choose this path when customer mentions the restaurant is fully booked"
+
+**Branch 2 (Prompt):**  
+Prompt: "Table available"  
+Description: "Choose this path when a suitable table is available for booking"
+
+### Condition-Based Example
+
+**Node: Check Table Size**  
+**Branch 1 (Condition):**  
+Variable: `guest_count`  
+Operator: `>`  
+Value: `8`  
+→ Routes to "Large Group Handling"
+
+**Branch 2 (Condition):**  
+Variable: `guest_count`  
+Operator: `<=`  
+Value: `8`  
+→ Routes to "Normal Booking Process"
+
+---
+
+## Best Practices
+
+1. **Clear Variable Names**: Use descriptive variable names in condition-based branches
+2. **Detailed Descriptions**: Provide clear context in prompt-based descriptions
+3. **Variable Validation**: Ensure variables exist before using them in conditions
+
+---
+
+## Wrapping Up
+
+Branches form the backbone of conversational flow, ensuring smooth transitions between nodes. With the choice between AI-driven decisions (Prompt) and variable-based conditions, you can create more dynamic and intelligent workflows tailored to your specific needs.
+
+In the next section, we'll explore the **different types of nodes** you can add and configure.

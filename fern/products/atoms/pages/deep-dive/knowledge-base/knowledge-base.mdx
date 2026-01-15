@@ -1,0 +1,117 @@
+---
+title: "Knowledge Base"
+description: "Learn how to give your agents access to external knowledge."
+icon: "database"
+---
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/gqFsUIxCn0U"
+  title="Knowledge Bases to your AI Voice Agent."
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>
+
+Knowledge Base (KB) is a powerful feature that allows your agents to access and reference external information during conversations. By uploading documents to your Knowledge Base, you can create agents that provide accurate, detailed responses based on your specific content.
+
+## Understanding Knowledge Base
+
+Think of Knowledge Base as your agent's reference library. When a user asks a question, your agent uses RAG (Retrieval Augmented Generation) to search through this library and provide relevant, accurate information. This is particularly valuable when you need your agent to:
+
+1. Quote specific prices or specifications
+2. Reference technical documentation
+3. Provide accurate product comparisons
+4. Handle domain-specific inquiries
+
+## Setting Up Your Knowledge Base
+
+Navigate to the [Knowledge Base](https://atoms.smallest.ai/dashboard/knowledge-base) tab in your dashboard to start creating your first KB. Here you can create new knowledge bases and manage existing ones. Simply click the **+** button to create a new one.
+
+### Supported Document Types
+
+You can upload various types of documents to your Knowledge Base:
+1. PDF files
+2. Text files
+3. JSON documents
+4. CSV files
+5. Excel spreadsheets (XLSX)
+
+<Note>
+For CSV and Excel files, maintain a simple structure: the first row should contain headers, and each subsequent row should represent one data point. Complex formats aren't supported and may lead to unexpected results.
+</Note>
+
+## A Practical Example
+
+Let's walk through a practical example of creating a Knowledge Base for laptop specifications and prices.
+
+Here's a sample CSV we'll use:
+
+```csv
+Model,Brand,Processor,RAM,Storage,Screen_Size,GPU,Price
+ThinkPad X1 Carbon,Lenovo,Intel i7-1260P,16GB,512GB SSD,14",Intel Iris Xe,1399.99
+MacBook Air M2,Apple,M2,8GB,256GB SSD,13.6",M2 Integrated,1199.00
+...
+```
+
+This CSV contains pricing and specifications for various laptop models. While this is a simplified example, your actual data can be much more extensive.
+
+## Implementing Knowledge Base in Your Agent
+
+After uploading your documents, you can integrate the Knowledge Base with your agents:
+
+1. Open your agent's **Configure** page
+2. Scroll to the "Global knowledge base" section
+3. Select your desired Knowledge Base
+
+### Understanding Global Knowledge Base
+
+When you assign a Knowledge Base as global, it becomes available across all nodes in your flow. Each node has a "use global knowledge base" toggle, giving you fine-grained control over when and where your agent accesses this information.
+
+<Tip>
+Only enable the Knowledge Base on nodes where it's relevant. For example, in a laptop sales agent, enable it on nodes handling product inquiries but disable it for general greetings or call conclusions.
+</Tip>
+
+## Best Practices
+
+### Document Preparation
+Prepare your documents thoughtfully before uploading them to the Knowledge Base:
+1. Format them clearly and consistently with proper headings and structure
+2. Remove unnecessary information that might create noise or confuse retrieval
+3. Keep data structured and easy to parse, especially for tabular data
+4. Upload only essential documents relevant to your agent's purpose
+5. Use English language files when possible as retrieval works best with English, though other languages are supported
+
+### Agent Configuration
+When setting up your agent to use a Knowledge Base:
+1. Create specific nodes for knowledge-based interactions
+2. Write clear instructions about how to use the knowledge
+3. Test various query types to ensure accurate information retrieval
+
+<Warning>
+Remember that the quality of responses depends heavily on the quality of your uploaded documents. Well-structured, clean data leads to better agent performance.
+</Warning>
+
+## Building a Laptop Price Assistant
+
+Let's put everything together by creating a simple agent that helps users find laptop information. We'll create a flow that can answer questions about laptop specifications and prices.
+
+### Creating the Node
+
+1. Create a new node in your graph
+2. Set the action to something like:
+<div className="flex justify-center">
+    <img src="../../images/laptop_agent_node.png"  width="550px" className="rounded-lg" noZoom />
+</div>
+3. Enable the "use global knowledge base" option for this node
+
+### Testing Your Agent
+
+You can test your agent through either chat or phone calls. Try asking questions like:
+1. "What's the price of the MacBook Air M2?"
+2. "Which laptops have 16GB RAM?"
+3. "Can you compare the ThinkPad and XPS?"
+
+<img src="../../images/laptop_agent_chat.png" className="rounded-lg" />
+
+Your agent will use RAG to search through the laptop specifications and provide accurate, relevant responses based on the uploaded data.

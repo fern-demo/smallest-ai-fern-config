@@ -1,0 +1,158 @@
+---
+title: "The API Call Node"
+description: "The node responsible for fetching or sending data to any external system"
+icon: plug
+---
+
+## What is an API Call Node?
+
+The API Call Node allows your workflow to **send or receive data** from external APIs, enabling real-time updates and seamless integrations.  
+For example, in a **restaurant reservation workflow**, an API Call Node can be used to **send booking details** to the restaurant's database or **retrieve available time slots**.
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/odDB2K39UMs"
+  title="How To Use API Call Nodes?"
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>{" "}
+
+---
+
+# Example: Restaurant Reservation Workflow
+
+Continuing with our **Restaurant Reservation Assistant**, here's how an **API Call Node** fits into the flow:
+
+1️⃣ **Greet & Ask for Reservation Intent**
+
+- The AI asks if the customer wants to make a reservation.
+
+2️⃣ **Collect Reservation Details**
+
+- The AI gathers the date, time, and number of guests.
+
+3️⃣ **Send Data via API Call**
+
+- The API Call Node sends the reservation details to an external system.
+
+4️⃣ **Confirm & End Call**
+
+- The AI receives a response from the API and confirms the booking.
+- The conversation ends with an **End Call Node**.
+
+---
+
+## Creating an API Call Node in Atoms
+
+Once inside the **Edit Workflow** canvas, follow these steps:
+
+### 1️⃣ Locate the Node Type Selector
+
+- In the **top left corner**, find the **Node Type Selector** and select **API Call Node**.
+- The node is added to the canvas automatically.
+
+![Adding API Call Node](../../../images/api-call-node.png)
+
+### 2️⃣ Configure the API Call Node
+
+- Open the node settings and enter the required API details.
+- Connect the API Call Node to the **previous conversational node** (e.g., "Collect Reservation Details").
+- Connect the API Call Node to the **next step** (e.g., "Confirm Reservation").
+
+---
+
+## Parameters of the API Call Node
+
+When defining an **API Call Node**, the following parameters help configure its behavior:
+
+| **Parameter** | **Description**                                                          |
+| ------------- | ------------------------------------------------------------------------ |
+| **Node Name** | Identifier for the node (e.g., "Update CRM", "Fetch Product Details")    |
+| **API URL**   | The endpoint URL to call                                                 |
+| **Method**    | HTTP method (GET, POST, PUT, DELETE, etc.)                               |
+| **Headers**   | HTTP headers for the request (authentication tokens, content type, etc.) |
+| **Body**      | Request body for POST/PUT methods (supports JSON format)                 |
+| **Variables** | Mapping of API response to workflow variables                            |
+| **Timeout**   | Maximum time (in seconds) to wait for API response                       |
+| **Is Async**  | Whether to process the API call asynchronously                           |
+
+Once these parameters are set, clicking **Save** finalizes the API Call Node setup.
+
+## Variable Mapping Examples
+
+### 1️⃣ CRM Update Response
+
+```javascript
+// Example API response mapping
+{
+  "success": "$.response.status",
+  "customerId": "$.response.data.id",
+  "updateTime": "$.response.data.timestamp"
+}
+```
+
+### 2️⃣ Product Information
+
+```javascript
+// Example variable extraction
+{
+  "productName": "$.response.data.product.name",
+  "inStock": "$.response.data.inventory.available",
+  "price": "$.response.data.pricing.current"
+}
+```
+
+### 3️⃣ Order Status
+
+```javascript
+// Example status check mapping
+{
+  "orderStatus": "$.response.data.status",
+  "estimatedDelivery": "$.response.data.delivery.eta",
+  "trackingNumber": "$.response.data.tracking.id"
+}
+```
+
+### 4️⃣ Error Handling
+
+```javascript
+// Example error response mapping
+{
+  "hasError": "$.response.error.exists",
+  "errorCode": "$.response.error.code",
+  "errorMessage": "$.response.error.message"
+}
+```
+
+The `$.` prefix indicates the root of the response object, allowing you to:
+
+- Access nested properties using dot notation
+- Extract specific values from complex JSON responses
+- Map response data to workflow variables
+
+Remember that all variable mappings must start with `$.` to properly access the response data in the Atoms workflow.
+
+---
+
+## When to Use an API Call Node
+
+✅ **Sending Data to External Systems**
+
+- Example: Sending a reservation request to a restaurant's booking system.
+
+✅ **Retrieving Information from an API**
+
+- Example: Checking available table slots before confirming a reservation.
+
+✅ **Processing Payments or Transactions**
+
+- Example: Integrating with a payment gateway to process deposits.
+
+---
+
+## Summary
+
+The **API Call Node** is a powerful tool that allows your workflow to **communicate with external systems**. Whether sending data or fetching information, API Call Nodes enable **real-time, automated interactions**.
+
+**Next Steps:** Learn how to use the [Transfer Call Node](/deep-dive/workflow/types-of-nodes/transfer-call) to add a Human into the loop!

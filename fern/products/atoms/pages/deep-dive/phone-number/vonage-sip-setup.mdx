@@ -1,0 +1,460 @@
+---
+title: "Vonage SIP Setup"
+description: "Connect your Vonage account to Smallest AI using Voice API"
+icon: "phone-arrow-up-right"
+---
+
+## Overview
+
+This guide explains how to connect your Vonage (formerly Nexmo) account to Smallest AI using the **Voice API** with SIP connectivity. Vonage provides global voice services with excellent reliability and feature-rich APIs.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- An active Vonage API account
+- Access to the Vonage API Dashboard
+- Phone numbers in your Vonage account (or ability to purchase new ones)
+- API credentials (API key and secret)
+
+## Step 1: Create a Voice API Application
+
+1. Log in to the [Vonage API Dashboard](https://dashboard.nexmo.com)
+2. Navigate to **Applications** in the left sidebar
+3. Click **Create a new application**
+4. Enter application details:
+   - **Name**: Give it a descriptive name (e.g., "Smallest AI Voice App")
+   - **Capabilities**: Enable **Voice** capability
+5. Configure voice event URLs:
+   - **Answer URL**: This will be configured to route to Smallest AI
+   - **Event URL**: Optional webhook URL for call events
+6. Click **Generate new application**
+
+## Step 2: Configure SIP Settings
+
+### Set Up SIP Endpoint
+
+1. In your application settings, navigate to **SIP** or **Voice Configuration**
+2. Add Smallest AI's SIP endpoint as a destination:
+   ```
+   sip:5rdbhjuwtlk.sip.livekit.cloud
+   ```
+3. Configure the SIP connection settings:
+   - **Transport**: UDP or TCP (UDP recommended)
+   - **Media Encryption**: SRTP if required
+4. Save your SIP configuration
+
+### Generate SIP Credentials
+
+1. In your application, go to the **Authentication** or **Security** section
+2. Generate SIP credentials if using credential-based authentication:
+   - Note your **SIP Username**
+   - Note your **SIP Password**
+3. Alternatively, configure API key-based authentication:
+   - Use your Vonage API key and secret
+4. Save your authentication settings
+
+## Step 3: Configure Voice Answer URL
+
+Set up how incoming calls are handled:
+
+### Option 1: Direct SIP Routing
+
+Configure your answer URL to route directly to Smallest AI:
+
+1. In your application settings, set the **Answer URL**
+2. Configure it to return a connect action to Smallest AI's SIP endpoint
+3. Use NCCO (Nexmo Call Control Objects) format:
+
+```json
+[
+  {
+    "action": "connect",
+    "endpoint": [
+      {
+        "type": "sip",
+        "uri": "sip:5rdbhjuwtlk.sip.livekit.cloud"
+      }
+    ]
+  }
+]
+```
+
+### Option 2: Webhook-Based Routing
+
+1. Set up a webhook endpoint on your server
+2. Configure the webhook to dynamically route calls
+3. Return NCCO with SIP connect action based on business logic
+
+## Step 4: Get Your Outbound SIP URI
+
+For outbound calls from Smallest AI to Vonage:
+
+1. In your Vonage dashboard, find your **SIP Endpoint**
+2. Your Vonage outbound SIP URI typically follows this format:
+   - `sip:sip.nexmo.com`
+   - Or a region-specific endpoint like `sip:sip-us.nexmo.com`
+3. Note this URI - you'll need it when importing numbers on Smallest AI
+4. Verify the URI includes any authentication parameters if needed
+
+## Step 5: Link Numbers to Your Application
+
+Connect your phone numbers to the Voice API application.
+
+### For Existing Numbers
+
+1. Navigate to **Numbers → Your Numbers** in the Vonage dashboard
+2. Find the number you want to use with Smallest AI
+3. Click **Edit** next to the number
+4. Under **Application**, select your newly created Voice API application
+5. Ensure the number is configured for:
+   - **Voice** capability enabled
+   - Correct answer URL configured
+6. Save your changes
+
+### For New Numbers
+
+1. Navigate to **Numbers → Buy Numbers**
+2. Search for numbers by:
+   - Country
+   - Features (Voice, SMS)
+   - Number type (mobile, landline)
+3. Purchase your desired number
+4. After purchase, link it to your Voice API application
+5. Configure voice settings
+
+## Step 6: Configure Authentication
+
+Choose your authentication method for SIP connections:
+
+### API Key Authentication
+
+1. Use your Vonage API key and secret
+2. These will be used in the SIP Termination URL:
+   - Format: `sip:sip.nexmo.com;username=API_KEY;password=API_SECRET`
+3. Store these credentials securely
+
+### JWT Authentication
+
+For enhanced security:
+
+1. Generate a JWT token using your application private key
+2. Configure JWT authentication in your application settings
+3. Use JWT token in SIP authentication headers
+4. Token expiration and refresh handled automatically
+
+<Note>
+  JWT authentication is more secure and recommended for production use. API key authentication is simpler for
+  testing and development.
+</Note>
+
+## Step 7: Import Numbers on Smallest AI
+
+Now import your Vonage numbers into Smallest AI.
+
+1. Navigate to [Phone Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/rent-numbers) in your Smallest AI dashboard
+2. Click **Buy Numbers** button
+3. Select the **Import SIP Number** tab
+4. Fill in your number details:
+
+   - **Phone Number**: Your Vonage number in E.164 format
+
+     - Example: `+12025551234` for a US number
+     - Example: `+442071234567` for a UK number
+
+   - **SIP Termination URL**: Your Vonage SIP endpoint
+
+     - Example: `sip:sip.nexmo.com`
+     - Or region-specific: `sip:sip-us.nexmo.com`
+     - Include authentication if required
+
+   - **Display Name** (Optional): A friendly name for this number
+
+     - Example: "Support Hotline"
+
+   - **Username**: Your Vonage API key or SIP username
+
+   - **Password**: Your Vonage API secret or SIP password
+
+5. Copy the **SIP Origination URL** shown
+6. Click **Add Custom Number**
+
+<Tip>Ensure the phone number format matches exactly with your Vonage number, including country code.</Tip>
+
+## Step 8: Test Your Setup
+
+After importing your number:
+
+1. Assign the imported Vonage number to one of your AI agents
+2. Make a test inbound call to your Vonage number
+3. Verify the call connects to your AI agent properly
+4. Test an outbound call from your agent
+5. Check audio quality in both directions
+6. Monitor call events in Vonage dashboard
+
+## Troubleshooting
+
+### Inbound Calls Not Connecting
+
+**Check Application Configuration:**
+
+- Verify your Voice API application has the correct Answer URL
+- Ensure NCCO returns proper SIP connect action
+- Check that SIP endpoint URI is correct: `sip:5rdbhjuwtlk.sip.livekit.cloud`
+
+**Check Number Assignment:**
+
+- Confirm the number is linked to your Voice API application
+- Verify voice capability is enabled on the number
+- Check that answer URL is accessible and responding
+
+**Review Call Events:**
+
+- Navigate to **Reports → Call logs** in Vonage dashboard
+- Check for error messages in call events
+- Look for webhook delivery failures
+
+### Outbound Calls Failing
+
+**Verify SIP Termination URI:**
+
+- Ensure the SIP URI in Smallest AI matches your Vonage endpoint
+- Check for typos or extra spaces
+- Verify region-specific endpoints if using them
+
+**Authentication Issues:**
+
+- Confirm API key and secret are correct
+- Check that credentials are properly formatted
+- Verify authentication method matches your configuration
+
+**Check Call Permissions:**
+
+- Ensure outbound calling is enabled in Vonage account
+- Verify you have sufficient account balance
+- Check geographic permissions for destination country
+
+### One-Way Audio Issues
+
+**Check Media Settings:**
+
+- Verify both sides support the same codecs
+- Ensure firewall allows RTP traffic on required ports
+- Check NAT/firewall traversal settings
+
+**SRTP Configuration:**
+
+- If using SRTP, ensure it's configured on both ends
+- Try disabling SRTP to isolate the issue
+- Verify encryption keys match if using SRTP
+
+**Codec Issues:**
+
+- Check that common codecs are enabled (G.711, Opus)
+- Review codec negotiation in call logs
+- Ensure codec preferences match on both sides
+
+### Call Quality Problems
+
+**Network Issues:**
+
+- Check network latency and bandwidth
+- Verify packet loss is minimal
+- Test from different network locations
+
+**Codec Optimization:**
+
+- Use Opus for better quality when available
+- Ensure G.711 is available as fallback
+- Adjust codec priorities in application settings
+
+**Regional Endpoints:**
+
+- Use region-specific SIP endpoints when available
+- Route calls through closest Vonage edge servers
+- Monitor call quality metrics in Vonage analytics
+
+### Authentication Errors
+
+**"401 Unauthorized" errors:**
+
+- Verify API key and secret are correct
+- Check that credentials haven't expired
+- Ensure authentication method is properly configured
+
+**JWT Token Issues:**
+
+- Verify JWT token is properly signed
+- Check token expiration time
+- Ensure private key is correct
+
+## Advanced Configuration
+
+### Webhook Event Handling
+
+Set up webhooks to receive call events:
+
+1. Configure **Event URL** in your application
+2. Set up an endpoint to receive webhook notifications
+3. Handle events such as:
+   - Call started
+   - Call answered
+   - Call completed
+   - Recording available
+4. Use events to trigger custom business logic
+
+Example webhook payload structure:
+
+```json
+{
+  "call_uuid": "63f61863-4a51-4f6b-86e1-46edebio0391",
+  "status": "answered",
+  "direction": "inbound",
+  "timestamp": "2025-01-01T12:00:00.000Z"
+}
+```
+
+### Call Recording
+
+Enable call recording in Vonage:
+
+1. In your NCCO, add a record action:
+
+```json
+[
+  {
+    "action": "record",
+    "eventUrl": ["https://your-server.com/recording-event"],
+    "endOnSilence": 3,
+    "format": "mp3"
+  },
+  {
+    "action": "connect",
+    "endpoint": [
+      {
+        "type": "sip",
+        "uri": "sip:5rdbhjuwtlk.sip.livekit.cloud"
+      }
+    ]
+  }
+]
+```
+
+2. Receive recording URL via webhook
+3. Download and store recordings as needed
+
+### Conversation API Integration
+
+For advanced features, integrate with Vonage Conversation API:
+
+1. Create conversations for each call
+2. Enable multi-party calls
+3. Add text messaging capabilities
+4. Store conversation history
+
+### Call Screening & Routing
+
+Implement intelligent call routing:
+
+1. Set up answer webhook with custom logic
+2. Screen calls based on:
+   - Caller ID
+   - Time of day
+   - Call volume
+   - Geographic location
+3. Route calls dynamically to appropriate agents
+4. Implement IVR menu options if needed
+
+### Number Masking
+
+Protect privacy with number masking:
+
+1. Purchase virtual numbers for masking
+2. Configure proxy numbers in your application
+3. Route calls through proxy numbers
+4. Hide actual numbers from both parties
+
+## Monitoring & Analytics
+
+### View Call Analytics
+
+Monitor your calls in Vonage dashboard:
+
+1. Navigate to **Reports → Analytics**
+2. View metrics such as:
+   - Total calls
+   - Call duration
+   - Success rate
+   - Geographic distribution
+3. Export data for further analysis
+
+### Real-Time Monitoring
+
+Track active calls:
+
+1. Go to **Reports → Real-time calls**
+2. View currently active calls
+3. Monitor call status and quality
+4. Check for any issues or errors
+
+### Set Up Alerts
+
+Configure notifications for important events:
+
+1. Navigate to **Settings → Notifications**
+2. Enable alerts for:
+   - Failed calls
+   - Low balance warnings
+   - High error rates
+   - Unusual activity
+3. Choose notification methods (email, SMS, webhook)
+
+## Cost Considerations
+
+When using Vonage with Smallest AI:
+
+**Vonage charges:**
+
+- Monthly number rental fees (varies by country)
+- Per-minute inbound call costs
+- Per-minute outbound call costs (varies by destination)
+- Optional features (recording, CNAM, etc.)
+
+**Smallest AI charges:**
+
+- Standard per-minute call rates for AI conversation
+- No additional fees for SIP trunk configuration
+- No monthly rental fees for imported numbers
+
+Check [Smallest AI Pricing](https://smallest.ai/pricing) and [Vonage Pricing](https://www.vonage.com/communications-apis/pricing/) for current rates.
+
+## Best Practices
+
+1. **Use JWT authentication** for production environments for better security
+2. **Implement webhook handlers** to track call events and status
+3. **Monitor call quality metrics** regularly in Vonage analytics
+4. **Set up proper error handling** in your answer URL logic
+5. **Use region-specific endpoints** when available for better latency
+6. **Keep credentials secure** and rotate them periodically
+7. **Test failover scenarios** to ensure reliability
+8. **Implement rate limiting** to prevent abuse
+
+## Need Help?
+
+If you encounter issues not covered in this guide:
+
+- **Email Support**: support@smallest.ai
+- **Include in your message**:
+  - Your Vonage phone number
+  - Your application ID
+  - Description of the issue
+  - Any error messages from call events
+- **Join our Community**: [Discord](https://smallest.ai/discord)
+- **Vonage Support**: For Vonage-specific issues, contact [Vonage Support](https://api.support.vonage.com)
+
+## Related Documentation
+
+- [SIP Trunking Overview](/deep-dive/phone-number/sip-trunking) - General SIP trunking concepts
+- [Phone Numbers](/deep-dive/phone-number/phone-number) - Managing phone numbers on Smallest AI
+- [Vonage Voice API Docs](https://developer.vonage.com/voice/voice-api/overview) - Official Vonage documentation
+- [Vonage NCCO Reference](https://developer.vonage.com/voice/voice-api/ncco-reference) - NCCO action reference

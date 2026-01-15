@@ -1,0 +1,202 @@
+---
+title: "Voice Settings"
+description: "Configure text-to-speech output for natural sounding agents."
+---
+
+Voice settings control how your agent sounds. The right voice and configuration makes conversations feel natural.
+
+## Voice Selection
+
+Atoms supports multiple TTS providers. Each offers different voices:
+
+| Provider | Voices | Characteristics |
+|----------|--------|-----------------|
+| Smallest AI | lightning, thunder | Ultra-low latency, natural prosody |
+| ElevenLabs | Many cloned/synthetic | Highest quality, more latency |
+| OpenAI | alloy, echo, fable, onyx, nova, shimmer | Good quality, fast |
+
+## Configuring Voice
+
+Voice configuration happens at the platform level. In code, you can override settings per-session.
+
+### Platform Configuration
+
+Set your default voice in the [Atoms Dashboard](https://atoms.smallest.ai):
+
+1. Open your agent settings
+2. Navigate to **Voice Configuration**
+3. Select a voice provider and voice ID
+4. Adjust speed and other parameters
+
+### Per-Session Override
+
+Override voice settings for specific sessions:
+
+```python
+async def start(self, init_event, task_manager):
+    await super().start(init_event, task_manager)
+    
+    # Get language preference from session variables
+    language = init_event.session_context.initial_variables.get("language", "en")
+    
+    if language == "es":
+        # Use Spanish voice
+        self.voice_config = {
+            "voice_id": "spanish-female-1",
+            "speed": 1.0
+        }
+```
+
+## Voice Parameters
+
+| Parameter | Type | Range | Description |
+|-----------|------|-------|-------------|
+| `voice_id` | string | - | The voice to use |
+| `speed` | float | 0.5 - 2.0 | Playback speed (1.0 = normal) |
+| `pitch` | float | 0.5 - 2.0 | Voice pitch adjustment |
+| `volume` | float | 0.0 - 1.0 | Output volume |
+
+### Speed
+
+Adjust speaking speed for different contexts:
+
+```python
+# Slower for complex information
+self.voice_config = {"speed": 0.9}
+
+# Faster for confirmations
+self.voice_config = {"speed": 1.1}
+```
+
+Recommended speeds:
+- **0.8 - 0.9**: Technical explanations, phone numbers, addresses
+- **1.0**: Normal conversation
+- **1.1 - 1.2**: Quick confirmations, casual chat
+
+## Voice Quality Tips
+
+### Keep Responses Short
+
+Long text blocks sound unnatural when spoken. Break responses into conversational chunks:
+
+```python
+# Bad: Long paragraph
+yield "Your order number 12345 was shipped yesterday via FedEx with tracking number 789456123 and is expected to arrive tomorrow between 2 and 6 PM."
+
+# Good: Natural pauses
+yield "Your order shipped yesterday."
+yield " "  # Small pause
+yield "It should arrive tomorrow between 2 and 6 PM."
+yield " "
+yield "Want me to send you the tracking link?"
+```
+
+### Use Punctuation for Pacing
+
+Punctuation affects TTS timing:
+
+```python
+# No pauses (sounds rushed)
+yield "Sure I can help you with that what do you need"
+
+# Natural pauses
+yield "Sure, I can help you with that. What do you need?"
+```
+
+### Spell Out Ambiguous Text
+
+```python
+# May sound wrong
+yield "The price is $5.00"
+
+# More reliable
+yield "The price is five dollars"
+
+# Phone numbers
+yield "Your confirmation code is 1-2-3-4"  # Better than "1234"
+```
+
+## SSML Support
+
+Some TTS providers support SSML for fine-grained control:
+
+```python
+# Add emphasis
+yield '<emphasis level="strong">Congratulations!</emphasis>'
+
+# Add a pause
+yield 'Please hold. <break time="1s"/> I am checking that for you.'
+
+# Slow down for a number
+yield 'Your code is <prosody rate="slow">4-7-2-9</prosody>'
+```
+
+<Warning>
+SSML support varies by provider. Test thoroughly before using in production.
+</Warning>
+
+## Handling Interruptions
+
+When users interrupt, the agent should stop speaking gracefully. The SDK handles this automatically for `OutputAgentNode`, but you can customize the behavior:
+
+```python
+class MyAgent(OutputAgentNode):
+    def __init__(self):
+        super().__init__(
+            name="my-agent",
+            is_interruptible=True  # Default is True
+        )
+```
+
+To disable interruption handling:
+
+```python
+super().__init__(name="my-agent", is_interruptible=False)
+```
+
+Use `is_interruptible=False` for:
+- Critical information the user must hear (payment confirmations)
+- Very short responses that would complete before an interrupt registers
+
+## Voice Testing
+
+Test your voice configuration locally:
+
+```bash
+smallestai agent chat
+```
+
+Listen for:
+
+1. **Natural pacing**: Does it sound rushed or too slow?
+2. **Correct pronunciation**: Are names and numbers spoken correctly?
+3. **Appropriate pauses**: Do breaks sound natural?
+
+## Multi-Language Support
+
+For agents supporting multiple languages, select voice per language:
+
+```python
+VOICE_MAP = {
+    "en": "english-female-1",
+    "es": "spanish-female-1", 
+    "fr": "french-female-1",
+}
+
+async def start(self, init_event, task_manager):
+    await super().start(init_event, task_manager)
+    
+    language = init_event.session_context.initial_variables.get("language", "en")
+    self.voice_id = VOICE_MAP.get(language, "english-female-1")
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Defining Tools" icon="wrench" href="/dev/build/agents/tools-functions/defining-tools">
+    Give your agent capabilities beyond conversation.
+  </Card>
+  <Card title="Agent Patterns" icon="diagram-project" href="/dev/build/agents/agent-patterns/interruption-handling">
+    Learn advanced behavior patterns.
+  </Card>
+</CardGroup>

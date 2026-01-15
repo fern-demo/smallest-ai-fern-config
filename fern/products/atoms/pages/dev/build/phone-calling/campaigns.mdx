@@ -1,0 +1,224 @@
+---
+title: "Campaigns"
+sidebarTitle: "Campaigns"
+description: "Run automated calling campaigns at scale."
+---
+
+Campaigns let you dial a list of contacts automatically. Create a campaign, link it to an audience (contact list), and start dialing.
+
+## Campaign Lifecycle
+
+```
+Create → Start → Running → Pause/Complete → Delete
+           ↓
+    (or Schedule)
+```
+
+## Prerequisites
+
+Before creating a campaign, you need:
+
+1. **Agent** — With a phone number linked (configured in Dashboard)
+2. **Audience** — A contact list uploaded in Dashboard
+3. **Phone Number** — Assigned to your agent in Dashboard → Phone Numbers
+
+<Tip>
+  Link a phone number to your agent in the [Dashboard](https://atoms.smallest.ai) under **Phone Numbers**. Campaigns use the phone number assigned to the agent as the caller ID.
+</Tip>
+
+<Note>
+  Create audiences by uploading a CSV with columns:
+  `phoneNumber`, `Name`, `Address`, `Email`, `CustomerID`
+</Note>
+
+## Creating a Campaign
+
+### Basic Campaign
+
+```python
+from smallestai.atoms import AtomsClient
+
+client = AtomsClient()
+
+campaign = client.create_campaign(
+    campaign_post_request={
+        "name": "January Lead Follow-up",
+        "description": "Follow up with leads from webinar",
+        "agentId": "your-agent-id",  # Must have phone linked
+        "audienceId": "your-audience-id"
+    }
+)
+
+campaign_id = campaign.data.get('_id')
+print(f"Created campaign: {campaign_id}")
+```
+
+### With Retry and Schedule Settings
+
+```python
+import requests
+import os
+from datetime import datetime, timedelta, timezone
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+
+# Schedule for tomorrow at 9 AM UTC
+scheduled_time = datetime.now(timezone.utc).replace(
+    hour=9, minute=0, second=0
+) + timedelta(days=1)
+
+response = requests.post(
+    "https://atoms.smallest.ai/api/v1/campaign",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "name": "Summer Sale Campaign",
+        "description": "Promotional calls",
+        "agentId": "agent-with-phone",
+        "audienceId": "summer-leads",
+        "maxRetries": 3,           # Retry unanswered (0-10)
+        "retryDelay": 15,          # Minutes between retries (1-1440)
+        "scheduledAt": scheduled_time.isoformat()
+    }
+)
+
+result = response.json()
+campaign_id = result["data"]["_id"]
+print(f"Scheduled campaign: {campaign_id}")
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `name` | string | Yes | Campaign name (max 40 chars) |
+| `description` | string | No | Notes about the campaign |
+| `agentId` | string | Yes | Agent ID (must have phone linked) |
+| `audienceId` | string | Yes | Contact list to dial |
+| `maxRetries` | int | No | Retry unanswered (0-10, default: 3) |
+| `retryDelay` | int | No | Minutes between retries (1-1440, default: 15) |
+| `scheduledAt` | string | No | ISO timestamp to auto-start |
+
+## Starting a Campaign
+
+```python
+client.start_campaign(id=campaign_id)
+print("Campaign started")
+```
+
+Scheduled campaigns start automatically at the specified time.
+
+## Checking Campaign Status
+
+```python
+import requests
+import os
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+
+response = requests.get(
+    f"https://atoms.smallest.ai/api/v1/campaign/{campaign_id}",
+    headers={"Authorization": f"Bearer {API_KEY}"}
+)
+data = response.json()
+
+campaign = data["data"]["campaign"]
+metrics = data["data"]["metrics"]
+
+print(f"Status: {campaign['status']}")
+print(f"Total: {metrics['total_participants']}")
+print(f"Called: {metrics['contacts_called']}")
+print(f"Connected: {metrics['contacts_connected']}")
+```
+
+## Pausing a Campaign
+
+```python
+client.pause_campaign(id=campaign_id)
+```
+
+## Deleting a Campaign
+
+```python
+client.delete_campaign(id=campaign_id)
+```
+
+## Complete Example
+
+```python
+import requests
+import os
+import time
+from smallestai.atoms import AtomsClient
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+BASE_URL = "https://atoms.smallest.ai/api/v1"
+headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+
+# 1. Create
+resp = requests.post(f"{BASE_URL}/campaign", headers=headers, json={
+    "name": f"Outreach {int(time.time())}",
+    "agentId": "your-agent-id",
+    "audienceId": "your-audience-id",
+    "maxRetries": 2,
+    "retryDelay": 30
+})
+campaign_id = resp.json()["data"]["_id"]
+print(f"Created: {campaign_id}")
+
+# 2. Start
+client = AtomsClient()
+client.start_campaign(id=campaign_id)
+print("Started")
+
+# 3. Monitor
+for _ in range(10):
+    time.sleep(30)
+    resp = requests.get(f"{BASE_URL}/campaign/{campaign_id}", headers=headers)
+    status = resp.json()["data"]["campaign"]["status"]
+    print(f"Status: {status}")
+    if status in ["completed", "failed"]:
+        break
+
+# 4. Delete
+client.delete_campaign(id=campaign_id)
+print("Deleted")
+```
+
+## Campaign States
+
+| State | Description |
+|-------|-------------|
+| `draft` | Created, not started |
+| `scheduled` | Waiting for scheduled time |
+| `running` | Making calls |
+| `paused` | Paused (can resume) |
+| `completed` | All contacts called |
+| `failed` | Error (e.g., no phone configured) |
+
+## Troubleshooting
+
+| Error | Solution |
+|-------|----------|
+| "No phone numbers available" | Link a phone number to your agent in Dashboard → Phone Numbers |
+| Campaign stays "draft" | Call `start_campaign()` |
+| Campaign fails immediately | Check agent has valid phone and audience has contacts |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Configure phone number first">
+    In Dashboard → Phone Numbers, link a phone to your agent before creating campaigns.
+  </Accordion>
+  <Accordion title="Test with small audience">
+    Start with 5-10 contacts to verify before scaling.
+  </Accordion>
+  <Accordion title="Use reasonable retry settings">
+    2-3 retries with 15-30 minute delays balances persistence and respect.
+  </Accordion>
+  <Accordion title="Schedule for appropriate times">
+    Call during 9am-8pm local time.
+  </Accordion>
+</AccordionGroup>

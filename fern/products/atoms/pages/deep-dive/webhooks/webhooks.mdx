@@ -1,0 +1,154 @@
+---
+title: "Webhooks"
+description: "Get event updates from your agent calls on a webhook"
+icon: "webhook"
+---
+
+This guide will walk you through setting up and using webhooks with atoms.
+
+## Setting Up Webhooks
+
+### Step 1: Add a Webhook
+
+1. Navigate to your dashboard
+2. Go to the "Webhook" section
+3. Click on "Create"
+4. Enter your webhook URL where you want to receive events
+5. (Optional) Add a small description
+6. Click "Add endpoint" to create your webhook
+
+<img src="../../images/webhook-create.png" className="rounded-lg" />
+
+### Step 2: Attach Webhook to Your Agent
+
+1. Go to your agent's configuration page
+2. Press the "add webhook" button
+3. Select the webhook url from dropdown and choose which events you want to receive
+4. Save your changes
+
+<img src="../../images/webhook-agent-configure.png" className="rounded-lg" />
+You should start recieving events on your agent calls. You can check all webhook
+events directly from your dashboard.
+
+## Webhook Event Types
+
+Your webhook will receive the following types of events:
+
+- `pre-conversation`: When an agent call begins
+- `post-conversation`: When an agent call completes
+- `analytics-completed`: When post-call analytics are generated and ready
+
+## Webhook Payload Format
+
+Each webhook event includes different data based on the event type. You can view the payload for each event type below:
+
+<Tabs>
+  <Tab title="Pre-conversation Event">
+  
+```json
+{
+  "url": "https://webhook-test.com/abc123",
+  "description": "test webhook",
+  "event": "agent123.pre-conversation",
+  "metadata": {
+    "agentId": "agent123",
+    "eventType": "pre-conversation",
+    "conversationType": "telephonyOutbound",
+    "toPhone": "+1234567890",
+    "fromPhone": "+0987654321"
+    "callId: "CALL-1231231233-123123"
+  },
+  "id": "webhook123"
+}
+```
+  </Tab>
+  <Tab title="Post-conversation Event">
+  
+```json
+{
+  "url": "https://webhook-test.com/abc123",
+  "description": "test webhook",
+  "event": "agent123.post-conversation",
+  "metadata": {
+    "agentId": "agent123",
+    "eventType": "post-conversation",
+    "conversationType": "telephonyOutbound",
+    "callData": {
+      "answerTime": "2024-03-21T10:00:01Z",
+      "callDirection": "telephony_outbound",
+      "callDuration": "30",
+      "callStatus": "completed",
+      "endTime":    "2024-03-21T10:00:31Z",
+      "fromNumber": "+911234567890",
+      "toNumber": "+911234567789",
+    },
+    "recordingUrl": "https://recordingurl.smallest.ai",
+    "callId": "CALL-XXXXXXX-YYYY",
+    "transcript": [
+      {
+        "role": "user",
+        "content": "Hello, I need help with my account",
+        "timestamp": "2024-03-21T10:00:05Z"
+      },
+      {
+        "role": "agent", 
+        "content": "Hi! I'd be happy to help you with your account.",
+        "timestamp": "2024-03-21T10:00:08Z"
+      }
+    ],
+    "variables": {
+      "var1": "v_123",
+      "var2": "v_234",
+    }
+  },
+  "id": "webhook123"
+}
+```
+
+  </Tab>
+  <Tab title="Analytics Completed Event">
+  
+```json
+{
+  "url": "https://webhook-test.com/abc123",
+  "description": "test webhook",
+  "event": "agent123.analytics-completed",
+  "metadata": {
+    "agentId": "agent123",
+    "eventType": "analytics-completed",
+    "conversationType": "telephonyOutbound",
+    "callId": "CALL-XXXXXXX-YYYY",
+    "analytics": {
+      "summary": "Customer called to inquire about account balance. Agent provided balance information and offered additional services.",
+      "successMetrics": [
+        {
+          "successMetricPrompt": "Did the agent provide the account balance?",
+          "successMetricType": "boolean",
+          "value": true,
+          "confidence": 0.95,
+          "reasoning": "Agent clearly stated the account balance of $1,250.00"
+        },
+        {
+          "successMetricPrompt": "What was the customer's satisfaction level?",
+          "successMetricType": "scale",
+          "value": 4,
+          "confidence": 0.88,
+          "reasoning": "Customer expressed satisfaction and thanked the agent"
+        }
+      ]
+    },
+    "callData": {
+      "fromNumber": "+911234567890",
+      "toNumber": "+911234567789",
+      "callDuration": 180000,
+      "callStatus": "completed",
+      "answerTime": "2024-03-21T10:00:01Z",
+      "endTime": "2024-03-21T10:03:01Z"
+    }
+  },
+  "id": "webhook123"
+}
+```
+
+  </Tab>
+</Tabs>

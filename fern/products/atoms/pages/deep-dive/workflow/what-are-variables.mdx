@@ -1,0 +1,110 @@
+---
+title: "What are Variables?"
+description: "Discover how variables can be used to retain information in the workflow"
+icon: code
+---
+
+# Understanding Variables in Atoms
+
+In **Atoms**, a **variable** is a container that stores specific information collected during a conversation. Variables allow your AI agent to remember and reference important details throughout the interaction, creating a more personalized and context-aware experience.
+
+---
+
+## Why Variables Matter
+
+Variables are crucial for creating intelligent, dynamic conversations because they:
+
+- **Maintain Context** - Remember key information throughout the conversation
+- **Personalize Interactions** - Address users by name and reference their specific details
+- **Enable Complex Logic** - Power decision-making based on collected information
+- **Integrate with External Systems** - Pass data to and from webhooks and APIs
+
+---
+
+## Types of Variables in Atoms
+
+Atoms supports several ways to create and use variables:
+
+### 1. System Variables
+
+These are predefined variables automatically provided by the platform. System variables are:
+
+- Generated at runtime
+- Read-only
+- Always available throughout your flow
+
+**Currently Available System Variables:**
+
+| Variable     | Format             | Description                            |
+| ------------ | ------------------ | -------------------------------------- |
+| Call ID      | `{{call_id}}`      | Unique identifier for the current call |
+| Agent Number | `{{agent_number}}` | Phone number of your agent             |
+| User Number  | `{{user_number}}`  | Phone number of the user               |
+| Current Date | `{{current_date}}` | Current date in readable format        |
+| Current Time | `{{current_time}}` | Current time in readable format        |
+| Current Day  | `{{current_day}}`  | Current day of the week                |
+
+### 2. User Input Variables
+
+These are created dynamically when your AI agent extracts information from user responses.
+
+**Example:**
+
+When a user says, "My name is Sarah," the agent can automatically store "Sarah" in a `customer_name` variable.
+
+### 3. Audience Variables
+
+Audience variables are created automatically from the columns in your uploaded [Audience CSV](/deep-dive/audience/audience) file. Each column header in your CSV becomes a variable name that's accessible throughout your workflow.
+
+**How Audience Variables Work:**
+
+1. You upload a CSV file to create an audience in Atoms
+2. Each column header in your CSV is transformed into a variable
+3. When a call connects to a user from this audience, all their data becomes available as variables
+4. Your workflow can reference these variables immediately without needing to collect this information
+
+**Example CSV File:**
+
+```csv
+phoneNumber,customer_name,due_amount,account_type,last_payment_date
++919876543210,John Doe,250,Premium,2023-10-15
++919876543211,Jane Smith,175,Standard,2023-11-03
++919876543212,Robert Johnson,320,Premium,2023-09-28
+```
+
+In this example:
+
+- `phoneNumber` is the required column for identifying contacts
+- `customer_name`, `due_amount`, `account_type`, and `last_payment_date` all become audience variables
+- When your agent calls John Doe, it can immediately access his data with variables like `{{customer_name}}`, `{{due_amount}}`, etc.
+
+This powerful feature allows you to personalize conversations from the very beginning. For example, your agent can start the call with: `Hello {{customer_name}}, I'm calling about your outstanding balance of ${{due_amount}} on your {{account_type}} account. Your last payment was on {{last_payment_date}}.`
+
+--
+
+## Using Variables in Your Workflow
+
+To reference a variable in your workflow, use the double curly braces syntax:
+
+```
+Hello {{customer_name}}, thank you for your interest in our restaurant.
+```
+
+This will automatically insert the value of the customer_name variable into your agent's response.
+
+---
+
+## Variable Best Practices
+
+When working with variables in Atoms, consider these recommendations:
+
+- **Use Descriptive Names** - Choose clear, meaningful variable names like `appointment_time` rather than `time`
+- **Validate User Input** - Confirm critical information to ensure accuracy before proceeding
+- **Plan Variable Usage** - Map out which variables you'll need throughout the workflow
+- **Provide Fallbacks** - Include default values for essential variables
+
+---
+
+## Wrapping Up
+
+Variables are powerful tools that make your AI agent more intelligent and context-aware. In the next section, we'll explore how to use branches to create dynamic conversation flows based on these variables.

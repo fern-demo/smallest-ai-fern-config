@@ -1,0 +1,418 @@
+---
+title: "Telnyx SIP Setup"
+description: "Connect your Telnyx account to Smallest AI using SIP Connection"
+icon: "signal-bars"
+---
+
+## Overview
+
+This guide explains how to connect your Telnyx account to Smallest AI using **SIP Connections**. Telnyx provides flexible, global SIP trunking with competitive pricing and excellent call quality.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- An active Telnyx account
+- Access to the Telnyx Portal
+- Phone numbers in your Telnyx account (or ability to purchase new ones)
+
+## Step 1: Create a SIP Connection
+
+1. Log in to the [Telnyx Portal](https://portal.telnyx.com)
+2. Navigate to **Connections** in the left sidebar
+3. Click **Create Connection**
+4. Select **SIP Connection** as the connection type
+5. Give your connection a descriptive name (e.g., "Smallest AI Connection")
+6. Click **Create**
+
+## Step 2: Configure Inbound Settings
+
+Inbound settings control how incoming calls to your Telnyx numbers are routed to Smallest AI.
+
+### Set Up Inbound Routing
+
+1. In your SIP connection, click on the **Inbound** tab
+2. Under **Inbound Settings**, find the **SIP URI** section
+3. Add a new SIP URI destination pointing to Smallest AI:
+   ```
+   sip:5rdbhjuwtlk.sip.livekit.cloud
+   ```
+4. Set the routing priority and weight if needed (default values work well)
+5. Click **Save**
+
+### Configure Codec Preferences
+
+1. In the same **Inbound** tab, scroll to **Codecs**
+2. Ensure the following codecs are enabled:
+   - G.711 (PCMU/PCMA)
+   - Opus (recommended for best quality)
+3. Save your codec preferences
+
+### Enable DTMF
+
+1. Under **DTMF Settings**, select your preferred DTMF method:
+   - **RFC 2833** (recommended)
+   - SIP INFO
+2. Save your settings
+
+## Step 3: Configure Outbound Settings
+
+Outbound settings control how calls from Smallest AI are sent through Telnyx to the PSTN.
+
+### Note Your Outbound SIP URI
+
+1. In your SIP connection, click on the **Outbound** tab
+2. Find and copy your **Outbound SIP URI**
+   - It will look like: `sip.telnyx.com` or similar
+   - You'll need this when importing numbers on Smallest AI
+
+### Configure Authentication
+
+Choose your authentication method:
+
+#### Option 1: IP Authentication
+
+1. In the **Outbound** tab, go to **Authentication**
+2. Select **IP Authentication**
+3. Add Smallest AI's IP ranges if available
+4. If no fixed IP ranges are provided, enable authentication without IP restrictions
+
+<Note>
+  Telnyx may require credential-based authentication if IP authentication cannot be configured. Check with
+  Telnyx support for the best approach.
+</Note>
+
+#### Option 2: Credential-Based Authentication (Recommended)
+
+1. In the **Outbound** tab, go to **Authentication**
+2. Select **Credential Authentication**
+3. Click **Create Credential**
+4. Enter a **Username** and **Password**
+5. Save the credentials
+6. Make note of both - you'll need these when importing the number on Smallest AI
+
+### Set Outbound Voice Profile
+
+1. In the **Outbound** tab, configure **Outbound Voice Profile**
+2. Set the preferred codec order:
+   - Opus
+   - G.711 (PCMU/PCMA)
+3. Enable **SRTP** if required by your use case
+4. Save your settings
+
+## Step 4: Configure Technical Settings
+
+### Set Media Handling
+
+1. In your SIP connection settings, go to **Media Handling**
+2. Configure the following:
+   - **Media Mode**: Set to "Media Proxy" or "Direct Media" based on your needs
+   - **T.38 Fax**: Disable unless you need fax support
+3. Save your settings
+
+### Configure Caller ID Settings
+
+1. Go to **Caller ID** settings in your connection
+2. Enable **Caller ID Name (CNAM)**
+3. Configure how outbound caller ID should be presented
+4. Save your settings
+
+## Step 5: Assign Numbers to the Connection
+
+Now link your phone numbers to this SIP connection.
+
+### For Existing Numbers
+
+1. Navigate to **Numbers → My Numbers** in the left sidebar
+2. Find the number you want to use with Smallest AI
+3. Click on the number to edit it
+4. Under **Connection**, select your newly created SIP connection
+5. Configure the **Connection Type** as "SIP"
+6. Save your changes
+
+### For New Numbers
+
+1. Navigate to **Numbers → Search & Buy Numbers**
+2. Search for numbers by:
+   - Country
+   - Area code
+   - Number pattern
+3. Purchase your desired number
+4. During or after purchase, assign it to your SIP connection
+5. Configure as a SIP connection
+
+## Step 6: Import Numbers on Smallest AI
+
+Now that your Telnyx connection is configured, import your numbers into Smallest AI.
+
+1. Navigate to [Phone Numbers](https://atoms.smallest.ai/dashboard/phone-numbers/rent-numbers) in your Smallest AI dashboard
+2. Click **Buy Numbers** button
+3. Select the **Import SIP Number** tab
+4. Fill in your number details:
+
+   - **Phone Number**: Your Telnyx number in E.164 format
+
+     - Example: `+12025551234` for a US number
+     - Example: `+442071234567` for a UK number
+
+   - **SIP Termination URL**: Your Outbound SIP URI from Step 3
+
+     - Example: `sip:sip.telnyx.com`
+     - Or your specific Telnyx SIP URI
+
+   - **Display Name** (Optional): A friendly name for this number
+
+     - Example: "Customer Service Line"
+
+   - **Username**: Your SIP credential username (if using credential-based auth)
+
+   - **Password**: Your SIP credential password (if using credential-based auth)
+
+5. Copy the **SIP Origination URL** shown (this should already be configured in Step 2)
+6. Click **Add Custom Number**
+
+<Tip>
+  Make sure the phone number you enter matches exactly with the number in your Telnyx account, including the
+  country code and format.
+</Tip>
+
+## Step 7: Test Your Setup
+
+After importing your number:
+
+1. Go to your agents in Smallest AI dashboard
+2. Assign the imported Telnyx number to one of your agents
+3. Make a test inbound call to your Telnyx number
+4. Verify that the call connects to your AI agent
+5. Test an outbound call from your agent
+6. Verify audio quality in both directions
+
+## Troubleshooting
+
+### Inbound Calls Not Connecting
+
+**Check Inbound Routing:**
+
+- Verify the SIP URI in Telnyx points to: `sip:5rdbhjuwtlk.sip.livekit.cloud`
+- Ensure there are no typos or extra spaces
+- Confirm the number is assigned to the correct SIP connection
+
+**Check Number Configuration:**
+
+- Verify the number is active in Telnyx
+- Ensure the number is linked to your SIP connection
+- Check that connection settings are saved
+
+### Outbound Calls Failing
+
+**Verify Termination URI:**
+
+- Ensure the SIP Termination URL in Smallest AI is correct
+- Use the exact URI provided by Telnyx (e.g., `sip:sip.telnyx.com`)
+- Remove any trailing spaces or incorrect protocols
+
+**Check Authentication:**
+
+- If using credentials, verify username and password are correct
+- Ensure credentials are enabled in your Telnyx connection
+- Try recreating credentials if authentication continues to fail
+
+**Geographic Permissions:**
+
+- Check that your Telnyx account has permissions for the destination country
+- Enable international calling if needed in Telnyx settings
+
+### One-Way Audio Issues
+
+**Check Media Settings:**
+
+- Verify **Media Mode** is set correctly in your connection
+- Try switching between "Media Proxy" and "Direct Media"
+- Ensure firewall allows RTP traffic
+
+**Codec Issues:**
+
+- Verify common codecs are enabled (G.711, Opus)
+- Check that codec negotiation is working properly
+- Review call logs in Telnyx for codec mismatches
+
+### Call Quality Problems
+
+**Optimize Codec Selection:**
+
+- Prioritize Opus for better quality
+- Ensure G.711 is available as fallback
+- Disable unnecessary codecs
+
+**Check Network:**
+
+- Verify network bandwidth is sufficient
+- Check for packet loss or high latency
+- Consider using a closer Telnyx edge location
+
+**SRTP Configuration:**
+
+- If enabled, ensure both sides support SRTP
+- Try disabling SRTP to isolate the issue
+- Contact support if SRTP is required but causing problems
+
+### Authentication Errors
+
+**"401 Unauthorized" or "403 Forbidden" errors:**
+
+- Verify credentials are correct in Smallest AI
+- Check that credentials are enabled in Telnyx connection
+- Ensure authentication method matches (IP vs. credential)
+
+**IP Authentication Issues:**
+
+- Verify IP ranges are configured correctly
+- Check if Smallest AI's IPs are allowed
+- Consider switching to credential-based authentication
+
+## Advanced Configuration
+
+### Call Recording
+
+Enable call recording in Telnyx:
+
+1. In your SIP connection, go to **Call Recording**
+2. Enable recording for inbound and/or outbound calls
+3. Configure recording format (WAV or MP3)
+4. Set recording storage preferences
+5. Save your settings
+
+<Note>
+  Call recording in Telnyx is separate from Smallest AI's recording features. You can use both or choose one
+  based on your needs.
+</Note>
+
+### Failover Configuration
+
+Set up failover for high availability:
+
+1. Create a secondary SIP connection as backup
+2. In your primary connection's **Inbound** settings, add failover rules
+3. Configure failover timeout and retry logic
+4. Assign numbers to both primary and failover connections
+5. Test failover by temporarily disabling the primary connection
+
+### Emergency Calling (E911)
+
+Configure emergency calling for US numbers:
+
+1. Navigate to **Numbers → My Numbers**
+2. Select each number that needs E911
+3. Click **Emergency Settings**
+4. Enter the emergency address associated with the number
+5. Verify and save the address
+
+<Warning>
+  E911 configuration is required for US phone numbers. Failure to configure properly may result in emergency
+  calls not being routed correctly.
+</Warning>
+
+### Caller ID Management
+
+Control how your caller ID appears:
+
+1. In your SIP connection, go to **Caller ID**
+2. Configure **Caller ID Name (CNAM)**
+3. Set up caller ID for outbound calls:
+   - Use the calling number as caller ID
+   - Or specify a custom verified caller ID
+4. Save your settings
+
+### International Calling Setup
+
+Enable international calling:
+
+1. Navigate to **Settings → International Calling** in Telnyx portal
+2. Review the list of available countries
+3. Enable the countries you want to call
+4. Review associated rates
+5. Set spending limits if desired
+6. Save your settings
+
+## Monitoring & Analytics
+
+### View Call Logs
+
+Monitor your calls in Telnyx:
+
+1. Navigate to **Reports → Call Detail Records (CDR)**
+2. Filter by:
+   - Date range
+   - Phone number
+   - Call direction (inbound/outbound)
+   - Call status
+3. Export CDR data for analysis
+
+### Real-Time Monitoring
+
+Use Telnyx's real-time monitoring:
+
+1. Go to **Reports → Real-Time Dashboard**
+2. View active calls
+3. Monitor call quality metrics
+4. Check for errors or issues
+
+### Set Up Alerts
+
+Configure alerts for important events:
+
+1. Navigate to **Settings → Notifications**
+2. Enable alerts for:
+   - Failed calls
+   - High call volume
+   - Account spending limits
+3. Configure notification channels (email, SMS, webhook)
+4. Save your alert settings
+
+## Cost Considerations
+
+When using Telnyx with Smallest AI:
+
+**Telnyx charges:**
+
+- Monthly number rental fees (typically lower than competitors)
+- Per-minute outbound call costs (competitive rates)
+- Inbound call costs (typically very low)
+- Optional features (call recording, CNAM, etc.)
+
+**Smallest AI charges:**
+
+- Standard per-minute call rates for AI conversation
+- No additional fees for SIP trunk configuration
+- No monthly rental fees for imported numbers
+
+Check [Smallest AI Pricing](https://smallest.ai/pricing) and [Telnyx Pricing](https://telnyx.com/pricing/elastic-sip) for current rates.
+
+## Best Practices
+
+1. **Use credential-based authentication** for better security than IP-based
+2. **Enable Opus codec** for optimal voice quality
+3. **Set up monitoring** to track call quality and issues
+4. **Configure E911** properly for US numbers (legal requirement)
+5. **Test failover scenarios** to ensure high availability
+6. **Monitor CDR regularly** to catch issues early
+7. **Keep credentials secure** and rotate them periodically
+
+## Need Help?
+
+If you encounter issues not covered in this guide:
+
+- **Email Support**: support@smallest.ai
+- **Include in your message**:
+  - Your Telnyx phone number
+  - Your SIP Termination URI
+  - Description of the issue
+  - Any error messages you're seeing
+- **Join our Community**: [Discord](https://smallest.ai/discord)
+- **Telnyx Support**: For Telnyx-specific issues, contact [Telnyx Support](https://telnyx.com/support)
+
+## Related Documentation
+
+- [SIP Trunking Overview](/deep-dive/phone-number/sip-trunking) - General SIP trunking concepts
+- [Phone Numbers](/deep-dive/phone-number/phone-number) - Managing phone numbers on Smallest AI
+- [Telnyx Documentation](https://developers.telnyx.com/docs) - Official Telnyx developer docs

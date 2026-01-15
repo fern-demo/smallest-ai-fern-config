@@ -1,0 +1,26 @@
+---
+title: "Pronunciation Dictionaries"
+icon: "language"
+---
+
+## Overview
+
+Pronunciation dictionaries allow you to fine-tune how our text-to-speech (TTS) engine pronounces specific words. If you find that a word, such as a company name, a technical term, or a proper noun, is consistently mispronounced, you can add it to a pronunciation dictionary to provide a custom, text-based phonetic spelling.
+
+### How It Works
+
+The feature works by mapping a word to its desired pronunciation using simple text. When the TTS engine encounters a word in your dictionary, it will use your specified pronunciation instead of its default.
+
+For example, if the word "Atoms" is being pronounced incorrectly, you could provide the following mapping:
+
+- **Word**: `Atoms`
+- **Pronunciation**: `A-toms`
+
+This tells the TTS engine to pronounce "Atoms" as "A-toms".
+
+### Current Limitations
+
+- **Text-to-Text Only**: The pronunciation must be provided as plain text.
+- **No IPA Support**: Currently, we do not support the International Phonetic Alphabet (IPA) for specifying pronunciations. You'll need to use a textual representation that guides the TTS engine to the correct sound.
+
+By using pronunciation dictionaries, you can improve the clarity and accuracy of your voice agent, ensuring a better experience for your users.

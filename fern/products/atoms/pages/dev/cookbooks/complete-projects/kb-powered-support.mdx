@@ -1,0 +1,147 @@
+---
+title: "KB-Powered Support Agent"
+description: "Build an intelligent support agent using Knowledge Base."
+---
+
+This guide demonstrates how to build a complete end-to-end customer support agent that uses a PDF-based Knowledge Base to answer user queries.
+
+## Prerequisites
+
+- Smallest AI API Key
+- A PDF document (e.g., product manual or policy doc)
+- Python 3.9+
+
+## 1. Setup & Ingestion
+
+First, we need to create a Knowledge Base and upload our source documents.
+
+<Note>
+**Important:** Currently, only **PDF files** are supported for ingestion. Text or other formats will fail.
+</Note>
+
+```python setup_kb.py
+import os
+from smallestai.atoms import AtomsClient
+from smallestai.atoms.models import KnowledgebasePostRequest
+
+# Initialize client
+client = AtomsClient()
+
+def setup_knowledge_base(pdf_path: str):
+    # 1. Create the KB
+    print("Creating Knowledge Base...")
+    kb = client.create_knowledge_base(
+        knowledgebase_post_request=KnowledgebasePostRequest(
+            name="Product Support KB",
+            description="Manuals and Policy Documents"
+        )
+    )
+    # The SDK returns a response object where .data contains the ID string
+    kb_id = kb.data
+    print(f"Created KB: {kb_id}")
+
+    # 2. Upload Document
+    print(f"Uploading {pdf_path}...")
+    with open(pdf_path, "rb") as f:
+        client.upload_media_to_knowledge_base(
+            id=kb_id,
+            media=(os.path.basename(pdf_path), f.read())
+        )
+    print("Upload complete. Processing started.")
+    return kb_id
+
+if __name__ == "__main__":
+    # Replace with your actual PDF
+    kb_id = setup_knowledge_base("manual.pdf")
+    print(f"Save this ID for your agent: {kb_id}")
+```
+
+## 2. Agent Implementation
+
+Now, create the agent that connects to this Knowledge Base.
+
+```python agent.py
+import asyncio
+import os
+from smallestai.atoms.agentic import OutputAgentNode, AgentSession
+from smallestai.atoms.agentic.models import LLMConfig
+from smallestai.atoms.agentic.clients.openai import OpenAIClient
+
+class SupportAgent(OutputAgentNode):
+    def __init__(self, kb_id: str):
+        super().__init__(
+            name="support_agent",
+            llm_config=LLMConfig(
+                model="gpt-4o",
+                system_prompt="""
+                You are a helpful support agent.
+                Answer questions based ONLY on the provided context.
+                If you don't know the answer, say "I'm sorry, I don't see that in the manual."
+                """
+            )
+        )
+        self.kb_id = kb_id
+
+    async def generate_response(self, user_message: str):
+        # 1. Retrieve Context automatically (Platform handles this)
+        # However, for local testing simulations, we can verify retrieval mechanisms.
+        
+        # In a real deployed session, the KB context is injected automatically.
+        # Below is standard response generation.
+        async for chunk in super().generate_response(user_message):
+            yield chunk
+
+async def main():
+    session = AgentSession()
+    
+    # Initialize agent with the KB ID we created
+    kb_id = os.getenv("KB_ID") 
+    agent = SupportAgent(kb_id=kb_id)
+    
+    session.add_node(agent)
+    await session.start()
+    
+    # Simulate a user query
+    print("User: How do I reset the device?")
+    
+    # NOTE: Local KB retrieval simulation requires the 'rag_client' or deployed context.
+    # This example assumes deployment or full E2E environment.
+    
+    await session.wait_until_complete()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## 3. Verification & Testing
+
+To test this thoroughly, verify the ingestion status before running the agent.
+
+```python verify_kb.py
+import time
+from smallestai.atoms import AtomsClient
+
+client = AtomsClient()
+
+def wait_for_ready(kb_id: str):
+    print("Checking KB status...")
+    while True:
+        items = client.get_knowledge_base_items(id=kb_id)
+        # Check if all items are 'completed'
+        pending = [i for i in items.data if i.processing_status != 'completed']
+        
+        if not pending:
+            print("All items ready!")
+            break
+            
+        print(f"Waiting for {len(pending)} items to index...")
+        time.sleep(2)
+
+# Use this to ensure your KB is ready for queries
+# wait_for_ready("your_kb_id")
+```
+
+## Known Limitations
+
+- **File Types:** Only `.pdf` files are supported. `upload_text_to_knowledge_base` is currently unavailable (returns 404).
+- **Deletion:** Deleting individual items (`delete_knowledge_base_item`) may be inconsistent; prefer deleting and recreating the KB for major updates.

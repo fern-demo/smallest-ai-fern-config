@@ -1,0 +1,127 @@
+---
+title: "Agent Performance"
+sidebarTitle: "Performance"
+description: "Monitor latency and response quality."
+---
+
+Track how fast your agents respond and identify performance bottlenecks.
+
+## Latency Metrics
+
+Each conversation log includes three latency measurements:
+
+| Metric | Description | What It Measures |
+|--------|-------------|------------------|
+| `average_transcriber_latency` | ASR latency | Time to convert speech to text |
+| `average_agent_latency` | LLM latency | Time for AI to generate response |
+| `average_synthesizer_latency` | TTS latency | Time to convert text to speech |
+
+## Getting Latency Data
+
+```python
+from smallestai.atoms import AtomsClient
+
+client = AtomsClient()
+
+logs = client.get_conversation_logs(id="conversation-123")
+data = logs.data
+
+print(f"ASR Latency: {data.average_transcriber_latency}ms")
+print(f"LLM Latency: {data.average_agent_latency}ms")
+print(f"TTS Latency: {data.average_synthesizer_latency}ms")
+
+# Total round-trip latency
+total = (
+    (data.average_transcriber_latency or 0) +
+    (data.average_agent_latency or 0) +
+    (data.average_synthesizer_latency or 0)
+)
+print(f"Total latency: {total}ms")
+```
+
+## Performance Benchmarks
+
+| Component | Good | Acceptable | Needs Work |
+|-----------|------|------------|------------|
+| ASR | < 200ms | 200-500ms | > 500ms |
+| LLM | < 500ms | 500-1000ms | > 1000ms |
+| TTS | < 200ms | 200-500ms | > 500ms |
+| **Total** | < 900ms | 900-2000ms | > 2000ms |
+
+## Analyzing Performance
+
+```python
+def check_performance(call_id):
+    logs = client.get_conversation_logs(id=call_id)
+    data = logs.data
+    
+    issues = []
+    
+    if data.average_transcriber_latency and data.average_transcriber_latency > 500:
+        issues.append("High ASR latency")
+    
+    if data.average_agent_latency and data.average_agent_latency > 1000:
+        issues.append("High LLM latency - consider shorter prompts")
+    
+    if data.average_synthesizer_latency and data.average_synthesizer_latency > 500:
+        issues.append("High TTS latency")
+    
+    if issues:
+        print(f"Performance issues: {', '.join(issues)}")
+    else:
+        print("Performance is good!")
+    
+    return issues
+```
+
+## Improving Performance
+
+<AccordionGroup>
+  <Accordion title="Reduce LLM latency">
+    The LLM is usually the slowest component. To speed it up, keep system prompts concise, use streaming responses (enabled by default), and consider faster models like gpt-4o-mini.
+  </Accordion>
+  
+  <Accordion title="Optimize tools">
+    Tool execution adds latency. Make API calls fast, cache where possible, and use parallel execution with `parallel=True`.
+  </Accordion>
+  
+  <Accordion title="Monitor trends">
+    Track latency over time. Sudden increases may indicate API issues or prompt bloat.
+  </Accordion>
+</AccordionGroup>
+
+## Agent Details
+
+Get info about which agent handled the call:
+
+```python
+agent = logs.data.agent
+
+if agent:
+    print(f"Agent ID: {agent.id}")
+    print(f"Agent Name: {agent.name}")
+```
+
+## Quality Metrics
+
+Combine latency with call outcomes:
+
+```python
+def quality_report(call_ids):
+    fast_and_completed = 0
+    slow_calls = 0
+    
+    for call_id in call_ids:
+        logs = client.get_conversation_logs(id=call_id)
+        data = logs.data
+        
+        total_latency = (data.average_agent_latency or 0)
+        
+        if data.status == "completed" and total_latency < 1000:
+            fast_and_completed += 1
+        elif total_latency >= 1000:
+            slow_calls += 1
+    
+    print(f"Quality calls: {fast_and_completed}/{len(call_ids)}")
+    print(f"Slow calls: {slow_calls}/{len(call_ids)}")
+```

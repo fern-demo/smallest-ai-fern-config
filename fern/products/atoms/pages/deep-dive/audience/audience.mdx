@@ -1,0 +1,235 @@
+---
+title: "Audience"
+description: "How to build an Audience for Atoms?"
+icon: "users-line"
+---
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/bPqIHr2mqAQ"
+  title="How to Build AI Voice Agent Workflows?"
+  frameborder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>
+
+## What is an Audience?
+
+An audience in Atoms is a collection of contacts you want to reach through your AI voice campaigns. Think of it as your contact list with phone numbers and additional information about each person you want to call. Before creating any campaign, you'll need an audience.
+
+### Key Features
+
+- Create once, use multiple times: Use the same audience across different campaigns
+- Flexible contact management: Add, remove, or update members anytime
+- Custom data support: Include additional information for personalized conversations
+- Large scale support: Handle up to 10,000 members per audience
+- Smart search: Find any member using any information in your data
+
+## Creating an Audience
+
+### Step 1: Preparing Your CSV File
+
+Your CSV file is the foundation of your audience. Here's what you need to know:
+
+#### CSV Requirements
+
+1. Include at least one column containing phone numbers
+   - The column name can be anything (e.g., 'phone', 'contact_number', 'mobile')
+   - You'll select this column during audience creation
+2. Use simple column names:
+   - Only use letters (a-z), numbers (0-9), and underscores (\_)
+   - ✅ Good examples: `phone_number`, `customer_name`, `amount2`
+   - ❌ Avoid: `phone number`, `api.name`, `customer.id`, `contact.phone`
+3. Keep your audience size under 10,000 members
+4. Avoid duplicate column names in your CSV
+
+#### Phone Number Format Requirements
+
+All phone numbers must be in international format for successful calling:
+
+1. Country code is mandatory (e.g., 1 for USA, 91 for India)
+2. No spaces, hyphens, or special characters allowed
+3. The '+' symbol at the start is optional
+
+Common country codes:
+
+- United States/Canada: 1
+- India: 91
+- United Kingdom: 44
+- Australia: 61
+- Singapore: 65
+
+✅ Correct formats:
+
+```csv
+phone,name
++12025550123,John Doe    # With + symbol
+919876543210,Sarah Chen  # Without + symbol
+```
+
+❌ Incorrect formats:
+
+```csv
+phone,name
+(202) 555-0123,John Doe    # Contains special characters
+202.555.0123,Sarah Chen    # Contains periods
+2025550123,Mike Johnson    # Missing country code
+```
+
+### Step 2: Phone Number Column Selection
+
+This is a crucial step that determines which numbers your campaigns will call:
+
+1. **Single Phone Number Column**
+   If your CSV has one phone number column:
+
+   ```csv
+   contact_number,customer_name,due_amount
+   919876543210,John Doe,250
+   12025550123,Sarah Chen,175
+   ```
+
+   Simply select this column from the dropdown menu during creation.
+
+2. **Multiple Phone Number Columns**
+   If your CSV has multiple phone columns:
+   ```csv
+   india_phone,us_phone,whatsapp_number,customer_name
+   919876543210,12025550123,919988776655,John Doe
+   918765432109,12025550124,918877665544,Sarah Chen
+   ```
+   You must choose which column to use:
+   - Select the most appropriate column for your campaign (e.g., 'india_phone' for calling Indian numbers)
+   - Only numbers from your selected column will be used for calling
+
+<Note>
+  Important: You must select exactly one phone number column during audience
+  creation. This column will be used to initiate all calls for campaigns using
+  this audience.
+</Note>
+
+### Step 3: Finalizing Your Audience
+
+After uploading your CSV and selecting the phone number column:
+
+1. Give your audience a descriptive name (e.g., "March 2024 Users")
+2. Add a helpful description to identify it later
+3. Click **Create** to save
+
+## Managing Your Audience
+
+After creating an audience, you can manage all aspects of your contact list through the Audience Members page.
+
+### Viewing and Searching Members
+
+- View your complete member list in an organized, paginated format
+- Use the powerful search feature to find members by column value in your data
+- Results update in real-time as you type
+
+### Adding New Members
+
+You have two options to add more members to an existing audience:
+
+1. **Manual Entry**
+
+   - Click "Add New" → "Manual Entry"
+   - Fill in all required fields
+   - Important: The phone number must:
+     - Match the format of your existing numbers
+     - Include the country code
+     - Follow the same format as your original CSV
+   - Review and submit to add the member
+
+2. **CSV Upload**
+   - Click "Add New" → "Upload CSV"
+   - Critical: Your new CSV must exactly match your existing structure
+     - Column names must be identical (case-sensitive)
+     - ❌ If original has `phone_number`, new CSV can't use `phone` or `PhoneNumber`
+     - ❌ If original has `customer_name`, new CSV can't use `name` or `CustomerName`
+   - System validates:
+     - Column name matches
+     - Phone number formats
+     - Total member limit (10,000)
+   - New members are added to your existing list
+
+<Warning>
+  Remember: The combined total of existing and new members cannot exceed 10,000.
+  For example, if you already have 9,000 members, you can only add 1,000 more.
+</Warning>
+
+### Bulk Operations
+
+Efficiently manage multiple members at once:
+
+1. **Selecting Members**
+
+   - Use individual checkboxes next to each member
+   - Use the header checkbox to select all members on the current page
+   - Selection count shows how many members are selected
+
+2. **Bulk Deletion**
+   - Select desired members using checkboxes
+   - Click "Delete Selected" to remove multiple members at once
+   - Confirm action before deletion
+   - Search and filter to find specific groups before bulk deletion
+
+<Warning>
+  Campaign Restrictions: - If your audience is being used in active campaigns:
+  1. You cannot modify or delete members 
+  2. You must first delete the associated campaigns
+  3. Then you can make changes to the audience - This ensures campaign consistency during execution
+</Warning>
+
+### Custom Variables and Personalization
+
+Your additional columns become variables for personalized conversations:
+
+```csv
+phone,customer_name,due_amount,appointment_date,reference_id
++919876543210,John Doe,250,March 10 2024,REF001
++12025550123,Sarah Chen,175,March 15 2024,REF002
+```
+
+Best practices for variables:
+
+1. **Dates**: Use natural language format
+
+   - ✅ "10 March 2024"
+   - ❌ "10/03/2024"
+
+2. **Numbers**: Consider how they'll be spoken
+
+   - ✅ "1,000" or "one thousand"
+   - ❌ "1000"
+
+3. **Names**: Use proper capitalization
+
+   - ✅ "John Doe"
+   - ❌ "john doe"
+
+4. **Amounts**: Use consistent format
+   - ✅ "250.00" or "250"
+   - ❌ Mix of "250" and "250.00"
+
+<Tip>
+  Pro Tip: Test your variables in the Agent Builder to ensure they sound natural
+  when spoken by the AI.
+</Tip>
+
+## Examples
+
+### Basic Audience
+
+```csv
+phone,name
++12025550123,John Doe
++919876543210,Sarah Chen
+```
+
+### Advanced Audience
+
+```csv
+primary_phone,alternate_phone,name,due_amount,last_payment_date
++12025550123,+12025550124,John Doe,250,March 10 2024
++919876543210,+919876543211,Sarah Chen,175,March 15 2024
+```

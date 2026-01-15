@@ -1,0 +1,908 @@
+openapi: 3.0.1
+info:
+  title: Waves API
+  description: |
+    API for the new Waves text-to-speech model.
+    Currently featuring our two models, Lightning & Lightning Large, with more models coming soon.
+  version: 1.0.0
+servers:
+  - url: https://waves-api.smallest.ai
+    description: Waves API server
+
+paths:
+  /api/v1/pronunciation-dicts:
+    get:
+      summary: Get pronunciation dictionaries
+      description: Retrieve all pronunciation dictionaries for the authenticated user
+      operationId: getPronunciationDicts
+      responses:
+        "200":
+          description: List of pronunciation dictionaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PronunciationDict"
+              example:
+                - id: "64f1234567890abcdef12345"
+                  items:
+                    - word: "mysql"
+                      pronunciation: "my-sequel"
+                  createdAt: "2023-09-01T12:00:00.000Z"
+        "401":
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Unauthorized"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Internal server error"
+
+    post:
+      summary: Create pronunciation dictionary
+      description: Create a new pronunciation dictionary for the authenticated user
+      operationId: createPronunciationDict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePronunciationDictRequest"
+            example:
+              items:
+                - word: "mysql"
+                  pronunciation: "my-sequel"
+      responses:
+        "200":
+          description: Successfully created pronunciation dictionary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PronunciationDict"
+              example:
+                id: "64f1234567890abcdef12345"
+                items:
+                  - word: "mysql"
+                    pronunciation: "my-sequel"
+                createdAt: "2023-09-01T12:00:00.000Z"
+        "400":
+          description: Bad request - Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Invalid request body"
+                details:
+                  - code: "invalid_type"
+                    expected: "string"
+                    received: "undefined"
+                    path: ["items", 0, "word"]
+                    message: "Required"
+        "401":
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Unauthorized"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Internal server error"
+
+    put:
+      summary: Update pronunciation dictionary
+      description: Update an existing pronunciation dictionary for the authenticated user
+      operationId: updatePronunciationDict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePronunciationDictRequest"
+            example:
+              id: "64f1234567890abcdef12345"
+              items:
+                - word: "mysql"
+                  pronunciation: "my-sequel"
+      responses:
+        "200":
+          description: Successfully updated pronunciation dictionary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePronunciationDictResponse"
+              example:
+                id: "64f1234567890abcdef12345"
+                items:
+                  - word: "mysql"
+                    pronunciation: "my-sequel"
+                  - word: "goodbye"
+                    pronunciation: "goodbai"
+        "400":
+          description: Bad request - Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Invalid request body"
+                details:
+                  - code: "invalid_type"
+                    expected: "string"
+                    received: "undefined"
+                    path: ["id"]
+                    message: "Required"
+        "401":
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Unauthorized"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Internal server error"
+
+    delete:
+      summary: Delete pronunciation dictionary
+      description: Delete an existing pronunciation dictionary for the authenticated user
+      operationId: deletePronunciationDict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeletePronunciationDictRequest"
+            example:
+              id: "64f1234567890abcdef12345"
+      responses:
+        "200":
+          description: Successfully deleted pronunciation dictionary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletePronunciationDictResponse"
+              example:
+                id: "64f1234567890abcdef12345"
+                deleted: true
+        "400":
+          description: Bad request - Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Invalid request body"
+                details:
+                  - code: "invalid_type"
+                    expected: "string"
+                    received: "undefined"
+                    path: ["id"]
+                    message: "Required"
+        "401":
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Unauthorized"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Internal server error"
+  /api/v1/lightning/get_speech:
+    post:
+      tags:
+        - Lightning
+      operationId: synthesizeLightningSpeech
+      summary: Generate speech from text (Lightning)
+      description: Converts provided text to speech using the Lightning model.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LightningRequest"
+      responses:
+        "200":
+          description: Synthesized speech retrieved successfully.
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+                description: A PCM int16 WAV file at the specified sample rate.
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InvalidRequest"
+                message: "The 'text' field is required."
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "Unauthorized"
+                message: "Bearer token is missing or invalid."
+        "500":
+          description: Server error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InternalServerError"
+                message: "An unexpected error occurred."
+
+  /api/v1/lightning-large/get_speech:
+    post:
+      tags:
+        - Lightning Large
+      operationId: synthesizeLightningLargeSpeech
+      summary: Generate speech from text (Lightning Large)
+      description: Converts provided text to speech using the Lightning Large model.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LightningLargeRequest"
+      responses:
+        "200":
+          description: Synthesized speech retrieved successfully.
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+                description: A PCM int16 WAV file at the specified sample rate.
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InvalidRequest"
+                message: "The 'text' field is required."
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "Unauthorized"
+                message: "Bearer token is missing or invalid."
+        "500":
+          description: Server error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InternalServerError"
+                message: "An unexpected error occurred."
+
+  /api/v1/lightning-v2/get_speech:
+    post:
+      tags:
+        - Lightning v2
+      operationId: synthesizeLightningv2Speech
+      summary: Generate speech from text (Lightning v2)
+      description: Converts provided text to speech using the Lightning v2 model.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lightningv2Request"
+      responses:
+        "200":
+          description: Synthesized speech retrieved successfully.
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+                description: A PCM int16 WAV file at the specified sample rate.
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InvalidRequest"
+                message: "The 'text' field is required."
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "Unauthorized"
+                message: "Bearer token is missing or invalid."
+        "500":
+          description: Server error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InternalServerError"
+                message: "An unexpected error occurred."
+
+  /api/v1/lightning-large/stream:
+    post:
+      tags:
+        - Lightning Large
+      operationId: streamLightningLargeSpeech
+      summary: Generate speech from text (Lightning Large)
+      description: Converts provided text to speech using the Lightning Large model.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LightningLargeRequest"
+      responses:
+        "200":
+          description: Synthesized speech retrieved successfully.
+          content:
+            text/event-stream:
+              example:
+                data: |
+                  event: chunk
+                  data: <WAV_DATA>
+                  done: false
+
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InvalidRequest"
+                message: "The 'text' field is required."
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "Unauthorized"
+                message: "Bearer token is missing or invalid."
+        "500":
+          description: Server error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InternalServerError"
+                message: "An unexpected error occurred."
+
+  /api/v1/lightning-v2/stream:
+    post:
+      tags:
+        - Lightning v2
+      operationId: streamLightningv2Speech
+      summary: Generate speech from text (Lightning v2)
+      description: Converts provided text to speech using the Lightning v2 model.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lightningv2Request"
+      responses:
+        "200":
+          description: Synthesized speech retrieved successfully.
+          content:
+            text/event-stream:
+              example:
+                data: |
+                  event: chunk
+                  data: <WAV_DATA>
+                  done: false
+
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InvalidRequest"
+                message: "The 'text' field is required."
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "Unauthorized"
+                message: "Bearer token is missing or invalid."
+        "500":
+          description: Server error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type.
+                  message:
+                    type: string
+                    description: Error message.
+              example:
+                error: "InternalServerError"
+                message: "An unexpected error occurred."
+
+components:
+  schemas:
+    PronunciationItem:
+      type: object
+      required:
+        - word
+        - pronunciation
+      properties:
+        word:
+          type: string
+          minLength: 1
+          description: The word to be pronounced
+          example: "mysql"
+        pronunciation:
+          type: string
+          minLength: 1
+          description: The phonetic pronunciation of the word
+          example: "my-sequel"
+
+    PronunciationDict:
+      type: object
+      required:
+        - id
+        - items
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the pronunciation dictionary
+          example: "64f1234567890abcdef12345"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PronunciationItem"
+          description: List of word-pronunciation pairs
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the dictionary was created
+          example: "2023-09-01T12:00:00.000Z"
+
+    CreatePronunciationDictRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PronunciationItem"
+          minItems: 1
+          description: List of word-pronunciation pairs to create
+
+    UpdatePronunciationDictRequest:
+      type: object
+      required:
+        - id
+        - items
+      properties:
+        id:
+          type: string
+          minLength: 1
+          description: ID of the pronunciation dictionary to update
+          example: "64f1234567890abcdef12345"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PronunciationItem"
+          description: Updated list of word-pronunciation pairs
+
+    DeletePronunciationDictRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          minLength: 1
+          description: ID of the pronunciation dictionary to delete
+          example: "64f1234567890abcdef12345"
+
+    UpdatePronunciationDictResponse:
+      type: object
+      required:
+        - id
+        - items
+      properties:
+        id:
+          type: string
+          description: ID of the updated pronunciation dictionary
+          example: "64f1234567890abcdef12345"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PronunciationItem"
+          description: Updated list of word-pronunciation pairs
+
+    DeletePronunciationDictResponse:
+      type: object
+      required:
+        - id
+        - deleted
+      properties:
+        id:
+          type: string
+          description: ID of the deleted pronunciation dictionary
+          example: "64f1234567890abcdef12345"
+        deleted:
+          type: boolean
+          description: Confirmation that the dictionary was deleted
+          example: true
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Invalid request body"
+        details:
+          type: array
+          items:
+            type: object
+          description: Additional error details (validation errors)
+
+    LightningRequest:
+      type: object
+      required:
+        - text
+        - voice_id
+      properties:
+        text:
+          type: string
+          description: The text to convert to speech.
+        voice_id:
+          type: string
+          description: The voice identifier to use for speech generation.
+        sample_rate:
+          type: integer
+          description: The sample rate for the generated audio.
+          minimum: 8000
+          maximum: 24000
+          default: 24000
+        speed:
+          type: number
+          description: The speed of the generated speech.
+          minimum: 0.5
+          maximum: 2.0
+          default: 1.0
+        language:
+          type: string
+          description: Determines how numbers are spelled out. If set to 'en', numbers will be read as individual digits in English. If set to 'hi', numbers will be read as individual digits in Hindi.
+          default: "en"
+          enum:
+            - en
+            - hi
+        output_format:
+          type: string
+          description: The format of the output audio.
+          default: "pcm"
+          enum:
+            - pcm
+            - mp3
+            - wav
+            - mulaw
+
+    LightningLargeRequest:
+      type: object
+      required:
+        - text
+        - voice_id
+      properties:
+        text:
+          type: string
+          description: The text to convert to speech.
+        voice_id:
+          type: string
+          description: The voice identifier to use for speech generation.
+        sample_rate:
+          type: integer
+          description: The sample rate for the generated audio.
+          minimum: 8000
+          maximum: 24000
+          default: 24000
+        speed:
+          type: number
+          description: The speed of the generated speech.
+          minimum: 0.5
+          maximum: 2.0
+          default: 1.0
+        consistency:
+          type: number
+          description: This parameter controls word repetition and skipping. Decrease it to prevent skipped words, and increase it to prevent repetition.
+          minimum: 0.0
+          maximum: 1.0
+          default: 0.5
+        similarity:
+          type: number
+          description: This parameter controls the similarity between the generated speech and the reference audio. Increase it to make the speech more similar to the reference audio.
+          minimum: 0.0
+          maximum: 1.0
+          default: 0.0
+        enhancement:
+          type: number
+          description: Enhances speech quality at the cost of increased latency.
+          minimum: 0
+          maximum: 2
+          default: 1
+        language:
+          type: string
+          description: Determines how numbers are spelled out. If set to 'en', numbers will be read as individual digits in English. If set to 'hi', numbers will be read as individual digits in Hindi.
+          default: "en"
+          enum:
+            - en
+            - hi
+        output_format:
+          type: string
+          description: The format of the output audio.
+          default: "pcm"
+          enum:
+            - pcm
+            - mp3
+            - wav
+            - mulaw
+        pronunciation_dicts:
+          type: array
+          items:
+            type: string
+            description: The ID of the pronunciation dictionary to use for speech generation.
+          description: The IDs of the pronunciation dictionaries to use for speech generation.
+
+    Lightningv2Request:
+      type: object
+      required:
+        - text
+        - voice_id
+      properties:
+        text:
+          type: string
+          description: The text to convert to speech.
+        voice_id:
+          type: string
+          description: The voice identifier to use for speech generation.
+        sample_rate:
+          type: integer
+          description: The sample rate for the generated audio.
+          minimum: 8000
+          maximum: 24000
+          default: 24000
+        speed:
+          type: number
+          description: The speed of the generated speech.
+          minimum: 0.5
+          maximum: 2.0
+          default: 1.0
+        consistency:
+          type: number
+          description: This parameter controls word repetition and skipping. Decrease it to prevent skipped words, and increase it to prevent repetition.
+          minimum: 0.0
+          maximum: 1.0
+          default: 0.5
+        similarity:
+          type: number
+          description: This parameter controls the similarity between the generated speech and the reference audio. Increase it to make the speech more similar to the reference audio.
+          minimum: 0.0
+          maximum: 1.0
+          default: 0.0
+        enhancement:
+          type: number
+          description: Enhances speech quality at the cost of increased latency.
+          minimum: 0
+          maximum: 2
+          default: 1
+        language:
+          type: string
+          description: Determines how numbers are spelled out. If set to 'en', numbers will be read as individual digits in English. If set to 'hi', numbers will be read as individual digits in Hindi.
+          default: "en"
+          enum:
+            - en
+            - hi
+            - ta
+            - kn
+            - mr
+            - bn
+            - gu
+            - ar
+            - he
+            - fr
+            - de
+            - pl
+            - ru
+            - it
+            - nl
+            - es
+            - sv
+            - ml
+            - te
+        output_format:
+          type: string
+          description: The format of the output audio.
+          default: "pcm"
+          enum:
+            - pcm
+            - mp3
+            - wav
+            - mulaw
+        pronunciation_dicts:
+          type: array
+          items:
+            type: string
+            description: The ID of the pronunciation dictionary to use for speech generation.
+          description: The IDs of the pronunciation dictionaries to use for speech generation.
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

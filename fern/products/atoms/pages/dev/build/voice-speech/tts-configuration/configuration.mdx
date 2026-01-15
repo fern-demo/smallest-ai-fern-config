@@ -1,0 +1,104 @@
+---
+title: "TTS Configuration"
+sidebarTitle: "Configuration"
+description: "Configure text-to-speech settings for your agent."
+---
+
+Configure how your agent speaks using the synthesizer settings.
+
+## Synthesizer Settings
+
+The `synthesizer` object controls text-to-speech:
+
+```python
+synthesizer = {
+    "voiceConfig": {
+        "model": "waves_lightning_large",
+        "voiceId": "zorin",
+        "gender": "male"
+    },
+    "speed": 1.2,
+    "sampleRate": 24000
+}
+```
+
+## Voice Config
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `model` | string | TTS model to use |
+| `voiceId` | string | Voice identifier |
+| `gender` | string | "male" or "female" |
+
+### Available Models
+
+| Model | Description |
+|-------|-------------|
+| `waves` | Standard quality |
+| `waves_lightning_large` | High quality, fast |
+| `waves_lightning_v2` | Latest version |
+| `other` | External provider (e.g., ElevenLabs) |
+
+## Speed
+
+Control speaking rate:
+
+```python
+"speed": 1.0   # Normal (default)
+"speed": 1.2   # 20% faster
+"speed": 0.8   # 20% slower
+```
+
+Range: 0.5 to 2.0
+
+## Sample Rate
+
+Audio quality setting:
+
+```python
+"sampleRate": 24000  # Standard quality
+"sampleRate": 44100  # High quality
+```
+
+## Example: Configure Agent Voice
+
+```python
+import requests
+import os
+
+API_KEY = os.getenv("SMALLEST_API_KEY")
+agent_id = "your-agent-id"
+
+# Update agent with custom voice
+response = requests.patch(
+    f"https://atoms.smallest.ai/api/v1/agent/{agent_id}",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "synthesizer": {
+            "voiceConfig": {
+                "model": "waves_lightning_large",
+                "voiceId": "nyah",
+                "gender": "female"
+            },
+            "speed": 1.1,
+            "sampleRate": 24000
+        }
+    }
+)
+
+print(f"Updated: {response.status_code}")
+```
+
+## Background Sound
+
+Add ambient audio:
+
+```python
+"backgroundSound": "call_center"  # Call center ambience
+"backgroundSound": "office"       # Office sounds
+"backgroundSound": "cafe"         # Cafe background
+"backgroundSound": ""             # No background (default)
+```

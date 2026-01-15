@@ -1,0 +1,83 @@
+---
+title: "The Default Node"
+description: "The simplest element of an Atoms workflow that defines a goal"
+icon: comment-dots
+---
+
+## Understanding the Default Node
+
+A **Default Node** is the most basic type of node in an Atoms workflow. It represents a **goal** in the conversation, what the AI agent needs to accomplish at a specific step. Unlike traditional chatbot scripts, where exact responses are predefined, **Default Nodes allow flexibility** by focusing on **intent** rather than exact phrasing.
+
+---
+
+## Example: Restaurant Reservation Workflow
+
+Consider a restaurant reservation assistant. Below are some **Default Nodes** that define key points in the conversation:
+
+1. **Greet & Ask for Reservation Intent**  
+   - Goal: Introduce the agent and ask if the customer wants to make a reservation.
+
+2. **Ask for Date & Time**  
+   - Goal: Collect the date and time of the reservation.
+
+3. **Collect Guest Details**  
+   - Goal: Gather the number of guests and any special requests. 
+
+Each Default Node **focuses on a specific conversational goal** without dictating the exact words the AI must use.
+
+---
+
+## Creating a Default Node in Atoms
+
+Once you're inside the **Edit Workflow** canvas, follow these steps to create a Default Node:  
+
+### 1️⃣ Locate the Node Type Selector  
+In the **top left corner**, you'll find the **Node Type Selector**. Select **Default Node** and edit the parameters, it is added to canvas automatically.   
+![Adding Node](../../../images/default-node.png)    
+
+### 2️⃣ Connect the Default Node  
+- Drag a branch from the **last conversational node** to the current **Default Node**.
+
+
+### Parameters of the default Node
+
+When defining a node in a workflow, certain parameters help configure its behavior. Below is an overview of the key parameters that define a Default Node's behavior:  
+<img src="../../../images/node.png" className="rounded-lg" style={{ height: "400px", width: "auto" }} sub="df" />
+
+
+| **Parameter**                | **Description** |
+|------------------------------|--------------------------------------|
+| **Node Name**                | A label to identify the node (e.g., "Ask for Customer Name"). |
+| **Action**                   | A short goal describing what the AI should do at this step. |
+| **Use Global Knowledge Base** | Enables the node to pull information from a knowledge base. |
+| **Static Text**               | Enables the node to use predefined static text rather than dynamically generated responses |
+| **Start Node**                | Marks this as the beginning of the workflow. |
+| **Loop Condition**            | Defines if/when the node should repeat (e.g., if the user provides incomplete information). |
+
+
+After configuring these parameters, clicking "Save" finalizes the node setup. 
+
+---
+
+## Best Practices for Default Nodes
+
+✔ **Focus on Goals, Not Exact Phrasing**  
+   - Instead of scripting exact dialogues, define the objective.  
+   - ✅ _"Confirm the reservation details and ask if the customer wants to proceed."_  
+   - ❌ _"You have booked a table at 7 PM. Do you confirm?"_
+
+✔ **Keep It Modular**  
+   - Break conversations into small, manageable nodes.  
+   - Example: Separate "Ask for Reservation Date" and "Ask for Guest Count."
+
+✔ **Use Clear & Simple Actions**  
+   - Each node should **only handle one task**.  
+   - If a node is doing too much, split it into multiple nodes.
+
+---
+
+## Summary
+
+The **Default Node** is the foundation of any workflow in Atoms. It represents a **single conversational goal**, guiding the AI agent's responses. By structuring conversations with well-defined Default Nodes, you can create **flexible and natural AI interactions**.
+
+Next Steps: Explore [Webhook Nodes](/deep-dive/workflow/types-of-nodes/webhook) to extend your workflow with real-time data exchange.
