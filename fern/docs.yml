@@ -35,14 +35,6 @@ products:
       - display-name: v2.2.0
         path: ./products/waves/versions/v2.2.0.yml
 
-navbar-links:
-  - type: minimal
-    text: GitHub
-    url: https://github.com/smallest-ai
-  - type: filled
-    text: Dashboard
-    url: https://dashboard.smallest.ai
-
 colors:
   accentPrimary:
     dark: '#083b4d'
