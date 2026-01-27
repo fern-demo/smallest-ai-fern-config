@@ -41,7 +41,12 @@ colors:
 theme:
   page-actions: toolbar
   footer-nav: minimal
-  product-switcher: toggle
+
+css: ./assets/styles.css
+
+js:
+  - path: ./assets/product-tabs.js
+    strategy: afterInteractive
 
 logo:
   dark: docs/assets/logo_light.png
