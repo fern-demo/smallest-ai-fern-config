@@ -1,13 +1,7 @@
-tabs:
-  docs:
-    display-name: Docs
-    icon: home
-  api-reference:
-    display-name: API Reference
-    icon: puzzle
-
-navigation:
-  - tab: docs
+variants:
+  - title: Guides
+    icon: fa-solid fa-book
+    slug: guides
     layout:
       - section: Getting Started
         contents:
@@ -32,6 +26,7 @@ navigation:
           - page: Overview
             path: ./v4.0.0/speech-to-text-new/overview.mdx
           - section: Real-time
+            icon: fa-solid fa-radio
             contents:
               - page: Quickstart
                 path: ./v4.0.0/speech-to-text-new/realtime/quickstart.mdx
@@ -48,6 +43,7 @@ navigation:
               - page: Troubleshooting
                 path: ./v4.0.0/speech-to-text-new/realtime/troubleshooting.mdx
           - section: Pre-recorded
+            icon: fa-solid fa-play
             contents:
               - page: Quickstart
                 path: ./v4.0.0/speech-to-text-new/pre-recorded/quickstart.mdx
@@ -64,6 +60,7 @@ navigation:
               - page: Troubleshooting
                 path: ./v4.0.0/speech-to-text-new/pre-recorded/troubleshooting.mdx
           - section: Features
+            icon: fa-solid fa-layer-group
             contents:
               - page: Word Timestamps
                 path: ./v4.0.0/speech-to-text-new/features/word-timestamps.mdx
@@ -86,6 +83,7 @@ navigation:
               - page: Age and Gender Detection
                 path: ./v4.0.0/speech-to-text-new/features/age-and-gender-detection.mdx
           - section: Benchmarks
+            icon: fa-solid fa-chart-line
             contents:
               - page: Performance
                 path: ./v4.0.0/speech-to-text-new/benchmarks/performance.mdx
@@ -143,7 +141,49 @@ navigation:
                 path: ./v4.0.0/on-prem/kubernetes/quick-start.mdx
               - page: Troubleshooting
                 path: ./v4.0.0/on-prem/kubernetes/k8s-troubleshooting.mdx
-  - tab: api-reference
+  - title: API Reference
+    icon: fa-solid fa-puzzle-piece
+    slug: api-reference
     layout:
       - api: API Reference
         api-name: waves
+        flattened: true
+        layout:
+          - section: API References
+            contents:
+              - page: Authentication
+                path: ../pages/api-references/authentication.mdx
+                icon: fa-solid fa-key
+              - page: WebSocket
+                path: ../pages/api-references/websocket.mdx
+                icon: fa-solid fa-plug
+          - section: Text to Speech
+            contents:
+              - tts:
+                  title: Lightning TTS
+              - ttsStream:
+                  title: Lightning TTS Stream
+              - ttsWebsocket:
+                  title: Lightning TTS WebSocket
+          - section: Speech to Text
+            contents:
+              - asr:
+                  title: Lightning ASR
+              - asrWebsocket:
+                  title: Lightning ASR WebSocket
+          - section: Voices
+            contents:
+              - voices:
+                  title: Get Voices
+          - section: Voice Cloning
+            contents:
+              - addVoice:
+                  title: Add Voice
+              - getClonedVoices:
+                  title: Get Cloned Voices
+              - deleteClonedVoice:
+                  title: Delete Cloned Voice
+          - section: Pronunciation Dictionaries
+            contents:
+              - pronunciationDictionaries:
+                  title: Pronunciation Dictionaries
