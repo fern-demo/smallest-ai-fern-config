@@ -13,14 +13,6 @@ layout:
   searchbar-placement: header
   page-width: full
 
-tabs:
-  atoms:
-    display-name: Atoms
-    icon: fa-solid fa-robot
-  waves:
-    display-name: Waves
-    icon: fa-solid fa-waveform-lines
-
 products:
   - display-name: Atoms
     path: ./products/atoms.yml
@@ -50,11 +42,6 @@ theme:
   page-actions: toolbar
   footer-nav: minimal
 
-css: ./assets/styles.css
-
-js:
-  - path: ./assets/product-tabs.js
-    strategy: afterInteractive
 
 logo:
   dark: docs/assets/logo_light.png
