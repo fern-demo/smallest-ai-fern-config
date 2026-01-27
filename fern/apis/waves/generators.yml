@@ -8,6 +8,7 @@ api:
     - openapi: openapi/get-cloned-voices-openapi.yaml
     - openapi: openapi/delete-cloned-voice-openapi.yaml
     - openapi: openapi/asr-openapi.yaml
+      overrides: openapi/asr-openapi-overrides.yaml
 
     # AsyncAPI specs - WebSocket streaming
     - asyncapi: asyncapi/stream-tts-ws.json
