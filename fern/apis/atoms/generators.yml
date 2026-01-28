@@ -2,6 +2,7 @@
 api:
   specs:
     - openapi: openapi/openapi.yaml
+      overrides: openapi/openapi-overrides.yaml
 
 groups:
   ts-sdk:

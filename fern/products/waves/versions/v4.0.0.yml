@@ -171,6 +171,11 @@ navigation:
           - page: Vonage
             path: ./v4.0.0/integrations/vonage.mdx
             icon: fa-solid fa-plug
+      - section: Changelog
+        contents:
+          - page: Announcements
+            path: ../pages/changelog/announcements.mdx
+            icon: fa-solid fa-bullhorn
       - section: On-Premise
         contents:
           - page: Introduction

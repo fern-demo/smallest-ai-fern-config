@@ -1,0 +1,15 @@
+# Override file for atoms openapi.yaml
+# Ignores the "*" parameter which causes TypeScript code generation issues
+# The "*" parameter was meant to document dynamic query params but generates invalid TS code
+
+paths:
+  /audience/{id}/members/search:
+    get:
+      parameters:
+        - name: id
+          in: path
+        - name: query
+          in: query
+        - name: "*"
+          in: query
+          x-fern-ignore: true

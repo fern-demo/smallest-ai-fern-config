@@ -31,15 +31,45 @@ navigation:
           - page: Knowledge Base
             path: ./atoms/pages/deep-dive/knowledge-base/knowledge-base.mdx
             icon: fa-solid fa-database
-          - page: Phone Number
-            path: ./atoms/pages/deep-dive/phone-number/phone-number.mdx
+          - section: Phone Number
             icon: fa-solid fa-hashtag
+            contents:
+              - page: Renting Numbers
+                path: ./atoms/pages/deep-dive/phone-number/phone-number.mdx
+                icon: fa-solid fa-phone
+              - page: SIP Trunking
+                path: ./atoms/pages/deep-dive/phone-number/sip-trunking.mdx
+                icon: fa-solid fa-network-wired
+              - page: Twilio SIP Setup
+                path: ./atoms/pages/deep-dive/phone-number/twilio-sip-setup.mdx
+                icon: fa-solid fa-plug
+              - page: Telnyx SIP Setup
+                path: ./atoms/pages/deep-dive/phone-number/telnyx-sip-setup.mdx
+                icon: fa-solid fa-plug
+              - page: Vonage SIP Setup
+                path: ./atoms/pages/deep-dive/phone-number/vonage-sip-setup.mdx
+                icon: fa-solid fa-plug
           - page: Webhooks
             path: ./atoms/pages/deep-dive/webhooks/webhooks.mdx
             icon: fa-solid fa-bolt
           - page: Widget
             path: ./atoms/pages/deep-dive/widget/widget.mdx
             icon: fa-solid fa-window-maximize
+          - section: Voice Config
+            icon: fa-solid fa-sliders
+            contents:
+              - page: Understanding Voice Parameters
+                path: ./atoms/pages/deep-dive/voice-config/understanding-voice-parameters.mdx
+                icon: fa-solid fa-gear
+              - page: Types of Voice Models
+                path: ./atoms/pages/deep-dive/voice-config/types-of-voice-models.mdx
+                icon: fa-solid fa-microphone
+              - page: Background Sound
+                path: ./atoms/pages/deep-dive/voice-config/background-sound.mdx
+                icon: fa-solid fa-volume-high
+              - page: Pronunciation Dictionaries
+                path: ./atoms/pages/deep-dive/voice-config/pronunciation-dictionaries.mdx
+                icon: fa-solid fa-spell-check
       - section: FAQs
         contents:
           - page: Frequently Asked Questions
