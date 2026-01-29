@@ -1,5 +1,6 @@
 # Override file for lightning-v3.1-openapi.yaml
 # Changes tag to Text to Speech for proper grouping
+# Fixes output_format enum and sample_rate enum to match backend
 
 paths:
   /api/v1/lightning-v3.1/get_speech:
@@ -7,8 +8,40 @@ paths:
       tags:
         - Text to Speech
       summary: Generate speech (Lightning v3.1)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                output_format:
+                  enum:
+                    - pcm
+                    - wav
+                    - ulaw
+                    - alaw
+                sample_rate:
+                  enum:
+                    - 8000
+                    - 16000
+                    - 24000
   /api/v1/lightning-v3.1/stream:
     post:
       tags:
         - Text to Speech
       summary: Stream speech (Lightning v3.1 SSE)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                output_format:
+                  enum:
+                    - pcm
+                    - wav
+                    - ulaw
+                    - alaw
+                sample_rate:
+                  enum:
+                    - 8000
+                    - 16000
+                    - 24000
