@@ -18,6 +18,7 @@ components:
   schemas:
     LightningV31Request:
       properties:
+        # The following are the correct enum values for the output_format
         output_format:
           enum:
             - pcm

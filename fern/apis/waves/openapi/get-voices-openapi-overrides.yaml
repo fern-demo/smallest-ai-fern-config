@@ -1,5 +1,5 @@
 # Override file for get-voices-openapi.yaml
-# Adds lightning-v3.1 to the model enum for voice discovery
+# Adds lightning-v3.1 to the model enum so SDK users can discover voices for that model
 
 paths:
   /api/v1/{model}/get_voices:
@@ -7,12 +7,9 @@ paths:
       parameters:
         - in: path
           name: model
-          required: true
           schema:
-            type: string
             enum:
               - lightning
               - lightning-large
               - lightning-v2
               - lightning-v3.1
-          description: The model to use for speech synthesis.
