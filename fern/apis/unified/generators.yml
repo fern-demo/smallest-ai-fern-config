@@ -68,6 +68,15 @@ groups:
           pydantic_config:
             skip_validation: true
           exclude_types_from_init_exports: true
+          additional_init_exports:
+            - from: atoms.client
+              imports:
+                - AtomsClient
+                - AsyncAtomsClient
+            - from: waves.client
+              imports:
+                - WavesClient
+                - AsyncWavesClient
 
   ts-sdk:
     generators:
@@ -80,6 +89,7 @@ groups:
           repository: fern-demo/smallest-ai-ts-sdk
         config:
           namespaceExport: SmallestAI
+          generateSubpackageExports: true
 
   go-sdk:
     generators:
