@@ -1,9 +1,11 @@
 # Override file for pulse-stt-openapi.yaml
 # Ensures proper grouping under Speech to Text section
+# Specifies waves server for all endpoints
 
 paths:
   /api/v1/pulse/get_text:
     post:
+      x-fern-server-name: waves
       x-fern-sdk-group-name: Speech to Text
       tags:
         - Speech to Text

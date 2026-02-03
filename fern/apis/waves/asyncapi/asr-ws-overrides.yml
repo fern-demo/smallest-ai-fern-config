@@ -1,8 +1,10 @@
 # Override file for asr-ws.json
 # Restructures the spec to avoid $ref to #/channels/ locations which Fern doesn't support
+# Specifies waves server for all endpoints
 
 channels:
   /api/v1/asr:
+    x-fern-server-name: waves
     x-fern-sdk-group-name: Speech to Text
     title: ASR WebSocket
 
