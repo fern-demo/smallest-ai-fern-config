@@ -2,6 +2,12 @@
 # Unified SDK configuration that combines both atoms and waves APIs as sub-resources
 
 api:
+  default-environment: Production
+  default-url: atoms
+  environments:
+    Production:
+      atoms: https://atoms-api.smallest.ai/api/v1
+      waves: https://waves-api.smallest.ai
   specs:
     # Atoms API - Agent Management
     - namespace: atoms
@@ -17,10 +23,13 @@ api:
       overrides: ../waves/openapi/get-voices-openapi-overrides.yaml
     - namespace: waves
       openapi: ../waves/openapi/add-voice-openapi.yaml
+      overrides: ../waves/openapi/add-voice-openapi-overrides.yaml
     - namespace: waves
       openapi: ../waves/openapi/get-cloned-voices-openapi.yaml
+      overrides: ../waves/openapi/get-cloned-voices-openapi-overrides.yaml
     - namespace: waves
       openapi: ../waves/openapi/delete-cloned-voice-openapi.yaml
+      overrides: ../waves/openapi/delete-cloned-voice-openapi-overrides.yaml
     - namespace: waves
       openapi: ../waves/openapi/asr-openapi.yaml
       overrides: ../waves/openapi/asr-openapi-overrides.yaml
