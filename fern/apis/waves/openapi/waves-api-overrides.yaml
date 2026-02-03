@@ -1,23 +1,29 @@
 # Override file for waves-api.yaml
 # Reorganizes tags to match desired section structure
 # Fixes output_format enum to match backend (pcm, wav, ulaw, alaw instead of pcm, mp3, wav, mulaw)
+# Specifies waves server for all endpoints
 
 paths:
   /api/v1/pronunciation-dicts:
     get:
+      x-fern-server-name: waves
       tags:
         - Pronunciation Dictionaries
     post:
+      x-fern-server-name: waves
       tags:
         - Pronunciation Dictionaries
     put:
+      x-fern-server-name: waves
       tags:
         - Pronunciation Dictionaries
     delete:
+      x-fern-server-name: waves
       tags:
         - Pronunciation Dictionaries
   /api/v1/lightning/get_speech:
     post:
+      x-fern-server-name: waves
       tags:
         - Text to Speech
       summary: Generate speech (Lightning)
@@ -34,6 +40,7 @@ paths:
                     - alaw
   /api/v1/lightning-large/get_speech:
     post:
+      x-fern-server-name: waves
       tags:
         - Text to Speech
       summary: Generate speech (Lightning Large)
@@ -50,6 +57,7 @@ paths:
                     - alaw
   /api/v1/lightning-large/stream:
     post:
+      x-fern-server-name: waves
       tags:
         - Text to Speech
       summary: Stream speech (Lightning Large SSE)
@@ -66,6 +74,7 @@ paths:
                     - alaw
   /api/v1/lightning-v2/get_speech:
     post:
+      x-fern-server-name: waves
       tags:
         - Text to Speech
       summary: Generate speech (Lightning v2)
@@ -82,6 +91,7 @@ paths:
                     - alaw
   /api/v1/lightning-v2/stream:
     post:
+      x-fern-server-name: waves
       tags:
         - Text to Speech
       summary: Stream speech (Lightning v2 SSE)
