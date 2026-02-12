@@ -72,7 +72,7 @@ groups:
           package-name: smallest-ai
         github:
           repository: fern-demo/smallest-ai-python-sdk
-          mode: pull-request
+          # mode: pull-request
         config:
           client:
             class_name: SmallestAI
@@ -81,6 +81,15 @@ groups:
             skip_validation: true
           exclude_types_from_init_exports: true
           should_generate_websocket_clients: true
+          extra_dependencies:
+            fastapi: ">=0.115.0"
+            uvicorn: ">=0.32.0"
+            loguru: ">=0.7.0"
+            openai: ">=2.0.0"
+            python-dotenv: ">=1.0.0"
+            requests: ">=2.25.0"
+          extra_dev_dependencies:
+            types-requests: ">=2.25.0"
           additional_init_exports:
             - from: atoms.client
               imports:
