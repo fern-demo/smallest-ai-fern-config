@@ -210,12 +210,6 @@ navigation:
             icon: fa-solid fa-plug
       - section: Text to Speech
         contents:
-          - page: Lightning v3.1
-            path: ../pages/v4.0.0/api-references/lightning-v3.1.mdx
-            icon: fa-solid fa-bolt
-          - page: Lightning v3.1 Stream
-            path: ../pages/v4.0.0/api-references/lightning-v3.1-stream.mdx
-            icon: fa-solid fa-bars-staggered
           - page: Lightning v3.1 WebSocket
             path: ../pages/v4.0.0/api-references/lightning-v3.1-ws.mdx
             icon: fa-solid fa-plug
