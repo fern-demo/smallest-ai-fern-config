@@ -109,10 +109,14 @@ navigation:
           - v3
         flattened: true
         layout:
-          - Lightning v2:
-              title: Lightning v2
-          - Text to Speech:
-              title: Text to Speech
+          - section: Lightning v2
+            contents:
+              - endpoint: POST /api/v1/lightning-v2/get_speech
+                title: "Text to Speech"
+              - endpoint: POST /api/v1/lightning-v2/stream
+                title: "Text to Speech (SSE)"
+              - endpoint: WSS /api/v1/lightning-v2/get_speech/stream
+                title: "Text to Speech (WebSocket)"
           - Lightning Large:
               title: Lightning Large
           - Lightning:
