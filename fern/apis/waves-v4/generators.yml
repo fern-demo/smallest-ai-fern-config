@@ -25,7 +25,8 @@ api:
       overrides: overrides/pulse-stt-openapi-overrides.yaml
 
     # AsyncAPI specs - WebSocket streaming
-    - asyncapi: asyncapi/lightning-v2-ws.yaml
+    - asyncapi: ../waves/asyncapi/lightning-v2-ws.yaml
+      overrides: overrides/lightning-v2-ws-overrides.yml
     - asyncapi: ../waves/asyncapi/lightning-v3.1-ws.yaml
       overrides: overrides/lightning-v3.1-ws-overrides.yml
     - asyncapi: ../waves/asyncapi/pulse-stt-ws.yaml
