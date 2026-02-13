@@ -10,6 +10,7 @@ paths:
         - v2
         - v3
         - v4
+      description: Get voices supported for a given model using the new Waves API.
       parameters:
         - in: path
           name: model
