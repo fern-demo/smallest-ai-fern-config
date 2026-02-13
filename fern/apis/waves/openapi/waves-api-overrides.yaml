@@ -1,5 +1,5 @@
 # Override file for waves-api.yaml
-# Reorganizes tags to match desired section structure
+# Uses model-specific tags (Lightning, Lightning Large, Lightning v2) to match MDX page structure
 # Fixes output_format enum to match backend (pcm, wav, ulaw, alaw instead of pcm, mp3, wav, mulaw)
 # Specifies waves server for all endpoints
 
@@ -25,7 +25,7 @@ paths:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning
       summary: Generate speech (Lightning)
       requestBody:
         content:
@@ -42,7 +42,7 @@ paths:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning Large
       summary: Generate speech (Lightning Large)
       requestBody:
         content:
@@ -59,7 +59,7 @@ paths:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning Large
       summary: Stream speech (Lightning Large SSE)
       requestBody:
         content:
@@ -76,7 +76,7 @@ paths:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning v2
       summary: Generate speech (Lightning v2)
       requestBody:
         content:
@@ -93,7 +93,7 @@ paths:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning v2
       summary: Stream speech (Lightning v2 SSE)
       requestBody:
         content:

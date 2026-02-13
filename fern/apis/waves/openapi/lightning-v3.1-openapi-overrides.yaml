@@ -1,5 +1,5 @@
 # Override file for lightning-v3.1-openapi.yaml
-# Changes tag to Text to Speech for proper grouping
+# Uses model-specific tag (Lightning v3.1) to match MDX page structure
 # Fixes output_format enum and sample_rate enum to match backend
 # Specifies waves server for all endpoints
 
@@ -8,13 +8,13 @@ paths:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning v3.1
       summary: Generate speech (Lightning v3.1)
   /api/v1/lightning-v3.1/stream:
     post:
       x-fern-server-name: waves
       tags:
-        - Text to Speech
+        - Lightning v3.1
       summary: Stream speech (Lightning v3.1 SSE)
 
 components:

@@ -270,8 +270,10 @@ navigation:
         api-name: waves
         flattened: true
         layout:
-          - Text to Speech:
-              title: Text to Speech
+          - Lightning v3.1:
+              title: Lightning v3.1
+          - Lightning v2:
+              title: Lightning v2
           - Speech to Text:
               title: Speech to Text
           - Voices:
