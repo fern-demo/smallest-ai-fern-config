@@ -36,7 +36,7 @@ products:
 
 colors:
   accentPrimary:
-    dark: '#083b4d'
+    dark: '#2A9D8F'
     light: '#083b4d'
   background:
     dark: '#000000'

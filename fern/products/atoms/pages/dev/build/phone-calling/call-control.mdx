@@ -11,19 +11,20 @@ Control the call flow from within your agent. End calls gracefully or transfer t
 Use `SDKAgentEndCallEvent` to end the call:
 
 ```python
-from smallestai.atoms.agent.nodes.output_agent import OutputAgentNode
+from smallestai.atoms.agent.nodes import OutputAgentNode
 from smallestai.atoms.agent.events import SDKAgentEndCallEvent
 from smallestai.atoms.agent.tools import function_tool
 
 class MyAgent(OutputAgentNode):
     @function_tool()
-    def end_call(self) -> SDKAgentEndCallEvent:
+    async def end_call(self) -> None:
         """End the call gracefully."""
-        return SDKAgentEndCallEvent()
+        await self.send_event(SDKAgentEndCallEvent())
+        return None
 ```
 
 <Note>
-  `SDKAgentEndCallEvent` has no parameters.
+  Tools that send SDK events must use `await self.send_event()` and return `None`. Simply returning the event object won't work.
 </Note>
 
 ## Transferring to Humans
@@ -40,15 +41,18 @@ from smallestai.atoms.agent.tools import function_tool
 
 class MyAgent(OutputAgentNode):
     @function_tool()
-    def transfer_to_human(self) -> SDKAgentTransferConversationEvent:
+    async def transfer_to_human(self) -> None:
         """Transfer to a human agent."""
-        return SDKAgentTransferConversationEvent(
+        await self.send_event(
+            SDKAgentTransferConversationEvent(
             transfer_call_number="+14155551234",
             transfer_options=TransferOption(
                 type=TransferOptionType.COLD_TRANSFER
             ),
             on_hold_music="relaxing_sound"
         )
+        )
+        return None
 ```
 
 ### Transfer Parameters
@@ -62,7 +66,12 @@ class MyAgent(OutputAgentNode):
 ### Transfer Types
 
 ```python
-from smallestai.atoms.agent.events import TransferOption, TransferOptionType
+from smallestai.atoms.agent.events import (
+    TransferOption,
+    TransferOptionType,
+    WarmTransferPrivateHandoffOption,
+    WarmTransferHandoffOptionType,
+)
 
 # Cold transfer (immediate handoff)
 cold = TransferOption(type=TransferOptionType.COLD_TRANSFER)
@@ -70,10 +79,10 @@ cold = TransferOption(type=TransferOptionType.COLD_TRANSFER)
 # Warm transfer (agent briefs human first)
 warm = TransferOption(
     type=TransferOptionType.WARM_TRANSFER,
-    private_handoff_option={
-        "type": "prompt",
-        "prompt": "Customer calling about billing"
-    }
+    private_handoff_option=WarmTransferPrivateHandoffOption(
+        type=WarmTransferHandoffOptionType.PROMPT,
+        prompt="Customer calling about billing"
+    )
 )
 ```
 

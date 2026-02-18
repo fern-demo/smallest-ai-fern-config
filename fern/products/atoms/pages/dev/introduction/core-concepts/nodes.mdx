@@ -15,7 +15,7 @@ In the conceptual graph, a Node is a vertex that performs three key actions:
 
 ## Abstracted Nodes
 
-To help you get started quickly, we have abstracted two common node patterns for you. You can use these out of the box or build your own custom nodes from scratch.
+To help you get started quickly, we have abstracted three common node patterns for you. You can use these out of the box or build your own custom nodes from scratch.
 
 ### 1. The Base Node (`Node`)
 
@@ -76,6 +76,36 @@ class MyAgent(OutputAgentNode):
             if chunk.content:
                 yield chunk.content
 ```
+
+### 3. The Background Agent (`BackgroundAgentNode`)
+
+A silent observer node that processes events without producing audio output.
+
+**Key Features:**
+*   **Silent Processing**: Receives all events but doesn't speak.
+*   **Parallel Execution**: Runs alongside your main agent.
+*   **State Sharing**: Main agent can query its state.
+
+**Use Case**: Sentiment analysis, call quality monitoring, analytics, webhooks.
+
+```python
+from smallestai.atoms.agent.nodes import BackgroundAgentNode
+from smallestai.atoms.agent.events import SDKEvent, SDKAgentTranscriptUpdateEvent
+
+class SentimentAnalyzer(BackgroundAgentNode):
+    def __init__(self):
+        super().__init__(name="sentiment-analyzer")
+        self.current_sentiment = "neutral"
+    
+    async def process_event(self, event: SDKEvent):
+        if isinstance(event, SDKAgentTranscriptUpdateEvent):
+            if event.role == "user":
+                self.current_sentiment = await self._analyze(event.content)
+```
+
+<Tip>
+  See [Background Agent](/atoms/developer-guide/build/agents/overview) for a complete guide.
+</Tip>
 
 ---
 
