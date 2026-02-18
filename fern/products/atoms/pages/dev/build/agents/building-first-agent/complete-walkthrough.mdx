@@ -170,13 +170,29 @@ class OrderAssistant(OutputAgentNode):
         if tool_calls:
             results = await self.tool_registry.execute(tool_calls, parallel=True)
             
-            # Add tool results to context
-            for result in results:
-                self.context.add_message({
-                    "role": "tool",
-                    "tool_call_id": result.tool_call_id,
-                    "content": result.content
-                })
+            # Add assistant tool_calls and results to context
+            self.context.add_messages([
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": [
+                        {
+                            "id": tc.id,
+                            "type": "function",
+                            "function": {
+                                "name": tc.name,
+                                "arguments": str(tc.arguments),
+                            },
+                        }
+                        for tc in tool_calls
+                    ],
+                },
+                *[
+                    {"role": "tool", "tool_call_id": tc.id, "content": result.content}
+                    for tc, result in zip(tool_calls, results)
+                ],
+            ])
+            
             followup = await self.llm.chat(
                 messages=self.context.messages,
                 stream=True
@@ -318,15 +334,31 @@ class OrderAssistant(OutputAgentNode):
             if chunk.tool_calls:
                 tool_calls.extend(chunk.tool_calls)
         
+        if tool_calls:
             results = await self.tool_registry.execute(tool_calls, parallel=True)
             
-            # Add tool results to context
-            for result in results:
-                self.context.add_message({
-                    "role": "tool",
-                    "tool_call_id": result.tool_call_id,
-                    "content": result.content
-                })
+            # Add assistant tool_calls and results to context
+            self.context.add_messages([
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": [
+                        {
+                            "id": tc.id,
+                            "type": "function",
+                            "function": {
+                                "name": tc.name,
+                                "arguments": str(tc.arguments),
+                            },
+                        }
+                        for tc in tool_calls
+                    ],
+                },
+                *[
+                    {"role": "tool", "tool_call_id": tc.id, "content": result.content}
+                    for tc, result in zip(tool_calls, results)
+                ],
+            ])
             
             followup = await self.llm.chat(
                 messages=self.context.messages,

@@ -1,19 +1,17 @@
 ---
-title: " "
-sidebarTitle: "Welcome"
-icon: "house"
-description: " "
-mode: "wide"
+title: Welcome to Atoms
+sidebar-title: Welcome
+subtitle: " "
+layout: overview
+hide-toc: true
 "og:title": "Welcome to Atoms - Voice AI Platform"
 ---
 
 <style>{`
-  /* Hide the default page header for this page */
-  .prose > h1:first-of-type,
-  article > header,
-  [class*="PageHeader"],
-  [class*="page-header"],
-  .mint-header {
+  /* Hide the auto-generated page header and subtitle since we have a custom hero */
+  .fern-page-heading,
+  [class*="page-heading"],
+  .fern-page-subtitle {
     display: none !important;
   }
 `}</style>
@@ -157,7 +155,7 @@ We built the entire stack from scratch. Pulse transcribes speech with 64ms time-
 ## What You Can Build
 
 <CardGroup cols={3}>
-  <Card title="Voice Agents" icon="robot" href="/atoms/introduction/capabilities/agents-explained">
+  <Card title="Voice Agents" icon="robot" href="/atoms/introduction/capabilities/agents">
     AI that understands speech, processes intent, and responds naturally.
   </Card>
   <Card title="Knowledge Base" icon="brain" href="/atoms/introduction/capabilities/knowledge-base">

@@ -1,11 +1,154 @@
 ---
 title: "Examples"
 sidebarTitle: "Examples"
-description: "Full end-to-end code examples."
+description: "Full end-to-end code examples from the cookbook."
 ---
 
-| Example | Description | Concepts | Link |
-|---------|-------------|----------|------|
-| **Getting Started** | SDK setup, outbound calls | AtomsClient, start_outbound_call | [View →](https://github.com/smallest-inc/cookbook/tree/main/atoms/getting_started) |
-| **Agent with Tools** | Custom function tools | function_tool, OutputAgentNode | [View →](https://github.com/smallest-inc/cookbook/tree/main/atoms/agent_with_tools) |
-| **Call Control** | End calls, transfer to humans | SDKAgentEndCallEvent, TransferConversationEvent | [View →](https://github.com/smallest-inc/cookbook/tree/main/atoms/call_control) |
+Complete, runnable examples you can deploy in minutes. Each example includes full source code, setup instructions, and deployment guide.
+
+<Info>
+  All examples are available in the [cookbook](https://github.com/smallest-inc/cookbook) repository.
+</Info>
+
+---
+
+## Getting Started
+
+<CardGroup cols={1}>
+  <Card title="Your First Agent" icon="rocket" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/getting_started">
+    **5 min** · Build and deploy a basic conversational agent.
+    
+    `OutputAgentNode` · `OpenAIClient` · `AtomsApp` · CLI deployment
+  </Card>
+</CardGroup>
+
+---
+
+## Agent Development
+
+<CardGroup cols={2}>
+  <Card title="Agent with Tools" icon="wrench" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/agent_with_tools">
+    **10 min** · Give your agent actions it can perform.
+    
+    `@function_tool` · `ToolRegistry` · Tool execution · LLM function calling
+  </Card>
+  
+  <Card title="Background Agent" icon="chart-line" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/background_agent">
+    **15 min** · Real-time sentiment analysis alongside your main agent.
+    
+    `BackgroundAgentNode` · Multi-node architecture · Shared state · Silent processing
+  </Card>
+  
+  <Card title="Interrupt Control" icon="hand" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/interrupt_control">
+    **10 min** · Configure how your agent handles user interruptions.
+    
+    `is_interruptible` · Dynamic settings · Barge-in handling
+  </Card>
+  
+  <Card title="Language Switching" icon="globe" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/language_switching">
+    **15 min** · Multilingual agent with language detection.
+    
+    Language detection · Dynamic prompts · Multi-language support
+  </Card>
+</CardGroup>
+
+---
+
+## Calling
+
+<CardGroup cols={2}>
+  <Card title="Call Control" icon="phone-flip" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/call_control">
+    **10 min** · End calls and transfer to human agents.
+    
+    `SDKAgentEndCallEvent` · `SDKAgentTransferConversationEvent` · Cold/warm transfers · Hold music
+  </Card>
+  
+  <Card title="Inbound IVR" icon="phone-volume" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/inbound_ivr">
+    **15 min** · Build an interactive voice response menu.
+    
+    Menu navigation · DTMF handling · Department routing
+  </Card>
+</CardGroup>
+
+---
+
+## Platform Features
+
+<CardGroup cols={2}>
+  <Card title="Knowledge Base RAG" icon="book" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/knowledge_base_rag">
+    **15 min** · Connect your agent to a knowledge base for accurate answers.
+    
+    Knowledge base setup · RAG retrieval · Document upload
+  </Card>
+  
+  <Card title="Campaigns" icon="bullhorn" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/campaigns">
+    **20 min** · Run outbound calling campaigns at scale.
+    
+    `AtomsClient` · Audience management · Campaign creation · Batch calling
+  </Card>
+</CardGroup>
+
+---
+
+## Analytics
+
+<CardGroup cols={1}>
+  <Card title="Call Analytics" icon="chart-bar" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/analytics">
+    **10 min** · Retrieve call metrics, transcripts, and post-call analysis.
+    
+    Call details · Transcript export · Post-call configuration · Metrics API
+  </Card>
+</CardGroup>
+
+---
+
+## End-to-End Projects
+
+<CardGroup cols={1}>
+  <Card title="Bank CSR Agent" icon="building-columns" href="https://github.com/smallest-inc/cookbook/tree/main/voice-agents/bank_csr">
+    **30 min** · Production-grade voice banking agent with real database queries, identity verification, and compliance logging.
+    
+    `BackgroundAgentNode` · SQL execution · Multi-round tool chaining · Deterministic computation · KBA verification · Audit logging · Call transfers
+  </Card>
+</CardGroup>
+
+---
+
+## Running Examples
+
+Each example follows the same pattern:
+
+```bash
+# Clone the cookbook
+git clone https://github.com/smallest-inc/cookbook
+cd cookbook/voice-agents/<example>
+
+# Install dependencies
+pip install -e .
+
+# Set environment variables
+export OPENAI_API_KEY="your-key"
+
+# Run locally
+python app.py
+
+# Test with CLI (in another terminal)
+smallestai agent chat
+```
+
+## Deploying Examples
+
+```bash
+# Login to Smallest AI
+smallestai auth login
+
+# Link to your agent
+smallestai agent init
+
+# Deploy
+smallestai agent deploy --entry-point app.py
+
+# Make live
+smallestai agent builds
+```
+

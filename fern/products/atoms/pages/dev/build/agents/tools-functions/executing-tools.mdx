@@ -104,7 +104,7 @@ if tool_calls:
             ],
         },
         *[
-            {"role": "tool", "tool_call_id": tc.id, "content": str(result)}
+            {"role": "tool", "tool_call_id": tc.id, "content": result.content}
             for tc, result in zip(tool_calls, results)
         ],
     ])

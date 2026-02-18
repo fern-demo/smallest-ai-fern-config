@@ -42,11 +42,12 @@ Background sound can be particularly useful in scenarios where:
 
 ## Available Sound Options
 
-Currently, a default office ambience sound is available out of the box. This provides a natural background noise that simulates a professional office environment.
-
-<Note>
-Additional sound options (like cafe ambience, outdoor environment, etc.) can be made available upon request. Contact our support team to discuss custom sound requirements.
-</Note>
+You can choose from:
+- `""` (none)
+- `"office"`
+- `"cafe"`
+- `"call_center"`
+- `"static"`
 
 ## API Support
 
@@ -54,8 +55,8 @@ The background sound setting can be configured via our API:
 
 ```json
 {
-  "backgroundSound": true
+  "backgroundSound": "office"
 }
 ```
 
-For more details, see our [API Reference](/api-reference/). 
+For more details, see our [API Reference](/atoms/api-reference). 

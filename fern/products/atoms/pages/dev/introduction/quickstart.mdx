@@ -42,7 +42,11 @@ Create two files: one for the agent logic, and one to run the application.
             )
 
         async def generate_response(self):
-            async for chunk in await self.llm.chat(self.context.messages, stream=True):
+            response = await self.llm.chat(
+                messages=self.context.messages,
+                stream=True
+            )
+            async for chunk in response:
                 if chunk.content:
                     yield chunk.content
     ```
@@ -68,6 +72,18 @@ Create two files: one for the agent logic, and one to run the application.
 
     <Tip>
       Your entry point can be named anything (`app.py`, `run.py`, etc.). When deploying, specify it with `--entry-point your_file.py`.
+    </Tip>
+    
+    <Tip>
+      **Want a greeting?** Use `@session.on_event` to speak when the user joins:
+      ```python
+      @session.on_event("on_event_received")
+      async def on_event(_, event):
+          if isinstance(event, SDKSystemUserJoinedEvent):
+              agent.context.add_message({"role": "assistant", "content": "Hello!"})
+              await agent.speak("Hello! How can I help?")
+      ```
+      Adding the greeting to context ensures the LLM knows the conversation has started.
     </Tip>
   </Step>
 </Steps>

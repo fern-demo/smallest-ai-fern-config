@@ -262,8 +262,10 @@ navigation:
                     path: ./atoms/pages/dev/build/agents/tools-functions/overview.mdx
                   - page: Defining tools
                     path: ./atoms/pages/dev/build/agents/tools-functions/defining-tools.mdx
-                  - page: Executing tools
-                    path: ./atoms/pages/dev/build/agents/tools-functions/executing-tools.mdx
+              - page: Executing tools
+                path: ./atoms/pages/dev/build/agents/tools-functions/executing-tools.mdx
+              - page: Built-in tools
+                path: ./atoms/pages/dev/build/agents/tools-functions/built-in-tools.mdx
               - section: Patterns
                 contents:
                   - page: Streaming
