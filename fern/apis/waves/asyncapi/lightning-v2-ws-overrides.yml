@@ -10,6 +10,10 @@ servers:
 
 channels:
   lightningV2Stream:
+    x-fern-audiences:
+      - v2
+      - v3
+      - v4
     x-fern-sdk-group-name: Lightning V2 TTS
     servers:
       - $ref: "#/servers/waves-ws"
