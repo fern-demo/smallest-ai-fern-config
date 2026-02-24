@@ -2,6 +2,7 @@
 
 instances:
   - url: smallest-ai.docs.buildwithfern.com
+    custom-domain: docs.smallest.ai
 
 title: Smallest AI Docs
 
