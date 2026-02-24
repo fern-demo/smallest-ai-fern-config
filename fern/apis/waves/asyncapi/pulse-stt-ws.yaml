@@ -145,6 +145,10 @@ servers:
 channels:
   /api/v1/pulse/get_text:
     address: /api/v1/pulse/get_text
+    parameters:
+      Authorization:
+        description: "Bearer token for authentication. Format: Bearer YOUR_API_KEY"
+        location: $message.header#/Authorization
     messages:
       pulseAudioData.message:
         name: PulseAudioData
