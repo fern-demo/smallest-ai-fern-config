@@ -16,7 +16,18 @@ paths:
         - Lightning V3.1
       operationId: synthesizeLightningV31Speech
       summary: Generate speech from text (Lightning V3.1)
-      description: Converts provided text to speech using the Lightning V3.1 model.
+      description: |
+        Converts provided text to speech using the Lightning V3.1 model.
+        Send `Accept: audio/wav` to receive binary WAV audio. Omitting it may result in empty or unplayable responses.
+      parameters:
+        - name: Accept
+          in: header
+          required: true
+          schema:
+            type: string
+            enum: [audio/wav]
+            default: audio/wav
+          description: Must be `audio/wav` to receive binary audio. Required for proper playback.
       security:
         - bearerAuth: []
       requestBody:
@@ -25,6 +36,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/LightningV31Request"
+            example:
+              text: "Hey i am your a text to speech model"
+              voice_id: "daniel"
+              output_format: "wav"
+              sample_rate: 44100
+              speed: 1.0
       responses:
         "200":
           description: Synthesized speech retrieved successfully.
@@ -169,9 +186,11 @@ components:
         text:
           type: string
           description: The text to convert to speech.
+          default: "Hey i am your a text to speech model"
         voice_id:
           type: string
           description: The voice identifier to use for speech generation.
+          default: "daniel"
         sample_rate:
           type: integer
           description: The sample rate for the generated audio.
