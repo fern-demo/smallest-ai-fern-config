@@ -129,9 +129,6 @@ navigation:
               - page: Numeric Formatting
                 path: ../pages/v4.0.0/speech-to-text/features/numeric-formatting.mdx
                 icon: fa-solid fa-hashtag
-              - page: Word Boosting
-                path: ../pages/v4.0.0/speech-to-text/features/word-boosting.mdx
-                icon: fa-solid fa-arrow-up
               - page: Age and Gender Detection
                 path: ../pages/v4.0.0/speech-to-text/features/age-and-gender-detection.mdx
                 icon: fa-solid fa-user
@@ -219,45 +216,45 @@ navigation:
         layout:
           - section: Text to Speech
             contents:
-              - endpoint: POST /api/v1/lightning-v3.1/get_speech
+              - endpoint: POST /waves/v1/lightning-v3.1/get_speech
                 title: "Lightning v3.1"
-              - endpoint: POST /api/v1/lightning-v3.1/stream
+              - endpoint: POST /waves/v1/lightning-v3.1/stream
                 title: "Lightning v3.1 SSE"
-              - endpoint: WSS /api/v1/lightning-v3.1/get_speech/stream
+              - endpoint: WSS /waves/v1/lightning-v3.1/get_speech/stream
                 title: "Lightning v3.1 WebSocket"
-              - endpoint: POST /api/v1/lightning-v2/get_speech
+              - endpoint: POST /waves/v1/lightning-v2/get_speech
                 title: "Lightning v2"
-              - endpoint: POST /api/v1/lightning-v2/stream
+              - endpoint: POST /waves/v1/lightning-v2/stream
                 title: "Lightning v2 SSE"
-              - endpoint: WSS /api/v1/lightning-v2/get_speech/stream
+              - endpoint: WSS /waves/v1/lightning-v2/get_speech/stream
                 title: "Lightning v2 WebSocket"
           - section: Speech to Text
             contents:
-              - endpoint: POST /api/v1/pulse/get_text
+              - endpoint: POST /waves/v1/pulse/get_text
                 title: "Pulse (Pre-Recorded)"
-              - endpoint: WSS /api/v1/pulse/get_text
+              - endpoint: WSS /waves/v1/pulse/get_text
                 title: "Pulse (Realtime)"
           - section: Voices
             contents:
-              - endpoint: GET /api/v1/{model}/get_voices
+              - endpoint: GET /waves/v1/{model}/get_voices
                 title: "Get Voices"
           - section: Voice Cloning
             contents:
-              - endpoint: POST /api/v1/lightning-large/add_voice
+              - endpoint: POST /waves/v1/lightning-large/add_voice
                 title: "Add Voice"
-              - endpoint: GET /api/v1/lightning-large/get_cloned_voices
+              - endpoint: GET /waves/v1/lightning-large/get_cloned_voices
                 title: "Get Cloned Voices"
-              - endpoint: DELETE /api/v1/lightning-large
+              - endpoint: DELETE /waves/v1/lightning-large
                 title: "Delete Cloned Voice"
           - section: Pronunciation Dictionaries
             contents:
-              - endpoint: GET /api/v1/pronunciation-dicts
+              - endpoint: GET /waves/v1/pronunciation-dicts
                 title: "Get Pronunciation Dictionaries"
-              - endpoint: POST /api/v1/pronunciation-dicts
+              - endpoint: POST /waves/v1/pronunciation-dicts
                 title: "Create Pronunciation Dictionary"
-              - endpoint: PUT /api/v1/pronunciation-dicts
+              - endpoint: PUT /waves/v1/pronunciation-dicts
                 title: "Update Pronunciation Dictionary"
-              - endpoint: DELETE /api/v1/pronunciation-dicts
+              - endpoint: DELETE /waves/v1/pronunciation-dicts
                 title: "Delete Pronunciation Dictionary"
 
   - tab: self-host
@@ -265,71 +262,102 @@ navigation:
       - section: Getting Started
         contents:
           - page: Introduction
-            path: ../pages/v4.0.0/on-prem/introduction.mdx
+            path: ../pages/v4.0.0/on-prem/getting-started/introduction.mdx
             icon: fa-solid fa-server
+          - page: Prerequisites
+            path: ../pages/v4.0.0/on-prem/getting-started/prerequisites.mdx
+            icon: fa-solid fa-list-check
+          - page: Why Self-Host?
+            path: ../pages/v4.0.0/on-prem/getting-started/why-self-host.mdx
+            icon: fa-solid fa-question
+          - page: Architecture
+            path: ../pages/v4.0.0/on-prem/getting-started/architecture.mdx
+            icon: fa-solid fa-diagram-project
       - section: Docker Setup
         contents:
           - section: STT Deployment
+            icon: fa-solid fa-microphone
             contents:
-              - page: Prerequisites
-                path: ../pages/v4.0.0/on-prem/docker/stt/prerequisites.mdx
-                icon: fa-solid fa-list-check
+              - section: Prerequisites
+                contents:
+                  - page: Hardware Requirements
+                    path: ../pages/v4.0.0/on-prem/docker/stt/prerequisites/hardware-requirements.mdx
+                  - page: Software Requirements
+                    path: ../pages/v4.0.0/on-prem/docker/stt/prerequisites/software-requirements.mdx
+                  - page: Credentials
+                    path: ../pages/v4.0.0/on-prem/docker/stt/prerequisites/credentials.mdx
+                  - page: Verification
+                    path: ../pages/v4.0.0/on-prem/docker/stt/prerequisites/verification.mdx
               - page: Quick Start
                 path: ../pages/v4.0.0/on-prem/docker/stt/quick-start.mdx
-                icon: fa-solid fa-rocket
               - page: Configuration
                 path: ../pages/v4.0.0/on-prem/docker/stt/configuration.mdx
-                icon: fa-solid fa-gear
               - page: Troubleshooting
                 path: ../pages/v4.0.0/on-prem/docker/stt/docker-troubleshooting.mdx
-                icon: fa-solid fa-wrench
           - section: TTS Deployment
+            icon: fa-solid fa-volume-high
             contents:
-              - page: Prerequisites
-                path: ../pages/v4.0.0/on-prem/docker/tts/prerequisites.mdx
-                icon: fa-solid fa-list-check
+              - section: Prerequisites
+                contents:
+                  - page: Hardware Requirements
+                    path: ../pages/v4.0.0/on-prem/docker/tts/prerequisites/hardware-requirements.mdx
+                  - page: Software Requirements
+                    path: ../pages/v4.0.0/on-prem/docker/tts/prerequisites/software-requirements.mdx
+                  - page: Credentials
+                    path: ../pages/v4.0.0/on-prem/docker/tts/prerequisites/credentials.mdx
+                  - page: Verification
+                    path: ../pages/v4.0.0/on-prem/docker/tts/prerequisites/verification.mdx
               - page: Quick Start
                 path: ../pages/v4.0.0/on-prem/docker/tts/quick-start.mdx
-                icon: fa-solid fa-rocket
               - page: Configuration
                 path: ../pages/v4.0.0/on-prem/docker/tts/configuration.mdx
-                icon: fa-solid fa-gear
               - page: Troubleshooting
                 path: ../pages/v4.0.0/on-prem/docker/tts/docker-troubleshooting.mdx
-                icon: fa-solid fa-wrench
       - section: Kubernetes Setup
         contents:
-          - page: Prerequisites
-            path: ../pages/v4.0.0/on-prem/kubernetes/prerequisites.mdx
+          - section: Prerequisites
             icon: fa-solid fa-list-check
+            contents:
+              - page: Hardware Requirements
+                path: ../pages/v4.0.0/on-prem/kubernetes/prerequisites/hardware-requirements.mdx
+              - page: Software Requirements
+                path: ../pages/v4.0.0/on-prem/kubernetes/prerequisites/software-requirements.mdx
+              - page: Credentials
+                path: ../pages/v4.0.0/on-prem/kubernetes/prerequisites/credentials.mdx
+              - page: Verification
+                path: ../pages/v4.0.0/on-prem/kubernetes/prerequisites/verification.mdx
           - page: Quick Start
             path: ../pages/v4.0.0/on-prem/kubernetes/quick-start.mdx
             icon: fa-solid fa-rocket
+          - section: AWS
+            icon: fa-brands fa-aws
+            contents:
+              - page: EKS Setup
+                path: ../pages/v4.0.0/on-prem/kubernetes/aws/eks-setup.mdx
+              - page: GPU Nodes
+                path: ../pages/v4.0.0/on-prem/kubernetes/aws/gpu-nodes.mdx
+              - page: IAM IRSA
+                path: ../pages/v4.0.0/on-prem/kubernetes/aws/iam-irsa.mdx
           - section: Storage & PVC
+            icon: fa-solid fa-hard-drive
             contents:
               - page: EFS Configuration
                 path: ../pages/v4.0.0/on-prem/kubernetes/storage/efs-configuration.mdx
-                icon: fa-solid fa-hard-drive
               - page: Model Storage
                 path: ../pages/v4.0.0/on-prem/kubernetes/storage/model-storage.mdx
-                icon: fa-solid fa-box-archive
               - page: Redis Persistence
                 path: ../pages/v4.0.0/on-prem/kubernetes/storage/redis-persistence.mdx
-                icon: fa-solid fa-memory
           - section: Autoscaling
+            icon: fa-solid fa-chart-line
             contents:
               - page: HPA Configuration
                 path: ../pages/v4.0.0/on-prem/kubernetes/autoscaling/hpa-configuration.mdx
-                icon: fa-solid fa-sliders
               - page: Cluster Autoscaler
                 path: ../pages/v4.0.0/on-prem/kubernetes/autoscaling/cluster-autoscaler.mdx
-                icon: fa-solid fa-expand
               - page: Metrics Setup
                 path: ../pages/v4.0.0/on-prem/kubernetes/autoscaling/metrics-setup.mdx
-                icon: fa-solid fa-chart-line
               - page: Grafana Dashboards
                 path: ../pages/v4.0.0/on-prem/kubernetes/autoscaling/grafana-dashboards.mdx
-                icon: fa-solid fa-gauge-high
           - page: Troubleshooting
             path: ../pages/v4.0.0/on-prem/kubernetes/k8s-troubleshooting.mdx
             icon: fa-solid fa-wrench
