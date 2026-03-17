@@ -1,52 +1,8 @@
 # yaml-language-server: $schema=https://schema.buildwithfern.dev/generators-yml.json
-autorelease: true
-
-replay:
-  enabled: true
+# NOTE: SDK generation for atoms is now handled by the unified config (fern/apis/unified/generators.yml).
+# This file only retains the API definition for reference by the unified config and docs.
 
 api:
   specs:
     - openapi: openapi/openapi.yaml
       overrides: openapi/openapi-overrides.yaml
-
-groups:
-  ts-sdk:
-    generators:
-      - name: fernapi/fern-typescript-node-sdk
-        version: 3.53.3
-        output:
-          location: npm
-          package-name: smallest-ai-atoms-sdk
-        github:
-          repository: fern-demo/smallest-ai-atoms-ts-sdk
-        config:
-          namespaceExport: SmallestAtoms
-          packageManager: yarn
-          testFramework: jest
-  python-sdk:
-    generators:
-      - name: fernapi/fern-python-sdk
-        version: 4.61.3
-        output:
-          location: pypi
-          package-name: smallest-ai-atoms-sdk
-        github:
-          repository: fern-demo/smallest-ai-atoms-python-sdk
-        config:
-          client:
-            class_name: SmallestAtoms
-            filename: client.py
-          pydantic_config:
-            skip_validation: true
-          exclude_types_from_init_exports: true
-  go-sdk:
-    generators:
-      - name: fernapi/fern-go-sdk
-        version: 1.26.1
-        # output:
-        #   location: local-file-system
-        #   path: ../../../sdks/atoms/go
-        github:
-          repository: fern-demo/smallest-ai-atoms-go-sdk
-        config:
-          packageName: smallestatoms
