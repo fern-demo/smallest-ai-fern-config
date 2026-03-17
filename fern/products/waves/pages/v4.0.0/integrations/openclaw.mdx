@@ -1,0 +1,96 @@
+---
+title: "OpenClaw"
+description: "Add ultra-fast TTS and STT to your OpenClaw agent with the Smallest AI skill."
+icon: "message-bot"
+---
+
+Add voice capabilities to your [OpenClaw](https://openclaw.ai) agent. Generate speech with sub-100ms latency and transcribe audio with the Smallest AI skill.
+
+## Installation
+
+```bash
+# Via ClawHub (recommended)
+clawhub install smallest-ai
+
+# Or manually
+git clone https://github.com/smallest-inc/smallest-ai-openclaw.git
+cp -r smallest-ai-openclaw ~/.openclaw/skills/smallest-ai
+```
+
+## Setup
+
+Set your API key:
+
+```bash
+export SMALLEST_API_KEY="your_key_here"
+```
+
+Get a free key at [waves.smallest.ai](https://waves.smallest.ai).
+
+Restart the gateway:
+
+```bash
+openclaw gateway stop && openclaw gateway start
+```
+
+## Usage
+
+The skill triggers automatically when you ask your agent to generate speech or transcribe audio. Just talk naturally:
+
+**Text-to-Speech:**
+- "Say good morning in a male voice"
+- "Read this aloud: The meeting is at 3pm"
+- "Generate a voice note saying hello in Hindi"
+
+**Speech-to-Text:**
+- "Transcribe this audio file"
+- "What did they say in this recording?"
+
+**Multilingual:**
+- "Say 'namaste, kaise hain aap' in advika's voice"
+- "Say 'hola buenos dias' using camilla"
+
+## Voices
+
+The skill auto-selects voices based on your request:
+
+| Voice | Gender | Accent | Best For |
+|-------|--------|--------|----------|
+| `sophia` | Female | American | General use (default) |
+| `robert` | Male | American | Professional (default male) |
+| `advika` | Female | Indian | Hindi, code-switching |
+| `vivaan` | Male | Indian | Bilingual English/Hindi |
+| `camilla` | Female | Mexican/Latin | Spanish |
+| `zara` | Female | American | Conversational |
+| `melody` | Female | American | Storytelling |
+| `arjun` | Male | Indian | English/Hindi bilingual |
+| `stella` | Female | American | Expressive, warm |
+
+80+ more voices available. The agent picks the right voice based on language and gender preference.
+
+## Features
+
+- Sub-100ms text-to-speech via Lightning v3.1
+- 64ms speech-to-text via Pulse
+- Supports WAV, MP3, OGG, FLAC, M4A, and WebM audio formats (STT)
+- 30+ languages with automatic language detection
+- Speaker diarization and emotion detection (STT)
+- Hindi-English code-switching
+- Voice cloning — clone any voice with just 5 seconds of audio (Basic plan+)
+
+## Links
+
+<CardGroup cols={2}>
+  <Card title="ClawHub" icon="store" href="https://clawhub.ai">
+    Install from ClawHub
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com/smallest-inc/smallest-ai-openclaw">
+    Source code
+  </Card>
+  <Card title="OpenClaw" icon="message-bot" href="https://openclaw.ai">
+    OpenClaw main site
+  </Card>
+  <Card title="API Docs" icon="book" href="https://docs.smallest.ai/waves">
+    Full API documentation
+  </Card>
+</CardGroup>
