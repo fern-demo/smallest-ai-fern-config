@@ -1,0 +1,169 @@
+---
+title: "Vercel AI SDK"
+description: "Use Smallest AI TTS and STT with the Vercel AI SDK in Next.js and Node.js apps."
+icon: "triangle"
+---
+
+Use Smallest AI as a speech and transcription provider in the [Vercel AI SDK](https://ai-sdk.dev). Generate speech and transcribe audio with a few lines of code.
+
+## Installation
+
+```bash
+npm install smallestai-vercel-provider ai
+```
+
+## Setup
+
+Get your API key from [waves.smallest.ai](https://waves.smallest.ai) and set it as an environment variable:
+
+```bash
+export SMALLEST_API_KEY="your_key_here"
+```
+
+## Text-to-Speech
+
+Supported models: `lightning-v3.1` (recommended — 44.1 kHz, natural expressive speech) and `lightning-v2` (16 languages, voice cloning).
+
+```typescript
+import { experimental_generateSpeech as generateSpeech } from 'ai';
+import { smallestai } from 'smallestai-vercel-provider';
+
+const { audio } = await generateSpeech({
+  model: smallestai.speech('lightning-v3.1'),
+  text: 'Hello from Smallest AI!',
+  voice: 'sophia',
+  speed: 1.0,
+});
+
+// audio.uint8Array — raw WAV bytes
+// audio.base64 — base64 encoded audio
+```
+
+## Speech-to-Text
+
+```typescript
+import { experimental_transcribe as transcribe } from 'ai';
+import { smallestai } from 'smallestai-vercel-provider';
+import { readFileSync } from 'fs';
+
+const { text, segments } = await transcribe({
+  model: smallestai.transcription('pulse'),
+  audio: readFileSync('recording.wav'),
+  mediaType: 'audio/wav',
+});
+
+console.log(text);       // "Hello from Smallest AI!"
+console.log(segments);   // [{ text: "Hello", startSecond: 0, endSecond: 0.5 }, ...]
+```
+
+## Next.js API Route Example
+
+Create a TTS endpoint in your Next.js app:
+
+```typescript
+// app/api/speak/route.ts
+import { experimental_generateSpeech as generateSpeech } from 'ai';
+import { smallestai } from 'smallestai-vercel-provider';
+
+export async function POST(req: Request) {
+  const { text, voice } = await req.json();
+
+  const { audio } = await generateSpeech({
+    model: smallestai.speech('lightning-v3.1'),
+    text,
+    voice: voice || 'sophia',
+  });
+
+  return new Response(Buffer.from(audio.uint8Array), {
+    headers: { 'Content-Type': 'audio/wav' },
+  });
+}
+```
+
+Play it in the browser:
+
+```typescript
+const res = await fetch('/api/speak', {
+  method: 'POST',
+  body: JSON.stringify({ text: 'Hello!', voice: 'sophia' }),
+});
+const blob = await res.blob();
+new Audio(URL.createObjectURL(blob)).play();
+```
+
+## Provider Options
+
+### TTS Options
+
+```typescript
+const { audio } = await generateSpeech({
+  model: smallestai.speech('lightning-v3.1'),
+  text: 'Hello!',
+  voice: 'robert',
+  providerOptions: {
+    smallestai: {
+      sampleRate: 48000,         // 8000 | 16000 | 24000 | 44100 | 48000
+      outputFormat: 'mp3',       // pcm | mp3 | wav | mulaw
+      language: 'en',            // ISO 639-1 code
+      consistency: 0.5,          // voice consistency (0–1)
+      similarity: 0.5,           // voice similarity (0–1)
+      enhancement: 1,            // audio enhancement level (0–2)
+    },
+  },
+});
+```
+
+### STT Options
+
+```typescript
+const result = await transcribe({
+  model: smallestai.transcription('pulse'),
+  audio: audioBuffer,
+  mediaType: 'audio/wav',
+  providerOptions: {
+    smallestai: {
+      language: 'hi',            // ISO 639-1 code
+      diarize: true,             // speaker identification
+      emotionDetection: true,    // detect emotions
+      ageDetection: true,        // detect speaker age
+      genderDetection: true,     // detect speaker gender
+    },
+  },
+});
+```
+
+## Available Voices
+
+80+ voices across multiple languages. Popular voices:
+
+| Voice | Gender | Accent | Best For |
+|-------|--------|--------|----------|
+| `sophia` | Female | American | General use (default) |
+| `robert` | Male | American | Professional |
+| `advika` | Female | Indian | Hindi, code-switching |
+| `vivaan` | Male | Indian | Bilingual English/Hindi |
+| `camilla` | Female | Mexican/Latin | Spanish |
+
+Fetch the full voice list programmatically:
+
+```bash
+curl -s "https://api.smallest.ai/waves/v1/lightning-v3.1/get_voices" \
+  -H "Authorization: Bearer $SMALLEST_API_KEY"
+```
+
+## Links
+
+<CardGroup cols={2}>
+  <Card title="npm Package" icon="npm" href="https://www.npmjs.com/package/smallestai-vercel-provider">
+    Install from npm
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com/smallest-inc/smallest-ai-vercel-provider">
+    Source code
+  </Card>
+  <Card title="Vercel AI SDK" icon="triangle" href="https://ai-sdk.dev">
+    AI SDK documentation
+  </Card>
+  <Card title="Cookbook" icon="book" href="https://github.com/smallest-inc/cookbook">
+    More examples
+  </Card>
+</CardGroup>
