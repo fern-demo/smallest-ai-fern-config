@@ -1,10 +1,10 @@
 tabs:
-  introduction:
-    display-name: Introduction
-    icon: fa-solid fa-house
   platform:
     display-name: Atoms Platform
     icon: fa-solid fa-desktop
+  introduction:
+    display-name: Product Overview
+    icon: fa-solid fa-house
   developer:
     display-name: Developer Guide
     icon: fa-solid fa-code
@@ -16,6 +16,177 @@ tabs:
     icon: fa-solid fa-plug
 
 navigation:
+  - tab: platform
+    layout:
+      - section: Get Started
+        contents:
+          - page: Quick start
+            path: ./atoms/pages/platform/introduction/quick-start.mdx
+            icon: fa-solid fa-rocket
+          - page: Platform overview
+            path: ./atoms/pages/platform/introduction/intro.mdx
+            icon: fa-regular fa-book-open
+      - section: Single Prompt Agents
+        contents:
+          - page: Overview
+            path: ./atoms/pages/platform/single-prompt/overview.mdx
+            icon: fa-solid fa-circle-info
+          - section: Creating Your Agent
+            contents:
+              - page: Manual Setup
+                path: ./atoms/pages/platform/single-prompt/manual-setup.mdx
+              - page: From Template
+                path: ./atoms/pages/platform/single-prompt/from-template.mdx
+              - page: AI Assisted
+                path: ./atoms/pages/platform/single-prompt/ai-assisted.mdx
+          - section: Prompt Section
+            contents:
+              - page: Writing Prompts
+                path: ./atoms/pages/platform/single-prompt/writing-prompts.mdx
+              - page: Model Selection
+                path: ./atoms/pages/platform/single-prompt/config/model-selection.mdx
+              - page: Voice Selection
+                path: ./atoms/pages/platform/single-prompt/config/voice-selection.mdx
+          - section: Configuration Panel
+            contents:
+              - page: End Call
+                path: ./atoms/pages/platform/single-prompt/config/end-call.mdx
+              - page: Transfer Call
+                path: ./atoms/pages/platform/single-prompt/config/transfer-call.mdx
+              - page: Knowledge Base
+                path: ./atoms/pages/platform/single-prompt/config/knowledge-base.mdx
+              - page: Variables
+                path: ./atoms/pages/platform/single-prompt/config/variables.mdx
+              - page: API Calls
+                path: ./atoms/pages/platform/single-prompt/config/api-calls.mdx
+          - section: Agent Settings
+            contents:
+              - page: General Settings
+                path: ./atoms/pages/platform/single-prompt/config/general-settings.mdx
+              - page: Language Selection
+                path: ./atoms/pages/platform/single-prompt/config/language-selection.mdx
+              - page: Voice Settings
+                path: ./atoms/pages/platform/single-prompt/config/voice-settings.mdx
+              - page: Model Settings
+                path: ./atoms/pages/platform/single-prompt/config/model-settings.mdx
+              - page: Phone Number
+                path: ./atoms/pages/platform/single-prompt/config/phone-number.mdx
+              - page: Webhooks
+                path: ./atoms/pages/platform/single-prompt/config/webhooks.mdx
+      - section: Conversational Flow Agents
+        availability: deprecated
+        contents:
+          - page: Overview
+            path: ./atoms/pages/platform/convo-flow/overview.mdx
+            icon: fa-solid fa-circle-info
+          - section: Creating Your Agent
+            contents:
+              - page: Manual Setup
+                path: ./atoms/pages/platform/convo-flow/manual-setup.mdx
+              - page: From Template
+                path: ./atoms/pages/platform/convo-flow/from-template.mdx
+          - section: Workflow Tab
+            contents:
+              - page: Workflow Builder
+                path: ./atoms/pages/platform/convo-flow/workflow-builder.mdx
+              - page: Node Types
+                path: ./atoms/pages/platform/convo-flow/node-types.mdx
+              - page: Conditions
+                path: ./atoms/pages/platform/convo-flow/conditions.mdx
+              - page: Variables
+                path: ./atoms/pages/platform/convo-flow/config/variables.mdx
+          - section: Agent Settings
+            contents:
+              - page: General Settings
+                path: ./atoms/pages/platform/convo-flow/config/general-settings.mdx
+              - page: Languages
+                path: ./atoms/pages/platform/convo-flow/config/languages.mdx
+              - page: Voice Settings
+                path: ./atoms/pages/platform/convo-flow/config/voice-settings.mdx
+              - page: Model Settings
+                path: ./atoms/pages/platform/convo-flow/config/model-settings.mdx
+              - page: Phone Number
+                path: ./atoms/pages/platform/convo-flow/config/phone-number.mdx
+              - page: Webhooks
+                path: ./atoms/pages/platform/convo-flow/config/webhooks.mdx
+      - section: Features
+        contents:
+          - page: Knowledge Base
+            path: ./atoms/pages/platform/features/knowledge-base.mdx
+            icon: fa-solid fa-database
+          - page: Webhooks
+            path: ./atoms/pages/platform/features/webhooks.mdx
+            icon: fa-solid fa-bolt
+          - page: Widget
+            path: ./atoms/pages/platform/features/widget.mdx
+            icon: fa-solid fa-window-maximize
+          - page: Integrations
+            path: ./atoms/pages/platform/features/integrations.mdx
+            icon: fa-solid fa-plug
+          - page: Post-Call Metrics
+            path: ./atoms/pages/platform/features/post-call-metrics.mdx
+            icon: fa-solid fa-chart-line
+          - page: Variables
+            path: ./atoms/pages/platform/features/variables-reference.mdx
+            icon: fa-solid fa-code
+          - page: API Calls
+            path: ./atoms/pages/platform/features/api-calls-reference.mdx
+            icon: fa-solid fa-server
+      - section: Deployment
+        contents:
+          - page: Phone Numbers
+            path: ./atoms/pages/platform/deployment/phone-numbers.mdx
+            icon: fa-solid fa-phone
+          - page: Audiences
+            path: ./atoms/pages/platform/deployment/audiences.mdx
+            icon: fa-solid fa-users
+          - page: Campaigns
+            path: ./atoms/pages/platform/deployment/campaigns.mdx
+            icon: fa-solid fa-bullhorn
+      - section: Analytics & Logs
+        contents:
+          - page: Overview
+            path: ./atoms/pages/platform/analytics/overview.mdx
+            icon: fa-solid fa-chart-pie
+          - page: Testing
+            path: ./atoms/pages/platform/analytics/testing.mdx
+            icon: fa-solid fa-flask
+          - page: Conversation Logs
+            path: ./atoms/pages/platform/analytics/conversation-logs.mdx
+            icon: fa-solid fa-comments
+          - page: Locking
+            path: ./atoms/pages/platform/analytics/locking.mdx
+            icon: fa-solid fa-lock
+      - section: Cookbooks
+        contents:
+          - page: Using Cookbooks
+            path: ./atoms/pages/platform/cookbooks/using-cookbooks.mdx
+            icon: fa-solid fa-book
+      - section: Reference
+        contents:
+          - page: Quick Reference
+            path: ./atoms/pages/platform/introduction/quick-ref.mdx
+            icon: fa-solid fa-list
+          - page: Glossary
+            path: ./atoms/pages/platform/troubleshooting/glossary.mdx
+            icon: fa-solid fa-book
+      - section: Troubleshooting
+        contents:
+          - section: Common Issues
+            contents:
+              - page: Agent Issues
+                path: ./atoms/pages/platform/troubleshooting/common-issues/agent-issues.mdx
+              - page: Call Quality
+                path: ./atoms/pages/platform/troubleshooting/common-issues/call-quality.mdx
+              - page: Configuration
+                path: ./atoms/pages/platform/troubleshooting/common-issues/configuration.mdx
+          - page: FAQ
+            path: ./atoms/pages/platform/troubleshooting/faq.mdx
+            icon: fa-solid fa-circle-question
+          - page: Getting Help
+            path: ./atoms/pages/platform/troubleshooting/getting-help.mdx
+            icon: fa-solid fa-life-ring
+
   - tab: introduction
     layout:
       - section: Capabilities
@@ -61,188 +232,20 @@ navigation:
             path: ./atoms/pages/intro/reference/support.mdx
             icon: fa-solid fa-life-ring
 
-  - tab: platform
-    layout:
-      - section: Introduction
-        contents:
-          - page: Introduction
-            path: ./atoms/pages/platform/introduction/intro.mdx
-            icon: fa-regular fa-book-open
-          - page: Quick start
-            path: ./atoms/pages/platform/introduction/quick-start.mdx
-            icon: fa-solid fa-rocket
-          - page: Quick reference
-            path: ./atoms/pages/platform/introduction/quick-ref.mdx
-            icon: fa-solid fa-list
-      - section: Single prompt agents
-        contents:
-          - page: Overview
-            path: ./atoms/pages/platform/single-prompt/overview.mdx
-            icon: fa-solid fa-circle-info
-          - section: Creating your agent
-            contents:
-              - page: Manual setup
-                path: ./atoms/pages/platform/single-prompt/manual-setup.mdx
-              - page: From template
-                path: ./atoms/pages/platform/single-prompt/from-template.mdx
-              - page: AI assisted
-                path: ./atoms/pages/platform/single-prompt/ai-assisted.mdx
-          - section: Prompt section
-            contents:
-              - page: Writing prompts
-                path: ./atoms/pages/platform/single-prompt/writing-prompts.mdx
-              - page: Model selection
-                path: ./atoms/pages/platform/single-prompt/config/model-selection.mdx
-              - page: Voice selection
-                path: ./atoms/pages/platform/single-prompt/config/voice-selection.mdx
-          - section: Configuration panel
-            contents:
-              - page: End call
-                path: ./atoms/pages/platform/single-prompt/config/end-call.mdx
-              - page: Transfer call
-                path: ./atoms/pages/platform/single-prompt/config/transfer-call.mdx
-              - page: Knowledge base
-                path: ./atoms/pages/platform/single-prompt/config/knowledge-base.mdx
-              - page: Variables
-                path: ./atoms/pages/platform/single-prompt/config/variables.mdx
-              - page: API calls
-                path: ./atoms/pages/platform/single-prompt/config/api-calls.mdx
-          - section: Agent settings
-            contents:
-              - page: General settings
-                path: ./atoms/pages/platform/single-prompt/config/general-settings.mdx
-              - page: Language selection
-                path: ./atoms/pages/platform/single-prompt/config/language-selection.mdx
-              - page: Voice settings
-                path: ./atoms/pages/platform/single-prompt/config/voice-settings.mdx
-              - page: Model settings
-                path: ./atoms/pages/platform/single-prompt/config/model-settings.mdx
-              - page: Phone number
-                path: ./atoms/pages/platform/single-prompt/config/phone-number.mdx
-              - page: Webhooks
-                path: ./atoms/pages/platform/single-prompt/config/webhooks.mdx
-      - section: Conversational flow agents
-        contents:
-          - page: Overview
-            path: ./atoms/pages/platform/convo-flow/overview.mdx
-            icon: fa-solid fa-circle-info
-          - section: Creating your agent
-            contents:
-              - page: Manual setup
-                path: ./atoms/pages/platform/convo-flow/manual-setup.mdx
-              - page: From template
-                path: ./atoms/pages/platform/convo-flow/from-template.mdx
-          - section: Workflow tab
-            contents:
-              - page: Workflow builder
-                path: ./atoms/pages/platform/convo-flow/workflow-builder.mdx
-              - page: Node types
-                path: ./atoms/pages/platform/convo-flow/node-types.mdx
-              - page: Conditions
-                path: ./atoms/pages/platform/convo-flow/conditions.mdx
-              - page: Variables
-                path: ./atoms/pages/platform/convo-flow/config/variables.mdx
-          - section: Agent settings
-            contents:
-              - page: General settings
-                path: ./atoms/pages/platform/convo-flow/config/general-settings.mdx
-              - page: Languages
-                path: ./atoms/pages/platform/convo-flow/config/languages.mdx
-              - page: Voice settings
-                path: ./atoms/pages/platform/convo-flow/config/voice-settings.mdx
-              - page: Model settings
-                path: ./atoms/pages/platform/convo-flow/config/model-settings.mdx
-              - page: Phone number
-                path: ./atoms/pages/platform/convo-flow/config/phone-number.mdx
-              - page: Webhooks
-                path: ./atoms/pages/platform/convo-flow/config/webhooks.mdx
-      - section: Features
-        contents:
-          - page: Knowledge base
-            path: ./atoms/pages/platform/features/knowledge-base.mdx
-            icon: fa-solid fa-database
-          - page: Webhooks
-            path: ./atoms/pages/platform/features/webhooks.mdx
-            icon: fa-solid fa-bolt
-          - page: Widget
-            path: ./atoms/pages/platform/features/widget.mdx
-            icon: fa-solid fa-window-maximize
-          - page: Integrations
-            path: ./atoms/pages/platform/features/integrations.mdx
-            icon: fa-solid fa-plug
-          - page: Post-call metrics
-            path: ./atoms/pages/platform/features/post-call-metrics.mdx
-            icon: fa-solid fa-chart-line
-          - page: Variables reference
-            path: ./atoms/pages/platform/features/variables-reference.mdx
-            icon: fa-solid fa-code
-          - page: API calls reference
-            path: ./atoms/pages/platform/features/api-calls-reference.mdx
-            icon: fa-solid fa-server
-      - section: Deployment
-        contents:
-          - page: Phone numbers
-            path: ./atoms/pages/platform/deployment/phone-numbers.mdx
-            icon: fa-solid fa-phone
-          - page: Audiences
-            path: ./atoms/pages/platform/deployment/audiences.mdx
-            icon: fa-solid fa-users
-          - page: Campaigns
-            path: ./atoms/pages/platform/deployment/campaigns.mdx
-            icon: fa-solid fa-bullhorn
-      - section: Analytics and logs
-        contents:
-          - page: Overview
-            path: ./atoms/pages/platform/analytics/overview.mdx
-            icon: fa-solid fa-chart-pie
-          - page: Testing
-            path: ./atoms/pages/platform/analytics/testing.mdx
-            icon: fa-solid fa-flask
-          - page: Conversation logs
-            path: ./atoms/pages/platform/analytics/conversation-logs.mdx
-            icon: fa-solid fa-comments
-          - page: Locking
-            path: ./atoms/pages/platform/analytics/locking.mdx
-            icon: fa-solid fa-lock
-      - section: Cookbooks
-        contents:
-          - page: Using cookbooks
-            path: ./atoms/pages/platform/cookbooks/using-cookbooks.mdx
-            icon: fa-solid fa-book
-      - section: Troubleshooting
-        contents:
-          - section: Common issues
-            contents:
-              - page: Agent issues
-                path: ./atoms/pages/platform/troubleshooting/common-issues/agent-issues.mdx
-              - page: Call quality
-                path: ./atoms/pages/platform/troubleshooting/common-issues/call-quality.mdx
-              - page: Configuration
-                path: ./atoms/pages/platform/troubleshooting/common-issues/configuration.mdx
-          - page: FAQ
-            path: ./atoms/pages/platform/troubleshooting/faq.mdx
-            icon: fa-solid fa-circle-question
-          - page: Glossary
-            path: ./atoms/pages/platform/troubleshooting/glossary.mdx
-            icon: fa-solid fa-book
-          - page: Getting help
-            path: ./atoms/pages/platform/troubleshooting/getting-help.mdx
-            icon: fa-solid fa-life-ring
-
   - tab: developer
     layout:
-      - section: Introduction
+      - section: Get Started
         contents:
-          - page: Overview
-            path: ./atoms/pages/dev/introduction/overview.mdx
-            icon: fa-regular fa-book-open
           - page: Quickstart
             path: ./atoms/pages/dev/introduction/quickstart.mdx
             icon: fa-solid fa-rocket
+          - page: Overview
+            path: ./atoms/pages/dev/introduction/overview.mdx
+            icon: fa-regular fa-book-open
           - page: CLI
             path: ./atoms/pages/dev/introduction/cli.mdx
             icon: fa-solid fa-terminal
-          - section: SDK
+          - section: Core Concepts
             contents:
               - page: Overview
                 path: ./atoms/pages/dev/introduction/core-concepts/overview.mdx
@@ -264,7 +267,7 @@ navigation:
                 contents:
                   - page: Overview
                     path: ./atoms/pages/dev/build/agents/agent-configuration/overview.mdx
-                  - page: LLM settings
+                  - page: LLM Settings
                     path: ./atoms/pages/dev/build/agents/agent-configuration/llm-settings.mdx
                   - page: Prompts
                     path: ./atoms/pages/dev/build/agents/agent-configuration/prompts.mdx
@@ -274,33 +277,25 @@ navigation:
                 contents:
                   - page: Overview
                     path: ./atoms/pages/dev/build/agents/tools-functions/overview.mdx
-                  - page: Defining tools
+                  - page: Defining Tools
                     path: ./atoms/pages/dev/build/agents/tools-functions/defining-tools.mdx
-              - page: Executing tools
-                path: ./atoms/pages/dev/build/agents/tools-functions/executing-tools.mdx
-              - page: Built-in tools
-                path: ./atoms/pages/dev/build/agents/tools-functions/built-in-tools.mdx
+                  - page: Executing Tools
+                    path: ./atoms/pages/dev/build/agents/tools-functions/executing-tools.mdx
+                  - page: Built-in Tools
+                    path: ./atoms/pages/dev/build/agents/tools-functions/built-in-tools.mdx
               - section: Patterns
                 contents:
                   - page: Streaming
                     path: ./atoms/pages/dev/build/agents/agent-patterns/streaming.mdx
-                  - page: Interruption handling
+                  - page: Interruption Handling
                     path: ./atoms/pages/dev/build/agents/agent-patterns/interruption-handling.mdx
-                  - page: State management
+                  - page: State Management
                     path: ./atoms/pages/dev/build/agents/agent-patterns/state-management.mdx
-                  - page: Conversation flow design
+                  - page: Conversation Flow Design
                     path: ./atoms/pages/dev/build/agents/agent-patterns/conversation-flow-design.mdx
-                  - page: Multi-agent orchestration
+                  - page: Multi-Agent Orchestration
                     path: ./atoms/pages/dev/build/agents/agent-patterns/multi-agent-orchestration.mdx
-              - section: Operations
-                contents:
-                  - page: Overview
-                    path: ./atoms/pages/dev/build/agents/debugging-testing/overview.mdx
-                  - page: Logging and observability
-                    path: ./atoms/pages/dev/build/agents/debugging-testing/logging-observability.mdx
-                  - page: Common issues
-                    path: ./atoms/pages/dev/build/agents/debugging-testing/common-issues.mdx
-          - section: Knowledge base
+          - section: Knowledge Base
             contents:
               - page: Overview
                 path: ./atoms/pages/dev/build/knowledge-base/overview.mdx
@@ -310,24 +305,38 @@ navigation:
             contents:
               - page: Overview
                 path: ./atoms/pages/dev/build/phone-calling/overview.mdx
-              - page: Outbound calls
+              - page: Outbound Calls
                 path: ./atoms/pages/dev/build/phone-calling/outbound-calls.mdx
-              - page: Call control
+              - page: Call Control
                 path: ./atoms/pages/dev/build/phone-calling/call-control.mdx
           - section: Campaigns
             contents:
-              - page: Managing audiences
+              - page: Overview
+                path: ./atoms/pages/dev/build/campaigns/overview.mdx
+              - page: Managing Audiences
                 path: ./atoms/pages/dev/build/campaigns/managing-audiences.mdx
-              - page: Creating campaigns
+              - page: Creating Campaigns
                 path: ./atoms/pages/dev/build/campaigns/creating-campaigns.mdx
+      - section: Operate
+        contents:
+          - section: Testing & Debugging
+            contents:
+              - page: Overview
+                path: ./atoms/pages/dev/build/agents/debugging-testing/overview.mdx
+              - page: Logging & Observability
+                path: ./atoms/pages/dev/build/agents/debugging-testing/logging-observability.mdx
+              - page: Common Issues
+                path: ./atoms/pages/dev/build/agents/debugging-testing/common-issues.mdx
           - section: Analytics
             contents:
               - page: Overview
                 path: ./atoms/pages/dev/build/analytics/overview.mdx
-              - page: Call metrics
+              - page: Call Metrics
                 path: ./atoms/pages/dev/build/analytics/call-metrics.mdx
-              - page: Post-call analytics
+              - page: Post-Call Analytics
                 path: ./atoms/pages/dev/build/analytics/post-call-analytics.mdx
+              - page: SSE for Live Transcripts
+                path: ./atoms/pages/dev/build/analytics/sse-live-transcripts.mdx
       - section: Examples
         contents:
           - page: Examples

@@ -19,11 +19,11 @@ layout:
   tabs-placement: header
 
 products:
-  - display-name: Atoms
+  - display-name: Voice Agents
     path: ./products/atoms.yml
     icon: fa-solid fa-robot
     slug: atoms
-  - display-name: Waves
+  - display-name: Models
     path: ./products/waves/versions/v4.0.0.yml
     icon: fa-solid fa-waveform-lines
     slug: waves
