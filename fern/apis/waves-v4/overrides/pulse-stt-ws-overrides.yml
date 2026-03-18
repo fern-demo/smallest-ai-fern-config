@@ -19,6 +19,7 @@ channels:
     servers:
       - $ref: "#/servers/production"
     parameters:
+      Authorization:
       language:
         description: "Language code for transcription. Use 'multi' for automatic language detection"
         enum:
