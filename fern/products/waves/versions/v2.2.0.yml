@@ -117,14 +117,6 @@ navigation:
                 title: "Text to Speech (SSE)"
               - endpoint: WSS /waves/v1/lightning-v2/get_speech/stream
                 title: "Text to Speech (WebSocket)"
-          - Lightning Large:
-              title: Lightning Large
-          - Lightning:
-              title: Lightning
-          - Voices:
-              title: Voices
-          - Voice Cloning:
-              title: Voice Cloning
 
   - tab: client-libraries
     layout:

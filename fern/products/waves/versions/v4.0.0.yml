@@ -132,6 +132,9 @@ navigation:
               - page: Numeric Formatting
                 path: ../pages/v4.0.0/speech-to-text/features/numeric-formatting.mdx
                 icon: fa-solid fa-hashtag
+              - page: Transcript Formatting
+                path: ../pages/v4.0.0/speech-to-text/features/transcript-formatting.mdx
+                icon: fa-solid fa-font
               - page: Age and Gender Detection
                 path: ../pages/v4.0.0/speech-to-text/features/age-and-gender-detection.mdx
                 icon: fa-solid fa-user
