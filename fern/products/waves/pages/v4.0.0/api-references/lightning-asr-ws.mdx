@@ -31,8 +31,8 @@ The WebSocket connection accepts the following query parameters:
 | `redact_pii`          | string | `false` | Redact personally identifiable information (name, surname, address). Options: `true`, `false` |
 | `redact_pci`          | string | `false` | Redact payment card information (credit card, CVV, zip, account number). Options: `true`, `false` |
 | `numerals`            | string | `auto`  | "Convert spoken numerals into digit form (e.g., 'twenty five' to '25') and `auto` enables automatic detection based on context. Options: `true`, `false`, `auto` |
-| `format`              | string | `true`  | Enable punctuation and capitalization formatting in transcript responses. Options: `true`, `false` |
-| `eou_timeout_ms`      | number | `800`   | Time in milliseconds to wait after speech ends before flushing transcript. Range: `100` to `10000` |
+| `format`              | string | `true`  | Enable punctuation and capitalization formatting in transcript responses. When `true`, transcripts include proper casing and punctuation (for example, `Hello, how are you?`). When `false`, returns raw lowercase text without punctuation (for example, `hello how are you`). Disable when feeding transcripts into downstream pipelines like LLMs that handle their own formatting. Options: `true`, `false` |
+| `eou_timeout_ms`      | number | `800`   | End-of-utterance timeout in milliseconds. Controls how long the model waits after the user stops speaking before flushing the transcript as final. Lower values (for example, `300`) give faster responses for snappy voice agents. Higher values (for example, `2000`) accommodate users who pause mid-sentence. Range: `100` to `10000` |
 | `diarize`             | string | `false` | Enable speaker diarization to identify and label different speakers in the audio. When enabled, each word in the transcription includes `speaker` (integer ID) and `speaker_confidence` (float 0-1) fields. Options: `true`, `false` |
 
 ### Webhook Configuration

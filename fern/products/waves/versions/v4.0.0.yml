@@ -36,6 +36,7 @@ navigation:
             path: ../pages/v4.0.0/getting-started/http-stream.mdx
             icon: fa-solid fa-bars-staggered
       - section: Text to Speech (Lightning)
+        slug: text-to-speech
         contents:
           - page: Quickstart
             path: ../pages/v4.0.0/text-to-speech/quickstart.mdx
@@ -56,6 +57,7 @@ navigation:
             path: ../pages/v4.0.0/text-to-speech/get-voice-models-langs.mdx
             icon: fa-solid fa-print
       - section: Speech to Text (Pulse)
+        slug: speech-to-text
         contents:
           - page: Quickstart
             path: ../pages/v4.0.0/speech-to-text/quickstart.mdx
@@ -135,6 +137,9 @@ navigation:
               - page: Punctuation Formatting
                 path: ../pages/v4.0.0/speech-to-text/features/punctuation-formatting.mdx
                 icon: fa-solid fa-font
+              - page: End-of-Utterance Timeout
+                path: ../pages/v4.0.0/speech-to-text/features/end-of-utterance-timeout.mdx
+                icon: fa-solid fa-stopwatch
               - page: Age and Gender Detection
                 path: ../pages/v4.0.0/speech-to-text/features/age-and-gender-detection.mdx
                 icon: fa-solid fa-user

@@ -1,11 +1,11 @@
 ---
 title: 'Punctuation Formatting'
-description: 'Control punctuation and capitalization formatting in realtime transcripts'
+description: 'Control punctuation and capitalization formatting in real-time transcripts'
 ---
 
 <Badge color="purple">Real-Time</Badge>
 
-Punctuation Formatting lets you control whether transcript text is returned with punctuation and capitalization applied.
+Punctuation formatting controls whether transcript text is returned with punctuation and capitalization applied, or as raw lowercase text. This is enabled by default.
 
 ## Enabling Punctuation Formatting
 
@@ -13,7 +13,7 @@ Punctuation Formatting lets you control whether transcript text is returned with
 Punctuation Formatting is currently only available for the Real-Time WebSocket API.
 </Note>
 
-Add a `format` parameter in the query string set to `true` or `false`. The default is `true`.
+Add the `format` parameter to your WebSocket connection query parameters. Options: `true` (default), `false`.
 
 ### Real-Time WebSocket API
 
@@ -22,7 +22,7 @@ const url = new URL("wss://api.smallest.ai/waves/v1/pulse/get_text");
 url.searchParams.append("language", "en");
 url.searchParams.append("encoding", "linear16");
 url.searchParams.append("sample_rate", "16000");
-url.searchParams.append("format", "true"); // default is true
+url.searchParams.append("format", "false"); // disable formatting
 
 const ws = new WebSocket(url.toString(), {
   headers: {
@@ -33,7 +33,7 @@ const ws = new WebSocket(url.toString(), {
 
 ## Example Output
 
-### With `format=true`
+### With `format=true` (default)
 
 ```json
 {
@@ -50,3 +50,13 @@ const ws = new WebSocket(url.toString(), {
   "is_final": true
 }
 ```
+
+## When to Use
+
+| Use case | Recommended setting |
+| --- | --- |
+| Live captions and subtitles | `format=true` - human-readable output |
+| Meeting transcription | `format=true` - properly formatted text |
+| Feeding into LLMs or NLP pipelines | `format=false` - raw text avoids double-formatting |
+| Search indexing | `format=false` - normalized text for consistent matching |
+| Custom post-processing | `format=false` - apply your own punctuation and casing rules |
