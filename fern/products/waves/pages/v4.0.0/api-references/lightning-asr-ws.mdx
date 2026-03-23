@@ -31,6 +31,8 @@ The WebSocket connection accepts the following query parameters:
 | `redact_pii`          | string | `false` | Redact personally identifiable information (name, surname, address). Options: `true`, `false` |
 | `redact_pci`          | string | `false` | Redact payment card information (credit card, CVV, zip, account number). Options: `true`, `false` |
 | `numerals`            | string | `auto`  | "Convert spoken numerals into digit form (e.g., 'twenty five' to '25') and `auto` enables automatic detection based on context. Options: `true`, `false`, `auto` |
+| `format`              | string | `true`  | Enable punctuation and capitalization formatting in transcript responses. Options: `true`, `false` |
+| `eou_timeout_ms`      | number | `800`   | Time in milliseconds to wait after speech ends before flushing transcript. Range: `100` to `10000` |
 | `diarize`             | string | `false` | Enable speaker diarization to identify and label different speakers in the audio. When enabled, each word in the transcription includes `speaker` (integer ID) and `speaker_confidence` (float 0-1) fields. Options: `true`, `false` |
 
 ### Webhook Configuration
@@ -50,6 +52,8 @@ url.searchParams.append("sentence_timestamps", "true");
 url.searchParams.append("redact_pii", "true");
 url.searchParams.append("redact_pci", "true");
 url.searchParams.append("numerals", "true");
+url.searchParams.append("format", "true");
+url.searchParams.append("eou_timeout_ms", "800");
 url.searchParams.append("diarize", "true");
 
 const ws = new WebSocket(url.toString(), {
@@ -194,7 +198,7 @@ from urllib.parse import urlencode
 
 BASE_WS_URL = "wss://api.smallest.ai/waves/v1/lightning/get_text"
 
-async def stream_audio(audio_file, api_key, language="en", encoding="linear16", sample_rate=16000, word_timestamps="true", full_transcript="false", sentence_timestamps="false", redact_pii="false", redact_pci="false", numerals="auto", diarize="false"):
+async def stream_audio(audio_file, api_key, language="en", encoding="linear16", sample_rate=16000, word_timestamps="true", full_transcript="false", sentence_timestamps="false", redact_pii="false", redact_pci="false", numerals="auto", format="true", eou_timeout_ms=800, diarize="false"):
     params = {
         "language": language,
         "encoding": encoding,
@@ -205,6 +209,8 @@ async def stream_audio(audio_file, api_key, language="en", encoding="linear16", 
         "redact_pii": redact_pii,
         "redact_pci": redact_pci,
         "numerals": numerals,
+        "format": format,
+        "eou_timeout_ms": eou_timeout_ms,
         "diarize": diarize
     }
     ws_url = f"{BASE_WS_URL}?{urlencode(params)}"
@@ -246,6 +252,8 @@ if __name__ == "__main__":
     parser.add_argument("--redact-pii", default="false")
     parser.add_argument("--redact-pci", default="false")
     parser.add_argument("--numerals", default="auto")
+    parser.add_argument("--format", default="true")
+    parser.add_argument("--eou-timeout-ms", type=int, default=800)
     parser.add_argument("--diarize", default="false")
     
     args = parser.parse_args()
@@ -261,6 +269,8 @@ if __name__ == "__main__":
         args.redact_pii,
         args.redact_pci,
         args.numerals,
+        args.format,
+        args.eou_timeout_ms,
         args.diarize
     ))
 ```
