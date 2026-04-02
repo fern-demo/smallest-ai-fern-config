@@ -19,7 +19,7 @@
     <img src="https://img.shields.io/badge/JS%20SDK-smallest--js-yellow?style=for-the-badge&logo=javascript&logoColor=white" alt="JavaScript SDK">
   </a>
   <a href="https://discord.gg/ywShEyXHBW">
-    <img src="https://dcbadge.vercel.app/api/server/ywShEyXHBW?style=flat" alt="Discord">
+    <img src="https://img.shields.io/badge/Discord-Join%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord">
   </a>
   <a href="https://twitter.com/smallest_AI">
     <img src="https://img.shields.io/twitter/url/https/twitter.com/smallest_AI.svg?style=social&label=Follow%20smallest_AI" alt="Twitter">
@@ -207,7 +207,7 @@ Push your branch and open a PR against `main`. A preview URL will be automatical
 |---|---|
 | [smallest-python](https://github.com/smallest-inc/smallest-python) | Official Python SDK |
 | [smallest-js](https://github.com/smallest-inc/smallest-js) | Official JavaScript/TypeScript SDK |
-| [podcast-generator](https://github.com/smallest-inc/podcast-generator) | AI Podcast Generator (Smallest Cast) |
+| [cookbook](https://github.com/smallest-inc/cookbook) | Examples and guides for using Smallest AI |
 
 ## Support
 
