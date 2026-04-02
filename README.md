@@ -77,43 +77,36 @@ This repository contains the source files for the Smallest AI documentation site
 
 ## Which Files to Edit
 
-### Voice Agents (Atoms) Content
+### Models (Waves)
 
-| What to change | Where |
+| What you're changing | Where to edit |
 |---|---|
-| Platform docs (UI guides, agent config, testing) | `fern/products/atoms/pages/platform/` |
-| Developer guide (API usage, building agents, SDK) | `fern/products/atoms/pages/dev/` |
-| Product overview (intro, capabilities, telephony) | `fern/products/atoms/pages/intro/` |
-| Deep-dive reference (voice config, LLM, webhooks) | `fern/products/atoms/pages/deep-dive/` |
-| API reference spec | `fern/apis/atoms/openapi/openapi.yaml` |
-| Navigation & tabs | `fern/products/atoms.yml` |
-| Images | `fern/products/atoms/pages/images/` |
+| Waves docs content (pages, guides) | `fern/products/waves/pages/v4.0.0/*.mdx` |
+| Waves sidebar navigation | `fern/products/waves/versions/v4.0.0.yml` |
+| Waves API spec (REST/HTTP endpoints) | `fern/apis/waves/openapi/*.yaml` |
+| Waves API spec (WebSocket endpoints) | `fern/apis/waves/asyncapi/*.yaml` |
+| Waves API ref page rendering (what shows on docs site) | `fern/apis/waves-v4/overrides/*.yml` |
+| Waves images | `fern/products/waves/pages/v4.0.0/images/` |
 
-### Models (Waves) Content
+### Voice Agents (Atoms)
 
-| What to change | Where |
+| What you're changing | Where to edit |
 |---|---|
-| Text-to-Speech (Lightning) docs | `fern/products/waves/pages/v4.0.0/text-to-speech/` |
-| Speech-to-Text (Pulse) docs | `fern/products/waves/pages/v4.0.0/speech-to-text/` |
-| Getting started, auth, quickstart | `fern/products/waves/pages/v4.0.0/getting-started/` |
-| Voice cloning | `fern/products/waves/pages/v4.0.0/voice-cloning/` |
-| Integrations (Vercel AI SDK, etc.) | `fern/products/waves/pages/v4.0.0/integrations/` |
-| Best practices | `fern/products/waves/pages/v4.0.0/best-practices/` |
-| Model cards (TTS / STT) | `fern/products/waves/pages/v4.0.0/text-to-speech/model-cards/` and `speech-to-text/model-cards/` |
-| On-prem deployment | `fern/products/waves/pages/v4.0.0/on-prem/` |
-| API reference overrides (docs display) | `fern/apis/waves-v4/overrides/` |
-| OpenAPI / AsyncAPI specs (SDK generation) | `fern/apis/waves/openapi/` and `fern/apis/waves/asyncapi/` |
-| Navigation & versions | `fern/products/waves/versions/v4.0.0.yml` |
-| Images | `fern/products/waves/pages/v4.0.0/images/` |
+| Atoms docs content | `fern/products/atoms/pages/**/*.mdx` |
+| Atoms sidebar navigation | `fern/products/atoms.yml` |
+| Atoms API spec | `fern/apis/atoms/openapi/openapi.yaml` |
+| Atoms images | `fern/products/atoms/pages/images/` |
 
-### Global / Shared
+### Global
 
-| What to change | Where |
+| What you're changing | Where to edit |
 |---|---|
-| Site theme, colors, logo, layout | `fern/docs.yml` |
-| Custom CSS | `fern/docs/assets/styles/global-styling.css` |
-| Favicon, logos | `fern/docs/assets/` |
+| Product toggle, global config | `fern/docs.yml` |
+| CSS / styling | `fern/docs/assets/styles/global-styling.css` |
+| Logos, favicon | `fern/docs/assets/` |
 | Shared MDX snippets | `fern/snippets/` |
+
+> **Important**: The `fern/apis/waves-v4/overrides/` directory controls what renders on the docs API reference pages. The `fern/apis/waves/openapi/` and `fern/apis/waves/asyncapi/` directories are used for SDK generation. Both need to stay in sync when API parameters change.
 
 ## Setup
 

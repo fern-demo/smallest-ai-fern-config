@@ -80,7 +80,7 @@ groups:
           location: pypi
           package-name: smallestai
         github:
-          repository: fern-demo/smallest-ai-python-sdk
+          repository: smallest-inc/smallest-ai-python-sdk
           mode: pull-request
         config:
           package_name: smallestai
@@ -121,7 +121,7 @@ groups:
           location: npm
           package-name: smallestai
         github:
-          repository: fern-demo/smallest-ai-ts-sdk
+          repository: smallest-inc/smallest-ai-ts-sdk
         config:
           namespaceExport: SmallestAI
           packageManager: yarn
@@ -133,6 +133,6 @@ groups:
       - name: fernapi/fern-go-sdk
         version: 1.26.1
         github:
-          repository: fern-demo/smallest-ai-go-sdk
+          repository: smallest-inc/smallest-ai-go-sdk
         config:
           packageName: smallestai
