@@ -167,6 +167,8 @@ channels:
         location: $message.header#/finalize_on_words
       max_words:
         description: "Maximum number of words before forced finalization. Useful for keeping ITN chunks short and accurate."
+        schema:
+          type: integer
         required: false
         location: $message.header#/max_words
     messages:
